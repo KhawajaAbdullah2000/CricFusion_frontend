@@ -11,8 +11,44 @@ import {
 import React, { useEffect, useState } from "react";
 import FormInput from "./FormInput";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Formik } from "formik";
+import * as Yup from 'yup';
+
+const validationSchema=Yup.object({
+  firstName:Yup.string().trim().min(3,'name must be within 3 to 50 characters').max(50,'name must be within 3 to 50 characters')
+  .required('First Name is required'),
+  lastName:Yup.string().trim().min(3,'name must be within 3 to 50 characters').max(50,'name must be within 3 to 50 characters')
+  .required('Last Name is required'),
+  email:Yup.string().email('Invalid Email').required('Email is required'),
+  password:Yup.string().trim().min(5,'Password is too short').max(30,'Password can be max 30 characters').required('Password is required'),
+  confirmPassword:Yup.string().equals([Yup.ref('password'),null],'Password doesnot match')
+
+});
+
+
+const logInSchema=Yup.object({
+  
+  email:Yup.string().email('Invalid Email').required('Email is required'),
+  password:Yup.string().trim().required('Password is required'),
+
+});
+
 
 export default function LoginAsPlayer() {
+
+const userInfo={
+  'firstName':'',
+  'lastName':'',
+  'email':'',
+  'password':'',
+  'confirmPassword':''
+};
+
+const logInUser={
+  'email':'',
+  'password':''
+};
+
   const [showModal, setModal] = useState(false);
   const fadeAnim = new Animated.Value(0);
   useEffect(() => {
@@ -24,9 +60,23 @@ export default function LoginAsPlayer() {
   }, []);
 
   return (
+   
+
     <View style={{ flex: 1, alignItems: "center" }}>
       <Modal transparent={true} visible={showModal} animationType='slide'>
-        <View
+
+      <Formik initialValues={userInfo} validationSchema={validationSchema} onSubmit={(values,formikActions)=>{
+        console.log(values);
+        formikActions.setSubmitting(false);
+      //  formikActions.resetForm();
+      }}>
+        {
+          ({values,errors,handleChange,handleBlur,touched,handleSubmit,isSubmitting})=>{
+            const {firstName,lastName,email,password,confirmPassword}=values;
+
+            return (
+            <>
+                 <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
           <View style={{ backgroundColor: "lightgreen", padding: 10 }}>
@@ -44,18 +94,28 @@ export default function LoginAsPlayer() {
               Signup
             </Text>
             <View style={{ marginBottom: 5 }}>
-              <FormInput label="First Name" placeholder="" />
-              <FormInput label="Last Name" placeholder="" />
-              <FormInput label="Email" placeholder="Enter your email" />
-              <FormInput label="Password" placeholder="*****" />
-              <FormInput label="Confirm Password" placeholder="*****" />
+              <FormInput  label="First Name" value={firstName} onBlur={handleBlur('firstName')} error={touched.firstName && errors.firstName} placeholder="Enter First Name" onChangeText={handleChange('firstName')} />
+              <FormInput label="Last Name" value={lastName} onBlur={handleBlur('lastName')} error={touched.lastName && errors.lastName} placeholder="Enter last Name" onChangeText={handleChange('lastName')} />
+              <FormInput autoCapitalize='none' value={email} onBlur={handleBlur('email')} error={touched.email && errors.email}  label="Email" placeholder="Enter your email" onChangeText={handleChange('email')} />
+              <FormInput autoCapitalize='none' value={password} onBlur={handleBlur('password')} error={touched.password && errors.password} label="Password" placeholder="*****" onChangeText={handleChange('password')} />
+              <FormInput autoCapitalize='none' value={confirmPassword} onBlur={handleBlur('confirmPassword')} error={touched.confirmPassword && errors.confirmPassword}  label="Confirm Password" placeholder="*****" onChangeText={handleChange('confirmPassword')} />
             </View>
-            <TouchableOpacity style={styles.signupBtn}>
+            <TouchableOpacity style={styles.signupBtn} onPress={isSubmitting?null:handleSubmit} >
               <Text style={{ color: "white", fontWeight: "bold" }}>Signup</Text>
             </TouchableOpacity>
           </View>
         </View>
+            
+            
+            </>
+            )
+          }
+        }
+   
+        </Formik>
       </Modal>
+
+
 
       <Animated.View
         style={{
@@ -76,14 +136,37 @@ export default function LoginAsPlayer() {
         </Text>
       </Animated.View>
 
-      <FormInput label="Email" placeholder="Enter your email" />
-      <FormInput label="Password" placeholder="*****" />
+      
+      <Formik initialValues={logInUser} validationSchema={logInSchema} onSubmit={(values,formikActions)=>{
+        console.log(values);
+        formikActions.setSubmitting(false);
+      //  formikActions.resetForm();
+      }}>
+        {
+          ({values,errors,handleChange,handleBlur,touched,handleSubmit,isSubmitting})=>{
+            const {email,password}=values;
+
+            return (
+
+          <>
+    
+    <FormInput autoCapitalize='none' value={email} onBlur={handleBlur('email')} error={touched.email && errors.email}  label="Email" placeholder="Enter your email" onChangeText={handleChange('email')} />
+    <FormInput autoCapitalize='none' value={password} onBlur={handleBlur('password')} error={touched.password && errors.password} label="Password" placeholder="*****" onChangeText={handleChange('password')} />
+
+      <TouchableOpacity style={styles.submitBtn} onPress={isSubmitting?null:handleSubmit}>
+        <Text>Login</Text>
+      </TouchableOpacity>
+      </>
+            )
+          }
+        }
+      </Formik>
 
       <View>
         <TouchableOpacity onPress={() => setModal(true)}>
           <Text
             style={{
-              marginBottom: 5,
+              marginTop: 10,
               color: "blue",
               textDecorationLine: "underline",
             }}
@@ -93,10 +176,12 @@ export default function LoginAsPlayer() {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.submitBtn}>
-        <Text>Login</Text>
-      </TouchableOpacity>
+
     </View>
+    // main view
+
+
+
   );
 }
 
