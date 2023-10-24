@@ -6,7 +6,7 @@ import LoginAsPlayer from './LoginAsPlayer';
 import LoginAsOrg from './LoginAsOrg';
 
 
-export default function Login() {
+export default function Login({navigation}) {
     const scrollview=useRef();
 
   return (
@@ -42,12 +42,12 @@ export default function Login() {
             <ScrollView horizontal pagingEnabled ref={scrollview}> 
             
             <ScrollView>
-            <LoginAsPlayer/>
+            <LoginAsPlayer navigation={navigation}/>
             </ScrollView>
           
 
            <ScrollView>
-           <LoginAsOrg/>
+           <LoginAsOrg navigation={navigation}/>
            </ScrollView>
            
 
@@ -62,7 +62,8 @@ export default function Login() {
 const styles = StyleSheet.create({
 container:{
     flex:1,
-    paddingTop:60,
+    paddingTop:150
+
 },
 heading:{
     fontSize:30,
