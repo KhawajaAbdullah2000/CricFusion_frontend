@@ -5,7 +5,7 @@ import { useLogin } from "../context/LoginProvider";
 export default function PlayerHome({route,navigation}) {
   const {profile,token}=useLogin();
 
-    //const {user,token}=route.params;
+    //const {routeuser,routetoken}=route.params;
   return (
     <View style={styles.container}>
     <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>Home Page for player {profile.email} </Text>

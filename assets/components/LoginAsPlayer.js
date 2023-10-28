@@ -4,9 +4,10 @@ import {
   View,
   Animated,
   Dimensions,
+  TouchableWithoutFeedback,
+  Pressable,
   TouchableOpacity,
   Modal,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import client from "../api/client";
 import { useLogin } from "../context/LoginProvider";
+
 
 const validationSchema = Yup.object({
   first_name: Yup.string()
@@ -47,7 +49,7 @@ const logInSchema = Yup.object({
 
 export default function LoginAsPlayer({ navigation }) {
   // const [checkapi, setApi] = useState('');
-const {setIsLoggedIn,setProfile,setToken}=useLogin()
+const {setIsLoggedIn,setProfile,setToken,setLoginPending}=useLogin()
   const userInfo = {
     first_name: "",
     last_name: "",
@@ -65,6 +67,7 @@ const {setIsLoggedIn,setProfile,setToken}=useLogin()
   const [servererror, setServerError] = useState(""); //for signup of player
   const [loginservererror, setLoginServerError] = useState(""); //for login of player
 
+
   const fadeAnim = new Animated.Value(0);
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -75,17 +78,21 @@ const {setIsLoggedIn,setProfile,setToken}=useLogin()
   }, []);
 
   const signUp = async (values, formikActions) => {
+    setLoginPending(true)
     const res = await client.post("/create-user", {
       ...values,
     });
     if (res.data.success) {
+      setLoginPending(false)
       formikActions.setSubmitting(false);
       formikActions.resetForm();
+   
       const signinRes = await client.post("signin", {
         email: values.email,
         password: values.password,
       });
       if (signinRes.data.success) {
+
         setIsLoggedIn(true);
         setProfile(signinRes.data.user)
         setToken(signinRes.data.token)
@@ -99,6 +106,7 @@ const {setIsLoggedIn,setProfile,setToken}=useLogin()
     }
     if (!res.data.success) {
       setServerError(res.data.message);
+      setLoginPending(false)
     }
     // formikActions.setSubmitting(false) if no errros in form submission;
     // formikActions.resetForm();
@@ -106,22 +114,25 @@ const {setIsLoggedIn,setProfile,setToken}=useLogin()
 
   const signIn = async (values, formikActions) => {
     try {
+       setLoginPending(true)
       const res = await client.post("signin", {
         ...values,
       });
       if (res.data.success) {
         formikActions.setSubmitting(false);
         formikActions.resetForm();
+        setLoginPending(false)
         setIsLoggedIn(true);
         setProfile(res.data.user);
         setToken(res.data.token)
-        // navigation.dispatch(
-        //   StackActions.replace("playerhome", {
-        //     token: res.data.token,
-        //     user: res.data.user,
+        //  navigation.dispatch(
+        //  StackActions.replace("playerhome", {
+        //     routetoken: res.data.token,
+        //     routeuser: res.data.user,
         //   })
-        // );
+        //  );
       } else {
+        setLoginPending(false)
         setLoginServerError(res.data.message);
       }
     } catch (error) {
@@ -160,15 +171,15 @@ const {setIsLoggedIn,setProfile,setToken}=useLogin()
                 >
                   <View style={{ backgroundColor: "lightgreen", padding: 10 }}>
                     <View style={{ position: "absolute", right: 15 }}>
-                      <TouchableWithoutFeedback onPress={() => setModal(false)}>
-                        <View>
+                      <Pressable onPress={() => setModal(false)}>
+                  
                           <Ionicons
                             name="close-outline"
-                            size={40}
+                            size={50}
                             color="red"
                           />
-                        </View>
-                      </TouchableWithoutFeedback>
+                        
+                      </Pressable>
                     </View>
 
                     <Text
@@ -244,6 +255,8 @@ const {setIsLoggedIn,setProfile,setToken}=useLogin()
                     </TouchableOpacity>
                   </View>
                 </View>
+           
+                
               </>
             );
           }}
@@ -338,7 +351,7 @@ const {setIsLoggedIn,setProfile,setToken}=useLogin()
         </TouchableOpacity>
       </View>
     </View>
-    // main view
+  
   );
 }
 
