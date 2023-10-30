@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { View, Text, Image, TouchableOpacity,StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import client from '../api/client';
 
 import {
   createDrawerNavigator,
@@ -16,7 +18,28 @@ import PlayerHome from './PlayerHome';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = props => {
-  const {setIsLoggedIn,profile}=useLogin();
+  const {setIsLoggedIn,setLoginPending,profile}=useLogin();
+
+  const SignOut=async ()=>{
+    try {
+      const token= await AsyncStorage.getItem('token');
+      if(token!=null){
+      const res= await client.get('/player-logout',{
+          Authorization: `JWT ${token}`
+        })
+        if(res.data.success){
+          //console.log(res.data.message)
+          await AsyncStorage.removeItem('token')
+          return true;
+        }
+      }
+      return false;
+
+    } catch (error) {
+      console.log('In signout mthod',error.message);
+      return false;
+    }
+  }
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -43,7 +66,18 @@ const CustomDrawer = props => {
         </View>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      <TouchableOpacity onPress={()=>setIsLoggedIn(false)}
+      <TouchableOpacity onPress={ ()=>{
+        setLoginPending(true)
+        const isLoggedOut=SignOut();
+        if(isLoggedOut){
+          setIsLoggedIn(false)
+        }
+        setLoginPending(false)
+
+      }
+ 
+      
+      }
         style={{
           position: 'absolute',
           right: 0,

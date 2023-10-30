@@ -17,7 +17,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import client from "../api/client";
 import { useLogin } from "../context/LoginProvider";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const validationSchema = Yup.object({
   first_name: Yup.string()
@@ -92,7 +92,8 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending}=useLogin()
         password: values.password,
       });
       if (signinRes.data.success) {
-
+        const SignUpAndLogInToken=signinRes.data.token;
+        await AsyncStorage.setItem('token',SignUpAndLogInToken)
         setIsLoggedIn(true);
         setProfile(signinRes.data.user)
         setToken(signinRes.data.token)
@@ -119,6 +120,10 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending}=useLogin()
         ...values,
       });
       if (res.data.success) {
+        const logInToken=res.data.token;
+        await AsyncStorage.setItem('token',logInToken)
+
+
         formikActions.setSubmitting(false);
         formikActions.resetForm();
         setLoginPending(false)
