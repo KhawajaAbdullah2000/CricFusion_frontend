@@ -4,12 +4,15 @@ const width=Dimensions.get('window').width
 
 import LoginAsPlayer from './LoginAsPlayer';
 import LoginAsOrg from './LoginAsOrg';
+import Apploader from './Apploader';
+import { useLogin } from '../context/LoginProvider';
 
 
 export default function Login({navigation}) {
     const scrollview=useRef();
-
+ const {loginPending}=useLogin()
   return (
+    <>
     <View style={styles.container}>
         <View style={{height:80}}>
             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
@@ -52,8 +55,12 @@ export default function Login({navigation}) {
            
 
             </ScrollView>
-
     </View>
+    {
+        loginPending? <Apploader/>:null
+    }
+    
+    </>
     
   );
 

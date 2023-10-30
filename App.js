@@ -1,36 +1,31 @@
-import { NavigationContainer,useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import 'react-native-gesture-handler';
+
+import { NavigationContainer } from '@react-navigation/native';
+import MainNavigator from './assets/components/MainNavigator';
+import React from 'react';
 
 
+import LoginProvider from './assets/context/LoginProvider';
 
-import Login from './assets/components/Login';
-import Home from './assets/components/Home';
-import PlayerHome from './assets/components/PlayerHome';
-
-const Stack = createNativeStackNavigator();
 export default function App() {
 
   return (
+
+    <LoginProvider>
+    
+   
     <NavigationContainer>
-      <Stack.Navigator>
-      <Stack.Screen name="home" component={Home} options={{
-      headerShown:false
-      }}/> 
-      <Stack.Screen name="login" component={Login} options={{
-      headerShown:false
-      }}/>    
 
-      <Stack.Screen name="playerhome" component={PlayerHome} options={{
-      headerShown:false
-      }}/>    
-
-      </Stack.Navigator>
-
-  
-
-
+     <MainNavigator/>
 
     </NavigationContainer>
+
+    </LoginProvider>
+  
+  
+    
   );
 }
+
+
 
