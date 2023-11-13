@@ -17,6 +17,7 @@ const LoginProvider=({children})=>{
    console.log("TOken is: "+my_token);
    if (my_token!=null){
     setLoginPending(true)
+    setToken(my_token)
    const res= await client.get('/profile',{
     headers:{
         Authorization:`JWT ${my_token}`

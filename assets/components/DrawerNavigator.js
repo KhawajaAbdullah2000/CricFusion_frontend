@@ -13,6 +13,7 @@ import { useLogin } from '../context/LoginProvider';
 import Matches from './Player/Matches';
 import Tournaments from './Player/Tournaments';
 import PlayerHome from './PlayerHome';
+import Team from './Player/Teams';
 
 
 const Drawer = createDrawerNavigator();
@@ -109,6 +110,7 @@ const DrawerNavigator = () => {
     >
     
     <Drawer.Screen component={PlayerHome} name='playerhome' />
+    <Drawer.Screen component={Team} name='teams' />
       <Drawer.Screen component={Matches} name='matches' />
       <Drawer.Screen component={Tournaments} name='tournaments' />
     </Drawer.Navigator>

@@ -4,12 +4,11 @@ import {
   View,
   Animated,
   Dimensions,
-  TouchableWithoutFeedback,
   Pressable,
   TouchableOpacity,
   Modal,
 } from "react-native";
-import { StackActions } from "@react-navigation/native";
+//import { StackActions } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import FormInput from "./FormInput";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -18,7 +17,7 @@ import * as Yup from "yup";
 import client from "../api/client";
 import { useLogin } from "../context/LoginProvider";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Apploader from "./Apploader";
 const validationSchema = Yup.object({
   first_name: Yup.string()
     .trim()
@@ -31,6 +30,7 @@ const validationSchema = Yup.object({
     .max(50, "name must be within 3 to 50 characters")
     .required("Last Name is required"),
   email: Yup.string().email("Invalid Email").required("Email is required"),
+  city:Yup.string().trim().required("City is required"),
   password: Yup.string()
     .trim()
     .min(5, "Password is too short")
@@ -40,6 +40,7 @@ const validationSchema = Yup.object({
     [Yup.ref("password"), null],
     "Password doesnot match"
   ),
+
 });
 
 const logInSchema = Yup.object({
@@ -49,13 +50,14 @@ const logInSchema = Yup.object({
 
 export default function LoginAsPlayer({ navigation }) {
   // const [checkapi, setApi] = useState('');
-const {setIsLoggedIn,setProfile,setToken,setLoginPending}=useLogin()
+const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin()
   const userInfo = {
     first_name: "",
     last_name: "",
     email: "",
     password: "",
     confirmPassword: "",
+    city:"",
   };
 
   const logInUser = {
@@ -85,24 +87,26 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending}=useLogin()
     if (res.data.success) {
       setLoginPending(false)
       formikActions.setSubmitting(false);
-      formikActions.resetForm();
+    //  formikActions.resetForm();
    
       const signinRes = await client.post("signin", {
         email: values.email,
         password: values.password,
       });
       if (signinRes.data.success) {
+        console.log("Signed in by: "+signinRes.data.token)
         const SignUpAndLogInToken=signinRes.data.token;
         await AsyncStorage.setItem('token',SignUpAndLogInToken)
         setIsLoggedIn(true);
         setProfile(signinRes.data.user)
         setToken(signinRes.data.token)
-        navigation.dispatch(
-          StackActions.replace("playerhome", {
-            token: signinRes.data.token,
-            user: signinRes.data.user,
-          })
-        );
+        setLoginPending(false)
+        // navigation.dispatch(
+        //   StackActions.replace("playerhome", {
+        //     token: signinRes.data.token,
+        //     user: signinRes.data.user,
+        //   })
+        // );
       }
     }
     if (!res.data.success) {
@@ -147,7 +151,11 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending}=useLogin()
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
+
       <Modal transparent={true} visible={showModal} animationType="slide">
+      {
+        loginPending? <Apploader/>:null
+    }
         <Formik
           initialValues={userInfo}
           validationSchema={validationSchema}
@@ -162,7 +170,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending}=useLogin()
             handleSubmit,
             isSubmitting,
           }) => {
-            const { first_name, last_name, email, password, confirmPassword } =
+            const { first_name, last_name, email, password, confirmPassword,city } =
               values;
 
             return (
@@ -229,7 +237,17 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending}=useLogin()
                         placeholder="Enter your email"
                         onChangeText={handleChange("email")}
                       />
-                      <FormInput
+                      
+                      <FormInput 
+                      autoCapitalize="none"
+                      value={city}
+                      onBlur={handleBlur("city")}
+                      error={touched.password && errors.password}
+                      label="City"
+                      placeholder="Your city"
+                      onChangeText={handleChange("city")}
+                    />
+                    <FormInput
                         autoCapitalize="none"
                         value={password}
                         onBlur={handleBlur("password")}
