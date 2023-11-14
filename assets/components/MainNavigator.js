@@ -32,6 +32,8 @@ const StackNavigator = () => {
 const MainNavigator = () => {
   const { isLoggedIn } = useLogin();
   return isLoggedIn ? <DrawerNavigator /> : <StackNavigator />;
+
+  
 };
 
 export default MainNavigator;

@@ -13,7 +13,9 @@ export default function PlayerHome({route,navigation}) {
     <View style={styles.container}>
     <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>Home Page for player {profile.email} </Text>
     <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>City {profile.city} </Text>
-    <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>ID {profile._id} </Text>
+     <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>ID {profile.user_id} with automatic login provider </Text>
+
+    <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>UserID: {profile._id} When user logsin after input </Text>
 
     <Text>{token}</Text>
     </View>

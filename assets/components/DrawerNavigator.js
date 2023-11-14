@@ -9,11 +9,16 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+const Stack = createNativeStackNavigator();
+
+
 import { useLogin } from '../context/LoginProvider';
 import Matches from './Player/Matches';
 import Tournaments from './Player/Tournaments';
 import PlayerHome from './PlayerHome';
 import Team from './Player/Teams';
+import ViewTeam from './Player/ViewTeam';
 
 
 const Drawer = createDrawerNavigator();
@@ -41,6 +46,10 @@ const CustomDrawer = props => {
       return false;
     }
   }
+
+
+
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -94,6 +103,15 @@ const CustomDrawer = props => {
   );
 };
 
+const TargetStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="ViewTeam" component={ViewTeam} options={{ headerShown: false}}/>
+      {/* Add more screens if needed */}
+    </Stack.Navigator>
+  );
+};
+
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
@@ -113,7 +131,15 @@ const DrawerNavigator = () => {
     <Drawer.Screen component={Team} name='teams' />
       <Drawer.Screen component={Matches} name='matches' />
       <Drawer.Screen component={Tournaments} name='tournaments' />
+      <Drawer.Screen name="ViewTeamDrawer" component={TargetStackNavigator}
+      options={{
+        //drawerLabel: () => null, // Hides the label for this drawer item
+        drawerItemStyle: { height: 0 },
+      }}
+    />
     </Drawer.Navigator>
+
+
   );
 };
 

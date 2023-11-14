@@ -133,6 +133,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin(
         setLoginPending(false)
         setIsLoggedIn(true);
         setProfile(res.data.user);
+        console.log("At signin in settingtoken: "+res.data.token);
         setToken(res.data.token)
         //  navigation.dispatch(
         //  StackActions.replace("playerhome", {

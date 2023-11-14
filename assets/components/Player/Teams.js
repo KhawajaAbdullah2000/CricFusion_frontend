@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     Pressable,
     Modal,
+    FlatList
 } from "react-native";
 import { useLogin } from "../../context/LoginProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -15,6 +16,8 @@ import * as Yup from "yup";
 import client from "../../api/client";
 import Apploader from "../Apploader";
 import { useEffect } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -28,6 +31,8 @@ const validationSchema = Yup.object({
 export default function Teams({ route, navigation }) {
     const { profile, token, setLoginPending, loginPending } = useLogin();
     const [modalVisible, setModalVisible] = useState(false);
+    const [teams,setTeams]=useState([]);
+
     const teamInfo = {
         name: "",
         slogan: "",
@@ -51,6 +56,7 @@ export default function Teams({ route, navigation }) {
             formikActions.setSubmitting(false);
             setLoginPending(false);
             setModalVisible(false);
+            fetchTeams();
         }
         if (!res.data.success) {
             setServerError(res.data.message);
@@ -58,37 +64,88 @@ export default function Teams({ route, navigation }) {
         }
     };
 
+    const fetchTeams= async()=>{
+         const res=await client.get(`/my-teams/${profile._id}`);
+         if(res.data.sucess){
+              setTeams(res.data.my_teams)
+              console.log("tEAM SET");
+          }
+        
+       // console.log("AT fetch teams "+profile._id);
+    }
+
+
     useEffect(() => {
-        console.log("USe Effect called on Teams component");
+        console.log("At useEffectd");
+       fetchTeams();
     },[]);
+
+    const handleButtonClick = (team_id) => {
+        navigation.navigate('ViewTeamDrawer',
+         {
+          screen: 'ViewTeam', 
+          params: { team_id } },
+       );
+      };
+
+    const renderItem = ({ item }) => (
+        <View style={{flexDirection:'row',marginTop:70,marginLeft:20}}>
+        <Text style={{fontSize:15,backgroundColor:'red'}}>Name: {item.myteams.name} </Text>
+    {
+        item.myteams.captain_id==profile._id?
+        <Text>Captain</Text> :null
+    }
+
+    <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:10,width:70,justifyContent:'center',alignItems:'center'}}
+    onPress={()=>handleButtonClick(item.team_id)}>
+    <Text>View Team</Text>
+    </TouchableOpacity>
+      </View>    
+      
+      );
+
 
     //const {routeuser,routetoken}=route.params;
     return (
         <View style={styles.container}>
+        
             <View style={{ flex: 1, marginTop: 20 }}>
+           
+          <View style={{flexDirection:'row',justifyContent:'space-around'}}>
                 <Text style={{ fontSize: 25, fontWeight: "bold", textAlign: "center" }}>
                     My Teams
                 </Text>
-
-                <View
-                    style={{
-                        flex: 1,
-                        alignItems: "flex-end",
-                        marginTop: 15,
-                        marginEnd: 7,
-                    }}
+                <TouchableOpacity
+                    style={styles.create_btn}
+                    onPress={() => setModalVisible(!modalVisible)}
                 >
-                    <TouchableOpacity
-                        style={styles.create_btn}
-                        onPress={() => setModalVisible(!modalVisible)}
-                    >
-                        <Text>
-                            Create new Team
-                            <Ionicons name="add" size={20} color="green" />
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                    <Text>
+                        Create new Team
+                        <Ionicons name="add" size={20} color="green" />
+                    </Text>
+                </TouchableOpacity>
+            
+        
+         </View>
+
+       
+    
+         {teams && (
+            <FlatList
+              data={teams}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.team_id}
+            />
+          )}
+         
+                
+
+                
+
+
+
             </View>
+        
 
             <Modal
                 animationType="slide"
@@ -158,7 +215,7 @@ export default function Teams({ route, navigation }) {
                                                     onBlur={handleBlur("slogan")}
                                                     error={touched.slogan && errors.slogan}
                                                     placeholder="Optional"
-                                                    onChangeText={handleChange("optional")}
+                                                    onChangeText={handleChange("slogan")}
                                                 />
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
@@ -184,6 +241,9 @@ export default function Teams({ route, navigation }) {
                     </Formik>
                 </View>
             </Modal>
+
+         
+
         </View>
     );
 }
@@ -194,7 +254,7 @@ const styles = StyleSheet.create({
         backgroundColor: "lightgreen",
     },
     create_btn: {
-        width: 200,
+        width: 170,
         height: 45,
         backgroundColor: "yellow",
         justifyContent: "center",
