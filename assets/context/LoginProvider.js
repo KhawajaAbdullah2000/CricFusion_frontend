@@ -14,6 +14,7 @@ const LoginProvider=({children})=>{
     const [loginPending,setLoginPending]=useState(false)
 
     const fetchUser=async ()=>{
+
    console.log("At fetch user");
    const my_token= await AsyncStorage.getItem('token');
    const org_token= await AsyncStorage.getItem('org_token');
@@ -21,12 +22,19 @@ const LoginProvider=({children})=>{
    if (my_token!=null){
     setLoginPending(true)
     setToken(my_token)
-   const res= await client.get('/profile',{
-    headers:{
-        Authorization:`JWT ${my_token}`
+    console.log("at line 25 of login provider")
+
+    try {
+        var res= await client.get('/profile',{
+            headers:{
+                Authorization:`JWT ${my_token}`
+            }
+               
+            });
+        
+    } catch (error) {
+        console.log("At profile route"+error.message);
     }
-       
-    });
 
     if(res.data.success){
         console.log("at login provider line 32")
@@ -52,7 +60,9 @@ const LoginProvider=({children})=>{
     setLoginPending(false)
    }
 
-    }
+   }
+
+
 
 
     useEffect(()=>{
