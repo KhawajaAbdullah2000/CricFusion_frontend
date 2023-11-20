@@ -6,6 +6,7 @@ import Home from "./Home";
 import PlayerHome from "./PlayerHome";
 import { useLogin } from "../context/LoginProvider";
 import DrawerNavigator from "./DrawerNavigator";
+import OrgDrawerNavigator from "./OrgDrawerNavigator"
 
 const Stack = createNativeStackNavigator();
 const StackNavigator = () => {
@@ -30,8 +31,11 @@ const StackNavigator = () => {
 };
 
 const MainNavigator = () => {
-  const { isLoggedIn } = useLogin();
-  return isLoggedIn ? <DrawerNavigator /> : <StackNavigator />;
+  const { isLoggedIn ,isOrgLoggedIn} = useLogin();
+  return (
+    isLoggedIn ? <DrawerNavigator /> :  isOrgLoggedIn? <OrgDrawerNavigator/>:   <StackNavigator />
+  
+  )
 
   
 };

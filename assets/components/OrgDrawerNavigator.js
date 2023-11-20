@@ -14,35 +14,29 @@ const Stack = createNativeStackNavigator();
 
 
 import { useLogin } from '../context/LoginProvider';
-import Matches from './Player/Matches';
-import Tournaments from './Player/Tournaments';
-import PlayerHome from './PlayerHome';
-import Team from './Player/Teams';
-import ViewTeam from './Player/ViewTeam';
+import OrganizationHome from "./orgaization/OrganizationHome";
+import Leagues from "./orgaization/Leagues";
 
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = props => {
-  const {setIsLoggedIn,setLoginPending,profile,setProfile}=useLogin();
+  const {setIsLoggedIn,setLoginPending,profile,setIsOrgLoggedIn}=useLogin();
 
   const SignOut=async ()=>{
     try {
-      const token= await AsyncStorage.getItem('token');
+      const token= await AsyncStorage.getItem('org_token');
       if(token!=null){
-      const res= await client.get('/player-logout',{
-          Authorization: `JWT ${token}`
-        })
-        if(res.data.success){
-          console.log("at player logout line 37")
-          await AsyncStorage.removeItem('token')
+
+          //console.log(res.data.message)
+          await AsyncStorage.removeItem('org_token')
           return true;
-        }
+        
       }
       return false;
 
     } catch (error) {
-      console.log('In signout mthod',error.message);
+      console.log('In Org signout mthod',error.message);
       return false;
     }
   }
@@ -64,8 +58,7 @@ const CustomDrawer = props => {
           }}
         >
           <View>
-            <Text>{profile.first_name}</Text>
-            <Text>{profile.email}</Text>
+            <Text>{profile.name}</Text>
           </View>
           <Image
             source={{
@@ -76,15 +69,14 @@ const CustomDrawer = props => {
         </View>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      <TouchableOpacity onPress={()=>{
-        setLoginPending(true)
-        console.log("at line 81");
+      <TouchableOpacity onPress={ ()=>{
+        console.log("logout");
+     setLoginPending(true)
         const isLoggedOut=SignOut();
         if(isLoggedOut){
-          setIsLoggedIn(false)
-          setProfile({})
-        }
-        setLoginPending(false)
+       setIsOrgLoggedIn(false)
+     }
+     setLoginPending(false)
 
       }
  
@@ -108,13 +100,12 @@ const CustomDrawer = props => {
 const TargetStackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ViewTeam" component={ViewTeam} options={{ headerShown: false}}/>
       {/* Add more screens if needed */}
     </Stack.Navigator>
   );
 };
 
-const DrawerNavigator = () => {
+const OrgDrawerNavigator = () => {
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -129,21 +120,15 @@ const DrawerNavigator = () => {
       drawerContent={props => <CustomDrawer {...props} />}
     >
     
-    <Drawer.Screen component={PlayerHome} name='playerhome' />
-    <Drawer.Screen component={Team} name='teams' />
-      <Drawer.Screen component={Matches} name='matches' />
-      <Drawer.Screen component={Tournaments} name='tournaments' />
-      <Drawer.Screen name="ViewTeamDrawer" component={TargetStackNavigator}
-      options={{
-        //drawerLabel: () => null, // Hides the label for this drawer item
-        drawerItemStyle: { height: 0 },
-      }}
-    />
+    <Drawer.Screen component={OrganizationHome} name='organizationhome' />
+
+     <Drawer.Screen component={Leagues} name='leagues' />
+   
     </Drawer.Navigator>
 
 
   );
 };
 
-export default DrawerNavigator;
+export default OrgDrawerNavigator;
  
