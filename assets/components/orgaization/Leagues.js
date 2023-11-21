@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     Pressable,
     Modal,
-    FlatList
+    FlatList,
+    Button
 } from "react-native";
 import {useLogin} from '../../context/LoginProvider'
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -16,6 +17,7 @@ import * as Yup from "yup";
 import client from "../../api/client";
 import Apploader from "../Apploader";
 import { useEffect } from "react";
+import DateTimePicker,{DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -23,8 +25,8 @@ const validationSchema = Yup.object({
         .min(3, "name must be within 3 to 50 characters")
         .max(50, "name must be within 3 to 50 characters")
         .required("Team Name is required"),
-      num_of_teams:Yup.number().required('Write number of teams'),
-      startsAt: Yup.date().required("Starting Date of League")
+      num_of_teams:Yup.number().required('Write number of teams')
+
       
 });
 
@@ -33,41 +35,68 @@ export default function Leagues({ route, navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [leagues,setLeagues]=useState([]);
 
+
+
     const leagueInfo = {
         name: "",
         num_of_teams: "",
         startsAt:""
 
     };
-    const [servererror, setServerError] = useState(""); //for signup of player
+    const [date, setDate] = useState(new Date(1598051730000))
+    const [servererror, setServerError] = useState(''); //for signup of player
 
     const createLeague = async (values, formikActions) => {
-        setLoginPending(true);
-        const res = await client.post("/create-league", {
-            name: values.name,
-            org_id: profile._id,
-            num_of_teams:values.num_of_teams,
-            startsAt:values.startsAt
-         }
-        );
-        if (res.data.success) {
-            formikActions.setSubmitting(false);
-            setLoginPending(false);
-            setModalVisible(false);
-            fetchLeagues();
-        }
-        if (!res.data.success) {
-            setServerError(res.data.message);
-            setLoginPending(false);
-        }
+
+         setLoginPending(true);
+
+          const res = await client.post("/create-league", {
+              name: values.name,
+              org_id: profile._id,
+             num_of_teams:values.num_of_teams,
+               startsAt:date
+           }
+     );
+          if (res.data.success) {
+       formikActions.setSubmitting(false);
+             setLoginPending(false);
+              setModalVisible(false);
+              fetchLeagues();
+          }
+          if (!res.data.success) {
+              setServerError(res.data.message);
+              setLoginPending(false);
+          }
     };
 
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate;
+        setDate(currentDate);
+      };
+
+      const showMode = (currentMode) => {
+        DateTimePickerAndroid.open({
+          value: date,
+          onChange,
+          mode: currentMode,
+          is24Hour: true,
+        });
+      };
+
+      const showDatepicker = () => {
+        showMode('date');
+      };
+    
+
     const fetchLeagues= async()=>{
-      //console.log(leagues);
+      setLoginPending(true);
          const res=await client.get(`/org-leagues/${profile._id}`);
          if(res.data.success){
           setLeagues(res.data.leagues)
-          console.log("Leagues set");
+          setLoginPending(false);
+
+          }else{
+            setLoginPending(false);
           }
         
        // console.log("AT fetch teams "+profile._id);
@@ -75,27 +104,40 @@ export default function Leagues({ route, navigation }) {
 
 
     useEffect(() => {
-        console.log("At use Effect of Leagues");
         fetchLeagues();
     },[]);
 
-    const handleButtonClick = (league_id) => {
+    const viewLeague = (league_id) => {
       console.log(league_id);
-      //   navigation.navigate('ViewTeamDrawer',
-      //    {
-      //     screen: 'ViewTeam', 
-      //     params: { team_id } },
-      //  );
+         navigation.push('Org_League',
+         {
+           league_id:league_id
+        }
+        );
       };
 
     const renderItem = ({ item }) => (
-        <View style={{flexDirection:'row',marginTop:70,marginLeft:20}}>
-        <Text style={{fontSize:15,backgroundColor:'red'}}>Name: {item.name} </Text>
-    <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:10,width:70,justifyContent:'center',alignItems:'center'}}
-    onPress={()=>handleButtonClick(item._id)}>
-    <Text>View League</Text>
+        // const formattedDate = new Date(item.startsAt).toLocaleDateString('en-US', {
+        //     weekday: 'long',
+        //     year: 'numeric',
+        //     month: 'long',
+        //     day: 'numeric',
+        //   });
+
+        <View style={styles.mainmapview}>
+        <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>Name: {item.name} </Text>
+        <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>From: {new Date(item.startsAt).toLocaleDateString('en-US',{
+                 year: 'numeric',
+                month: 'long',
+            day: 'numeric',
+               })} </Text>
+
+    <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:15,width:70,justifyContent:'center',
+    alignItems:'center',marginEnd:5,elevation:6}}
+    onPress={()=>viewLeague(item._id)}>
+    <Text style={{fontSize:15}}>View League</Text>
     </TouchableOpacity>
-      </View>    
+      </View>   
       
       );
 
@@ -123,25 +165,10 @@ export default function Leagues({ route, navigation }) {
         
          </View>
 
-         <View style={styles.table}>
-         {/* Table Head */}
-         <View style={styles.table_head}>
-             <View style={{ width: '15%'}}>
-                 <Text style={styles.table_head_captions}>No.</Text>
-             </View>
-             <View style={{ width: '45%'}}>
-                 <Text style={styles.table_head_captions}>League Name</Text>
-             </View>
-             <View style={{ width: '45%'}}>
-                 <Text style={styles.table_head_captions}>Actions</Text>
-             </View>
-         </View>
 
-        
-
-    
-    </View>
-
+    {
+        loginPending? <Apploader/>:null
+    }
   
       <FlatList
        data={leagues}
@@ -149,11 +176,11 @@ export default function Leagues({ route, navigation }) {
        keyExtractor={(item) => item._id}/>
 
          
-                
 
-          
 
             </View>
+
+      <Text>selected: {date.toLocaleString()}</Text>
         
 
             <Modal
@@ -227,14 +254,18 @@ export default function Leagues({ route, navigation }) {
                                                     onChangeText={handleChange("num_of_teams")}
                                                 />
 
-                                                <FormInput
-                                                label="Starting Date"
-                                                value={startsAt}
-                                                onBlur={handleBlur("startsAt")}
+                                          
+                                                <View style={{marginHorizontal:60}}>
+                                                <Button onPress={showDatepicker} title="League Starting Date" 
+                                                onBlur={startsAt}
                                                 error={touched.startsAt && errors.startsAt}
-                              
                                                 onChangeText={handleChange("startsAt")}
-                                            />
+                                                />
+                                                </View>
+                   
+
+                                    
+                                           
 
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
@@ -324,33 +355,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: "center",
     },
-    table_head: {
-      flexDirection: 'row', 
-      borderBottomWidth: 1, 
-      borderColor: '#ddd', 
-      padding: 7,
-      backgroundColor: '#3bcd6b'
-  },
-  table_head_captions:{
-      fontSize: 15,
-      color: 'white'
-  },
-  
-  table_body_single_row:{
-      backgroundColor: '#fff',
-      flexDirection: 'row', 
-      borderBottomWidth: 1, 
-      borderColor: '#ddd', 
-      padding: 7,
-  },
-  table_data:{  
-      fontSize: 11,
-  },
-  table: {
-      margin: 15,
-      justifyContent: 'center',
-      alignItems: 'center',
-      elevation: 1,
-      backgroundColor: '#fff',
-  }, 
+  mainmapview:{
+    flexDirection:'row',marginTop:20,paddingVertical:25,backgroundColor:'purple',alignItems:'center',justifyContent:'space-between'
+  }
 });

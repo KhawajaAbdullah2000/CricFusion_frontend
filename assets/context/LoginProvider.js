@@ -37,7 +37,7 @@ const LoginProvider=({children})=>{
     }
 
     if(res.data.success){
-        console.log("at login provider line 32")
+        console.log("at login provider line 40")
         setProfile(res.data.profile)
         setIsLoggedIn(true)
     }else {

@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator();
 import { useLogin } from '../context/LoginProvider';
 import OrganizationHome from "./orgaization/OrganizationHome";
 import Leagues from "./orgaization/Leagues";
+import Org_League from './orgaization/Org_League';
 
 
 const Drawer = createDrawerNavigator();
@@ -100,7 +101,9 @@ const CustomDrawer = props => {
 const TargetStackNavigator = () => {
   return (
     <Stack.Navigator>
-      {/* Add more screens if needed */}
+    <Stack.Screen name="Leagues" component={Leagues} options={{headerShown: false}} />
+    <Stack.Screen name="Org_League" component={Org_League} options={{headerShown: false}} />
+
     </Stack.Navigator>
   );
 };
@@ -122,7 +125,7 @@ const OrgDrawerNavigator = () => {
     
     <Drawer.Screen component={OrganizationHome} name='organizationhome' />
 
-     <Drawer.Screen component={Leagues} name='leagues' />
+     <Drawer.Screen component={TargetStackNavigator} name='leagues' />
    
     </Drawer.Navigator>
 
