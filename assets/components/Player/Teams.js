@@ -81,26 +81,29 @@ export default function Teams({ route, navigation }) {
     },[]);
 
     const handleButtonClick = (team_id) => {
-        navigation.navigate('ViewTeamDrawer',
-         {
-          screen: 'ViewTeam', 
-          params: { team_id } },
+        navigation.push('view_team',
+        {
+          team_id:team_id
+       }
        );
       };
 
     const renderItem = ({ item }) => (
-        <View style={{flexDirection:'row',marginTop:70,marginLeft:20}}>
-        <Text style={{fontSize:15,backgroundColor:'red'}}>Name: {item.myteams.name} </Text>
-    {
-        item.myteams.captain_id==profile._id?
-        <Text>Captain</Text> :null
-    }
+        
+        <View style={styles.mainmapview}>
+        <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>Name: {item.myteams.name} </Text>
+        <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>{
+                 item.myteams.captain_id==profile._id?
+                <Text>Captain</Text> :null
+             } </Text>
+        
 
     <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:10,width:70,justifyContent:'center',alignItems:'center'}}
     onPress={()=>handleButtonClick(item.team_id)}>
-    <Text>View Team</Text>
+    <Text style={{fontSize:15}}>View Team</Text>
     </TouchableOpacity>
-      </View>    
+      </View>   
+   
       
       );
 
@@ -174,7 +177,7 @@ export default function Teams({ route, navigation }) {
                             const { name, slogan } = values;
 
                             return (
-                                <>
+                             
                                     <View
                                         style={{
                                             flex: 1,
@@ -235,7 +238,7 @@ export default function Teams({ route, navigation }) {
                                             </View>
                                         </View>
                                     </View>
-                                </>
+                                
                             );
                         }}
                     </Formik>
@@ -305,4 +308,7 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: "center",
     },
+    mainmapview:{
+        flexDirection:'row',marginTop:20,paddingVertical:25,backgroundColor:'purple',alignItems:'center',justifyContent:'space-between'
+      }
 });

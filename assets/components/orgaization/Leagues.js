@@ -25,7 +25,8 @@ const validationSchema = Yup.object({
         .min(3, "name must be within 3 to 50 characters")
         .max(50, "name must be within 3 to 50 characters")
         .required("Team Name is required"),
-      num_of_teams:Yup.number().required('Write number of teams')
+      num_of_teams:Yup.number().required('Write number of teams'),
+      city:Yup.string().required('city is required')
 
       
 });
@@ -40,6 +41,7 @@ export default function Leagues({ route, navigation }) {
     const leagueInfo = {
         name: "",
         num_of_teams: "",
+        city:"",
         startsAt:""
 
     };
@@ -54,6 +56,7 @@ export default function Leagues({ route, navigation }) {
               name: values.name,
               org_id: profile._id,
              num_of_teams:values.num_of_teams,
+             city:values.city,
                startsAt:date
            }
      );
@@ -117,19 +120,14 @@ export default function Leagues({ route, navigation }) {
       };
 
     const renderItem = ({ item }) => (
-        // const formattedDate = new Date(item.startsAt).toLocaleDateString('en-US', {
-        //     weekday: 'long',
-        //     year: 'numeric',
-        //     month: 'long',
-        //     day: 'numeric',
-        //   });
+    
 
         <View style={styles.mainmapview}>
         <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>Name: {item.name} </Text>
         <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>From: {new Date(item.startsAt).toLocaleDateString('en-US',{
                  year: 'numeric',
                 month: 'long',
-            day: 'numeric',
+               day: 'numeric',
                })} </Text>
 
     <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:15,width:70,justifyContent:'center',
@@ -207,7 +205,7 @@ export default function Leagues({ route, navigation }) {
                             handleSubmit,
                             isSubmitting,
                         }) => {
-                            const { name, num_of_teams,startsAt } = values;
+                            const { name, num_of_teams,city,startsAt } = values;
 
                             return (
                             
@@ -250,9 +248,19 @@ export default function Leagues({ route, navigation }) {
                                                     value={num_of_teams}
                                                     onBlur={handleBlur("num_of_teams")}
                                                     error={touched.num_of_teams && errors.num_of_teams}
-                                                    placeholder="Optional"
+                                                    placeholder=""
                                                     onChangeText={handleChange("num_of_teams")}
                                                 />
+
+                                                <FormInput
+                                                label="City"
+                                                value={city}
+                                                onBlur={handleBlur("city")}
+                                                error={touched.city && errors.city}
+                                                placeholder="City.."
+                                                onChangeText={handleChange("city")}
+                                            />
+
 
                                           
                                                 <View style={{marginHorizontal:60}}>
