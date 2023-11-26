@@ -7,7 +7,7 @@ import {
     Pressable,
     Modal,
     FlatList,
-    Button
+    Button,Image
 } from "react-native";
 import {useLogin} from '../../context/LoginProvider'
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -119,24 +119,34 @@ export default function Leagues({ route, navigation }) {
         );
       };
 
+
+      const randomNumber = Math.floor(Math.random() * 3) + 1;
+      const imageSources = {
+        1: require('../../banner1.jpg'),
+        2: require('../../banner2.jpg'),
+        3: require('../../banner3.jpg'),
+      };
+
+
+
     const renderItem = ({ item }) => (
-    
 
-        <View style={styles.mainmapview}>
-        <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>Name: {item.name} </Text>
-        <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>From: {new Date(item.startsAt).toLocaleDateString('en-US',{
-                 year: 'numeric',
-                month: 'long',
-               day: 'numeric',
-               })} </Text>
+        <View style={styles.card}>
+        <Image source={imageSources[randomNumber]} style={styles.image} />
+        <Text style={styles.title}>{item.name}</Text>
+        <Text style={styles.title}>From: {new Date(item.startsAt).toLocaleDateString('en-US',{
+                     year: 'numeric',
+                       month: 'long',
+                       day: 'numeric',
+                    })} </Text>
 
-    <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:15,width:70,justifyContent:'center',
-    alignItems:'center',marginEnd:5,elevation:6}}
-    onPress={()=>viewLeague(item._id)}>
-    <Text style={{fontSize:15}}>View League</Text>
-    </TouchableOpacity>
-      </View>   
+                    <TouchableOpacity style={styles.btn}
+                    onPress={()=>viewLeague(item._id)}>
+                 <Text style={{fontSize:15,textAlign:'center',fontWeight:'bold'}}>View League</Text>
+                 </TouchableOpacity>
       
+    
+   </View>
       );
 
 
@@ -365,5 +375,30 @@ const styles = StyleSheet.create({
     },
   mainmapview:{
     flexDirection:'row',marginTop:20,paddingVertical:25,backgroundColor:'purple',alignItems:'center',justifyContent:'space-between'
+  },
+  card: {
+    flex: 1,
+    margin: 10,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: 150,
+    resizeMode: 'cover',
+  },
+  title: {
+   paddingBottom:8,
+    textAlign: 'center',
+    backgroundColor: '#eee',
+
+  },
+
+  btn:{
+    padding: 10,
+    textAlign: 'center',
+    backgroundColor: 'yellow',
+  elevation:10
   }
+  
 });
