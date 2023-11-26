@@ -12,12 +12,17 @@ const ApplyTeamInLeague = ({route,navigation}) => {
     const [team,setTeam]=useState({})
     const [notify,setNotify]=useState('')
     const [registeration,setRegisteration]=useState(false)
+    const [teams_full,setTeams_Full]=useState(false)
 
     const fetchLeague=async ()=>{
         
         const res=await client.get(`/get-league-details/${route.params.league_id}`);
         if(res.data.success){
              setLeague(res.data.leagueDetails);
+         if(res.data.leagueDetails[0].num_of_teams==res.data.leagueDetails[0].teams_joined){
+          setTeams_Full(true)
+         }
+
          }else{
            console.log('No League Found');
          }
@@ -45,9 +50,13 @@ const ApplyTeamInLeague = ({route,navigation}) => {
         setLoginPending(false);
         fetchRegisterationDetails()
         setNotify("Team Registered");
-     }else{
+     }
+     if (!res.data.success){
+      if(res.data.teams_full==1){
+        setTeams_Full(true)
+      }
       setLoginPending(false)
-      setNotify("team Already registered")
+
      }
      }
 
@@ -56,7 +65,6 @@ const ApplyTeamInLeague = ({route,navigation}) => {
       const res=await client.get(`/check-reg-in-league/${route.params.league_id}/${route.params.team_id}`);
       if(res.data.success){
            if(res.data.registeration){
-            console.log()
             setRegisteration(true);
            }else{
             setRegisteration(false);
@@ -72,20 +80,6 @@ const ApplyTeamInLeague = ({route,navigation}) => {
     },[])
 
 
-    useEffect(() => {
-      let timeoutId;
-      if (notify) {
-        // Set a timeout to clear the notification after 5 seconds (5000 milliseconds)
-        timeoutId = setTimeout(() => {
-          setNotify('');
-        }, 5000);
-      }
-  
-      // Clear the timeout when the component unmounts or when a new notification is triggered
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }, [notify]);
 
 
   return (
@@ -115,7 +109,7 @@ const ApplyTeamInLeague = ({route,navigation}) => {
       {
         team? (
 
-            !registeration?(
+           ( !registeration && !teams_full)? (
               <TouchableOpacity style={{backgroundColor:'red',paddingVertical:10,borderRadius:10,marginTop:20}}
               onPress={JoinLeague}
               >
@@ -123,15 +117,21 @@ const ApplyTeamInLeague = ({route,navigation}) => {
               </TouchableOpacity>
 
             ):null
-          
-      
+             
+            
       
         ):null}
 
         {
-          notify? <Text>{notify}</Text>:null
+          registeration?(<Text>Your Team {team.name} is been registered </Text>):null
         }
+
+        {
+          
+          teams_full?( <Text style={{textAlign:'center' ,fontSize:18,fontWeight:'bold'}}>Teams fulled</Text>):null
+            
   
+        }
 
 
 
