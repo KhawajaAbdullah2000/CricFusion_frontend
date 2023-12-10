@@ -9,7 +9,7 @@ import { Share } from 'react-native';
 
 //import {Share} from 'react-native-share';
 
-const Org_League = ({route}) => {
+const Org_League = ({route,navigation}) => {
   const { profile, setLoginPending, loginPending } = useLogin();
 const [league,setLeague]=useState([]);
 const [teams,setTeams]=useState([]);
@@ -79,11 +79,20 @@ const imageSources = {
   3: require('../../banner3.jpg'),
 };
 
+const scheduleMatches=(league_id)=>{
+
+  navigation.push('Schedule_League',
+         {
+           league_id:league_id
+        }
+        );
+
+
+}
 
 
   
   const renderItem = ({ item }) => (
-
 
     <View style={styles.card}>
 
@@ -95,9 +104,9 @@ const imageSources = {
                 >
              <Text style={{fontSize:15,textAlign:'center',fontWeight:'bold'}}>View Team</Text>
              </TouchableOpacity>
-  
 
 </View>
+
   );
 
     
@@ -120,6 +129,14 @@ const imageSources = {
     <View style={{backgroundColor:'lightblue',height:50,width:100,justifyContent:'center',
     alignItems:'center',alignSelf:'flex-end',marginEnd:20,borderRadius:20}}>
     <Text>Promote League</Text>
+    </View>
+    </TouchableOpacity>
+
+
+    <TouchableOpacity onPress={() => scheduleMatches(route.params.league_id)}>
+    <View style={{backgroundColor:'lightgreen',height:50,width:100,justifyContent:'center',
+    alignItems:'center',alignSelf:'flex-end',marginEnd:20,borderRadius:20,marginTop:20}}>
+    <Text>Schedule Matches</Text>
     </View>
     </TouchableOpacity>
 
@@ -199,8 +216,6 @@ const imageSources = {
   
 {
   
-
-
   teams && (
    <FlatList
    data={teams}
