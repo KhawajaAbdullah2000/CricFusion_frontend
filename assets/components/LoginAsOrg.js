@@ -201,6 +201,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
                         fontSize: 25,
                         textAlign: "center",
                         fontWeight: "bold",
+             
                       }}
                     >
                       Signup
@@ -289,10 +290,11 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
       >
         <Text
           style={{
-            fontSize: 23,
+            fontSize: 28,
             fontWeight: "bold",
             marginBottom: 10,
             marginTop: 15,
+            color:'orange'
           }}
         >
           Login

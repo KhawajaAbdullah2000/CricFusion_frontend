@@ -3,14 +3,12 @@ import React ,{ useEffect,useState }from 'react'
 import {useLogin} from '../../context/LoginProvider';
 import client from '../../api/client';
 
-
-
 import { Share } from 'react-native';
 
 //import {Share} from 'react-native-share';
 
 const Org_League = ({route,navigation}) => {
-  const { profile, setLoginPending, loginPending } = useLogin();
+  const { profile, setLoginPending, loginPending ,setContextLeague_id} = useLogin();
 const [league,setLeague]=useState([]);
 const [teams,setTeams]=useState([]);
 const [modalVisible,setModalVisible]=useState(false)
@@ -81,11 +79,15 @@ const imageSources = {
 
 const scheduleMatches=(league_id)=>{
 
-  navigation.push('Schedule_League',
-         {
-           league_id:league_id
-        }
-        );
+setContextLeague_id(league_id);
+  
+  navigation.push('Schedule_League');
+
+  //  navigation.push('Schedule_League',
+  //        {
+  //           league_id:league_id
+  //       }
+  //        );
 
 
 }
@@ -96,7 +98,7 @@ const scheduleMatches=(league_id)=>{
 
     <View style={styles.card}>
 
-    <Image source={imageSources[randomNumber]} style={styles.image} />
+<Image source={require('../../teamlogo.png')} style={styles.image} />
     <Text style={[styles.title,{color:'white',fontWeight:'bold',fontSize:15}]}>{item.teams.name}</Text>
    
                 <TouchableOpacity style={styles.btn}
@@ -249,7 +251,7 @@ const styles=StyleSheet.create({
   image: {
     width: '100%',
     height: 150,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
   title: {
    paddingBottom:8,

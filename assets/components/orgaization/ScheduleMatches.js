@@ -1,9 +1,13 @@
 import { View, Text,StyleSheet,FlatList,TouchableOpacity,Image,TouchableWithoutFeedback } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import client from '../../api/client';
-import { ScrollView } from 'react-native-gesture-handler';
+import { useLogin } from '../../context/LoginProvider';
+
+
 
 const ScheduleMatches = ({route}) => {
+
+  const {contextLeague_id}=useLogin()
 
 
 const [teams,setTeams]=useState([]);
@@ -36,26 +40,21 @@ const fetchTeamsRegistered=async(league_id)=>{
 
 useEffect(()=>{
 
-    fetchTeamsRegistered(route.params.league_id)
+  fetchTeamsRegistered(contextLeague_id)
+
+    // fetchTeamsRegistered(route.params.league_id)
   },[]);
 
 
-
-  
- const randomNumber = Math.floor(Math.random() * 3) + 1;
- 
- const imageSources = {
-   1: require('../../banner1.jpg'),
-   2: require('../../banner2.jpg'),
-   3: require('../../banner3.jpg'),
- };
 
  const chooseTeam1=(team_id)=>{
     if(team1!=team_id){
         setTeam1(team_id);
     }else{
-        setTeam1(null)
+      setTeam1(null)
     }
+ 
+    
 
  }
 
@@ -74,7 +73,7 @@ useEffect(()=>{
    
     <View style={[styles.card]}>
  
-    <Image source={imageSources[randomNumber]} style={styles.image} />
+    <Image source={require('../../teamlogo.png')} style={styles.image} />
     <Text style={[styles.title,{color:'white',fontWeight:'bold',fontSize:15}]}>{item.teams.name}</Text>
    
                 <TouchableOpacity style={styles.btn}
@@ -105,7 +104,7 @@ useEffect(()=>{
   const renderItem2 = ({ item }) => (
 
     <View style={styles.card}>
-    <Image source={imageSources[randomNumber]} style={styles.image} />
+    <Image source={require('../../teamlogo2.png')} style={styles.image} />
     <Text style={[styles.title,{color:'white',fontWeight:'bold',fontSize:15}]}>{item.teams.name}</Text>
    
                 <TouchableOpacity style={styles.btn}
@@ -135,7 +134,7 @@ useEffect(()=>{
     <View style={{flexDirection:'row',justifyContent:'space-around'}}>
       <Text style={{fontSize:20,fontWeight:'900',textAlign:'center'}}>Schedule Matches</Text>
       {
-        team1!=null && team2!=null?   <TouchableOpacity>
+        team1!=null && team2!=null && team1!=team2?   <TouchableOpacity>
         <Text style={{backgroundColor:'lightblue',borderRadius:10,width:90,textAlign:'center'}}>Create match</Text>
          </TouchableOpacity>:null
       }

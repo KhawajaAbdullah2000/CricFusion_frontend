@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity,StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import client from '../api/client';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {
   createDrawerNavigator,
@@ -19,6 +20,7 @@ import OrganizationHome from "./orgaization/OrganizationHome";
 import Leagues from "./orgaization/Leagues";
 import Org_League from './orgaization/Org_League';
 import ScheduleMatches from './orgaization/ScheduleMatches';
+import MatchesSchedules from './orgaization/MatchesSchedules';
 
 
 const Drawer = createDrawerNavigator();
@@ -100,24 +102,46 @@ const CustomDrawer = props => {
   );
 };
 
-//const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
-// const LeaguesTab=({route})=> {
-//   const { league_id } = route.params;
-//   return (
-//     <Tab.Navigator>
-//       <Tab.Screen name="org_league_details" component={() => <Org_League league_id={league_id} />}  />
+const LeaguesScheduling=()=> {
 
-//     </Tab.Navigator>
-//   );
-// }
+ return (
+   <Tab.Navigator initialRouteName='scheduleMatch' 
+   screenOptions={{headerShown:false,tabBarActiveTintColor:'lightgreen',
+  tabBarShowLabel:false}}>
+     <Tab.Screen name="scheduleMatch" component={ScheduleMatches} options=
+     {{
+      tabBarIcon:({color})=>(
+        <Ionicons
+        name="build-outline"
+        size={35}
+        color={color}
+      />     
+      )
+    }} />
+     <Tab.Screen name="schedule" component={MatchesSchedules} options=
+     {{
+      tabBarIcon:({color})=>(
+        <Ionicons
+        name="calendar-outline"
+        size={35}
+        color={color}
+      />     
+      )
+    }}   />
+
+   </Tab.Navigator>
+   );
+  
+  }
 
 const TargetStackNavigator = () => {
   return (
     <Stack.Navigator>
     <Stack.Screen name="Leagues" component={Leagues} options={{headerShown: false}} />
    <Stack.Screen name="Org_League" component={Org_League} options={{headerShown: false}} />
-   <Stack.Screen name="Schedule_League" component={ScheduleMatches} options={{headerShown: false}} />
+   <Stack.Screen name="Schedule_League" component={LeaguesScheduling} options={{headerShown: false}} />
 
   
 

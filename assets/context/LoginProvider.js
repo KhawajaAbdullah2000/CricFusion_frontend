@@ -12,6 +12,7 @@ const LoginProvider=({children})=>{
     const [profile,setProfile]=useState({});
     const [token,setToken]=useState('');
     const [loginPending,setLoginPending]=useState(false)
+    const [contextLeague_id,setContextLeague_id]=useState(null);
 
     const fetchUser=async ()=>{
 
@@ -71,7 +72,8 @@ const LoginProvider=({children})=>{
     },[])
             return (
             <LoginContext.Provider
-             value={{isLoggedIn,setIsLoggedIn,profile,setProfile,token,setToken,loginPending,setLoginPending,isOrgLoggedIn,setIsOrgLoggedIn}}>
+             value={{isLoggedIn,setIsLoggedIn,profile,setProfile,token,setToken,loginPending,setLoginPending,
+                isOrgLoggedIn,setIsOrgLoggedIn,contextLeague_id,setContextLeague_id}}>
             {children}
             </LoginContext.Provider>
             )
