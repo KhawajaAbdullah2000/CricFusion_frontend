@@ -1,23 +1,48 @@
-import { View, Text,StyleSheet,FlatList,TouchableOpacity,Image,TouchableWithoutFeedback } from 'react-native'
+import { View, Text,StyleSheet,FlatList,TouchableOpacity,Image,Modal,Pressable } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import client from '../../api/client';
 import { useLogin } from '../../context/LoginProvider';
+import FormInput from "../FormInput";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import Apploader from "../Apploader";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+// import DateTimePicker,{DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 
+const validationSchema = Yup.object({
+  venue: Yup.string().min(3, "venue must be within 3 to 50 characters")
+  .max(50, "name must be within 3 to 50 characters")
+  .required("Venue is required")
+
+    
+});
 
 
 const ScheduleMatches = ({route}) => {
 
-  const {contextLeague_id}=useLogin()
+
+  const {contextLeague_id,loginPending,setLoginPending}=useLogin()
 
 
 const [teams,setTeams]=useState([]);
 
 const [team1,setTeam1]=useState(null);
 const [team2,setTeam2]=useState(null);
-const [borderColor,setBorderColor]=useState(null);
+const [modalVisible, setModalVisible] = useState(false);
+const [servererror, setServerError] = useState(''); 
+const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+
+const [matchDate,setMatchDate]=useState(null);
 
 
 
+const matchInfo = {
+  venue: "",
+  match_date: null,
+  match_time:null
+
+};
 
 
 const fetchTeamsRegistered=async(league_id)=>{
@@ -124,8 +149,38 @@ useEffect(()=>{
                 }
              </TouchableOpacity>
 
+
+
 </View>
   );
+
+  const scheduleMatch=async(values, formikActions)=>{
+    setLoginPending(<i class="fas fa-tire-rugged    "></i>);
+    const res = await client.post("/schedule-match", {
+        league_id: contextLeague_id,
+        team1_id:team1,
+        team2_id:team2,
+        venue:values.venue,
+        match_date:Date(values.match_date)
+     }
+);
+    if (res.data.success) {
+      console.log("SUccess");
+      setMatchDate(null);
+      formikActions.setSubmitting(false);
+     setLoginPending(false);
+      setModalVisible(false);
+
+       
+    }
+    if (!res.data.success) {
+  
+        setServerError(res.data.message);
+        setLoginPending(false);
+    }
+
+  
+  }
 
 
   return (
@@ -134,7 +189,8 @@ useEffect(()=>{
     <View style={{flexDirection:'row',justifyContent:'space-around'}}>
       <Text style={{fontSize:20,fontWeight:'900',textAlign:'center'}}>Schedule Matches</Text>
       {
-        team1!=null && team2!=null && team1!=team2?   <TouchableOpacity>
+        team1!=null && team2!=null && team1!=team2?  
+         <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
         <Text style={{backgroundColor:'lightblue',borderRadius:10,width:90,textAlign:'center'}}>Create match</Text>
          </TouchableOpacity>:null
       }
@@ -160,7 +216,6 @@ useEffect(()=>{
       
 
 
-
         {
   
             teams && (
@@ -176,6 +231,172 @@ useEffect(()=>{
       
             } 
            
+            
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    {loginPending ? <Apploader /> : null}
+                    <Formik
+                        initialValues={matchInfo}
+                        validationSchema={validationSchema}
+                        onSubmit={scheduleMatch}
+                    >
+                        {({
+                            values,
+                            errors,
+                            handleChange,
+                            handleBlur,
+                            touched,
+                            handleSubmit,
+                            isSubmitting,
+                        }) => {
+                            const { venue, match_date,match_time } = values;
+
+                            const showDatePicker = () => {
+                              setDatePickerVisibility(true);
+                            };
+                          
+                            const hideDatePicker = () => {
+                              setDatePickerVisibility(false);
+                            };
+                          
+                            const handleDateConfirm = (date,formik) => {
+                           
+                              console.log(date);
+                              setMatchDate(date)
+                              hideDatePicker();
+                              formik.setFieldValue('match_date', date);
+
+                             
+                            };
+
+                          //   const showTimePicker = () => {
+                          //     setTimePickerVisibility(true);
+                          //   };
+                          
+                          //   const hideTimePicker = () => {
+                          //     setTimePickerVisibility(false);
+                          //   };
+                          
+                          //   const handleTimeConfirm = (time,formik) => {
+
+                          // console.log(time);
+                          // setMatchTime(time)
+                          //     hideTimePicker();
+                          //     formik.setFieldValue('match_time', time);
+                          //   };
+
+                            return (
+                            
+                                    <View
+                                        style={{
+                                            flex: 1,
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <View style={styles.modalView}>
+                                            <Text
+                                                style={{
+                                                    fontSize: 25,
+                                                    textAlign: "center",
+                                                    fontWeight: "bold",
+
+                                                }}
+                                            >
+                                                Schedule Match
+                                            </Text>
+
+                                            {servererror ? (
+                                                <Text style={{ textAlign: "center", color: "red" }}>
+                                                    {servererror}
+                                                </Text>
+                                            ) : null}
+
+                                            <View style={{ marginBottom: 5 }}>
+                                                <FormInput
+                                                    label="Venue"
+                                                    value={venue}
+                                                    onBlur={handleBlur("venue")}
+                                                    error={touched.venue && errors.venue}
+                                                    placeholder="Enter venue"
+                                                    onChangeText={handleChange("venue")}
+                                                />
+                                       
+
+
+                                                <View style={{flexDirection:'row'}}>
+                                              
+                                              <Text style={{fontWeight:'bold',fontSize:17,marginBottom:5,marginLeft:10}}>Match Time</Text>
+                                          <TouchableOpacity onPress={showDatePicker}
+                                           style={{backgroundColor:'yellow',width:140,height:30,marginLeft:20,borderRadius:20,
+                                           justifyContent:'center'}}>
+                                            <Text style={{textAlign:'center'}} >Select</Text>
+                                          </TouchableOpacity>
+                            
+
+                                  
+                                          </View>
+                                     
+                                          <DateTimePickerModal
+                                          isVisible={isDatePickerVisible}
+                                          mode="datetime"
+                                          onConfirm={handleDateConfirm}
+                                          onCancel={hideDatePicker}
+                                        />
+
+                                        {
+                                          matchDate!=null? <Text style={{fontSize:15,textAlign:'center'}}>
+                                          {new Date(matchDate).toLocaleString('en-US',{
+                                            year: 'numeric',
+                                              month: 'long',
+                                              day: 'numeric',
+                                              hour: 'numeric',
+                                              minute: 'numeric'
+                                             
+                                              
+                                           })
+                                          }</Text>:null
+                                        }
+
+
+                            
+                                
+                                       
+
+                    
+                                            </View>
+
+                                            
+                                            <View style={{ flexDirection: "row" }}>
+                                                <TouchableOpacity
+                                                    style={{flex:1,backgroundColor:'green',borderRadius:20,padding:10}}
+                                                    onPress={isSubmitting ? null : handleSubmit}
+                                                >
+                                                    <Text style={{textAlign:'center'}}>Schedule Match</Text>
+                                                </TouchableOpacity>
+
+                                                <Pressable
+                                                    style={[styles.button, styles.buttonClose,{flex:1}]}
+                                                    onPress={() => setModalVisible(!modalVisible)}
+                                                >
+                                                    <Text style={styles.textStyle}>Cancel</Text>
+                                                </Pressable>
+                                            </View>
+                                        </View>
+                                    </View>
+                              
+                            );
+                        }}
+                    </Formik>
+                </View>
+            </Modal>
 
         </View>
 
@@ -231,6 +452,48 @@ const styles=StyleSheet.create({
      paddingBottom:100,
       backgroundColor:'red'
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+},
+modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+},
+button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+
+},
+buttonOpen: {
+    backgroundColor: "#F194FF",
+},
+buttonClose: {
+    backgroundColor: "#2196F3",
+},
+textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+},
+modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+}
   
   
   });

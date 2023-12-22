@@ -46,7 +46,7 @@ export default function Leagues({ route, navigation }) {
 
     };
     const [date, setDate] = useState(new Date(1598051730000))
-    const [servererror, setServerError] = useState(''); //for signup of player
+    const [servererror, setServerError] = useState(''); 
 
     const createLeague = async (values, formikActions) => {
 

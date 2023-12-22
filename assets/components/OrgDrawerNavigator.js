@@ -107,7 +107,7 @@ const Tab = createBottomTabNavigator();
 const LeaguesScheduling=()=> {
 
  return (
-   <Tab.Navigator initialRouteName='scheduleMatch' 
+   <Tab.Navigator initialRouteName='scheduleMatch'
    screenOptions={{headerShown:false,tabBarActiveTintColor:'lightgreen',
   tabBarShowLabel:false}}>
      <Tab.Screen name="scheduleMatch" component={ScheduleMatches} options=
