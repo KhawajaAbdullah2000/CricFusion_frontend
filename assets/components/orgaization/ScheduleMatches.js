@@ -31,7 +31,6 @@ const [team2,setTeam2]=useState(null);
 const [modalVisible, setModalVisible] = useState(false);
 const [servererror, setServerError] = useState(''); 
 const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
 const [matchDate,setMatchDate]=useState(null);
 
@@ -39,8 +38,7 @@ const [matchDate,setMatchDate]=useState(null);
 
 const matchInfo = {
   venue: "",
-  match_date: null,
-  match_time:null
+  match_date: null
 
 };
 
@@ -155,13 +153,14 @@ useEffect(()=>{
   );
 
   const scheduleMatch=async(values, formikActions)=>{
-    setLoginPending(<i class="fas fa-tire-rugged    "></i>);
+    //console.log(matchDate.toISOString());
+    setLoginPending(true);
     const res = await client.post("/schedule-match", {
         league_id: contextLeague_id,
         team1_id:team1,
         team2_id:team2,
         venue:values.venue,
-        match_date:Date(values.match_date)
+        match_date:matchDate.toISOString()
      }
 );
     if (res.data.success) {
@@ -256,7 +255,7 @@ useEffect(()=>{
                             handleSubmit,
                             isSubmitting,
                         }) => {
-                            const { venue, match_date,match_time } = values;
+                            const { venue, match_date } = values;
 
                             const showDatePicker = () => {
                               setDatePickerVisibility(true);
@@ -267,30 +266,16 @@ useEffect(()=>{
                             };
                           
                             const handleDateConfirm = (date,formik) => {
-                           
-                              console.log(date);
+                             my_date=date.toISOString()
+                      
+                              console.log(my_date);
                               setMatchDate(date)
                               hideDatePicker();
-                              formik.setFieldValue('match_date', date);
+                              //formik.setFieldValue('match_date', date.toISOString());
 
                              
                             };
 
-                          //   const showTimePicker = () => {
-                          //     setTimePickerVisibility(true);
-                          //   };
-                          
-                          //   const hideTimePicker = () => {
-                          //     setTimePickerVisibility(false);
-                          //   };
-                          
-                          //   const handleTimeConfirm = (time,formik) => {
-
-                          // console.log(time);
-                          // setMatchTime(time)
-                          //     hideTimePicker();
-                          //     formik.setFieldValue('match_time', time);
-                          //   };
 
                             return (
                             

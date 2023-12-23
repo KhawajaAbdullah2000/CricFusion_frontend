@@ -41,10 +41,11 @@ const MatchesSchedules = () => {
 
 
   useEffect(()=>{
+    console.log("At schedule screen");
     fetchLeagueDetails(contextLeague_id);
     fetchLeagueSchedule(contextLeague_id);
    
-  })
+  },[])
 
   
   const renderItem = ({ item }) => (
