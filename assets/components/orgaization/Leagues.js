@@ -268,6 +268,7 @@ export default function Leagues({ route, navigation }) {
                                                 onBlur={handleBlur("city")}
                                                 error={touched.city && errors.city}
                                                 placeholder="City.."
+                                                autoCapitalize='none'
                                                 onChangeText={handleChange("city")}
                                             />
 

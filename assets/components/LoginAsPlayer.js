@@ -147,7 +147,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin(
         setLoginServerError(res.data.message);
       }
     } catch (error) {
-      console.log(error.message);
+      console.log("At signin "+error.message);
     }
   };
 

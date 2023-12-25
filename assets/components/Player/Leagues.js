@@ -11,13 +11,20 @@ const Leagues = ({route,navigation}) => {
 
  const fetchLeagues=async ()=>{
     setLoginPending(true)
-    const res=await client.get(`/nearby-leagues/${profile.city}`);
-         if(res.data.success){
-              setLeagues(res.data.leagues);
-              setLoginPending(false)
-          }else{
-            console.log('No League Found');
-          }
+    try {
+      const res=await client.get(`/nearby-leagues/${profile.city}`);
+      console.log(res.data.success,+ "at fetch leagues");
+           if(res.data.success){
+                setLeagues(res.data.leagues);
+                setLoginPending(false)
+            }else{
+              console.log('No League Found');
+            }
+      
+    } catch (error) {
+      console.log(error.message)
+    }
+
           
  }
 
@@ -85,9 +92,7 @@ const playerId=profile._id;
     <View style={styles.container}>
       <Text style={{fontSize:18,fontWeight:'bold',marginTop:20,textAlign:'center'}}>Nearby Leagues in {profile.city}</Text>
 
-      {
-        loginPending?<Apploader/>:null
-      }
+      
 
 {
     leagues &&  <FlatList
