@@ -10,11 +10,10 @@ export default function PlayerHome({route,navigation}) {
     //const {routeuser,routetoken}=route.params;
   return (
     <View style={styles.container}>
-    <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>Home Page for Organization {profile.email} </Text>
-    <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>City {profile.city} </Text>
-     <Text style={{fontSize:20,marginTop:60,marginLeft:10}}>ID {profile._id}  </Text>
 
-    <Text> Token: {token}</Text>
+    <Text style={{fontWeight:'bold',fontSize:50,textAlign:'center'}}>Welcome back to CricFusion</Text>
+
+ 
     </View>
   );
 }
@@ -22,8 +21,9 @@ export default function PlayerHome({route,navigation}) {
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'lightgreen',
-        paddingHorizontal:10
+        paddingHorizontal:10,
+        alignItems:'center',
+        justifyContent:'center'
          
     }
 

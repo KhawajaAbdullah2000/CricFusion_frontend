@@ -188,7 +188,7 @@ export default function Leagues({ route, navigation }) {
 
             </View>
 
-      <Text>selected: {date.toLocaleString()}</Text>
+
         
 
             <Modal

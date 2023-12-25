@@ -21,6 +21,8 @@ import Teams from './Player/Teams';
 import ViewTeam from './Player/ViewTeam';
 import ApplyAsTeam from './Player/ApplyAsTeam';
 import ApplyTeamInLeague from './Player/ApplyTeamInLeague';
+import Leagues from './Player/Leagues';
+import RegisterAsIndividual from './Player/RegisterAsIndividual';
 
 const Drawer = createDrawerNavigator();
 
@@ -113,11 +115,18 @@ const TargetStackNavigator = () => {
       <Stack.Screen name="view_team" component={ViewTeam} options={{ headerShown: false}}/>
       <Stack.Screen name="apply_as_team" component={ApplyAsTeam} options={{ headerShown: false}}/>
       <Stack.Screen name="apply_team_in_league" component={ApplyTeamInLeague} options={{ headerShown: false}}/>
+    </Stack.Navigator>
+  );
+};
 
-      
+const LeagueForIndividualStackNavigator = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="leagues" component={Leagues} options={{ headerShown: false}}/>
+      <Stack.Screen name="register_as_individual" component={RegisterAsIndividual} options={{ headerShown: false}}/>
 
 
-      {/* Add more screens if needed */}
+    
     </Stack.Navigator>
   );
 };
@@ -139,6 +148,9 @@ const DrawerNavigator = () => {
     
     <Drawer.Screen component={PlayerHome} name='playerhome' />
     <Drawer.Screen component={TargetStackNavigator} name='My Teams' />
+    <Drawer.Screen component={LeagueForIndividualStackNavigator} name='Leagues' />
+
+
       <Drawer.Screen component={Matches} name='matches' />
       <Drawer.Screen component={Tournaments} name='tournaments' />
 

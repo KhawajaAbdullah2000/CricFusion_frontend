@@ -71,11 +71,7 @@ const promoteLeague=async (league_id)=>{
 
  const randomNumber = Math.floor(Math.random() * 3) + 1;
  
-const imageSources = {
-  1: require('../../banner1.jpg'),
-  2: require('../../banner2.jpg'),
-  3: require('../../banner3.jpg'),
-};
+
 
 const scheduleMatches=(league_id)=>{
 
@@ -166,7 +162,7 @@ setContextLeague_id(league_id);
 
      <Modal
      animationType="slide"
-     transparent={true}
+     transparent={false}
      visible={modalVisible}
      onRequestClose={() => {
          setModalVisible(false);
@@ -179,14 +175,13 @@ setContextLeague_id(league_id);
 
      <Text style={{fontWeight:'bold',fontSize:20,marginTop:40}}>Promote Your League</Text>
 
-     <Text style={{alignSelf:'flex-start',marginLeft:40,marginTop:20}}>Type your meesage</Text>
+     <Text style={{alignSelf:'flex-start',marginLeft:40,marginTop:20,fontWeight:'bold'}}>Type your meesage</Text>
      <TextInput
      editable
      multiline
-
      onChangeText={text => onChangeText(text)}
      value={value}
-     style={{backgroundColor:'yellow',width:'80%',borderWidth:1,borderColor:'#1b1b33',height:40,marginTop:10}}
+     style={{backgroundColor:'yellow',width:'80%',borderWidth:1,borderColor:'#1b1b33',height:50,marginTop:10}}
    />
    <View style={{flexDirection:'row',marginTop:10,alignSelf:'flex-end'}}>
 
@@ -272,7 +267,7 @@ const styles=StyleSheet.create({
     alignItems: "center",
     marginTop: 200,
    paddingBottom:100,
-    backgroundColor:'red'
+    backgroundColor:'lightblue'
 },
 
 
