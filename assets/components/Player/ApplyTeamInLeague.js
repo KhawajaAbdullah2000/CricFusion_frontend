@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet,TouchableOpacity } from 'react-native'
+import { View, Text,StyleSheet,TouchableOpacity,ImageBackground } from 'react-native'
 import React,{useEffect,useState} from 'react'
 import { useLogin } from "../../context/LoginProvider";
 import client from '../../api/client';
@@ -72,6 +72,12 @@ const ApplyTeamInLeague = ({route,navigation}) => {
        }
      };
 
+     const PlayerList=()=>{
+      navigation.navigate('player_list',{
+        league_id:route.params.league_id
+      });
+     }
+
 
     useEffect(()=>{
       fetchLeague();
@@ -89,32 +95,38 @@ const ApplyTeamInLeague = ({route,navigation}) => {
   }
 
 
-      <Text style={{fontSize:18,fontWeight:'bold',marginTop:30,textAlign:'center'}}>Join League</Text>
-
-
       {league && league.length > 0 && (
-        <View style={{flex:1,alignSelf:'center',marginTop:30}}>
-          <Text style={styles.details}>League Name: {league[0].name}</Text>
-          <Text style={styles.details}>Number of Teams: {league[0].num_of_teams}</Text>
-          <Text style={styles.details}>Organizad by: {league[0].League.name}</Text>
-          <Text style={styles.details}>Starting from: 
-          {new Date(league[0].startsAt).toLocaleDateString('en-US',{
-            year: 'numeric',
-           month: 'long',
-          day: 'numeric',
-          })}</Text>
+        <ImageBackground
+        source={require('../../../assets/leagueBanner.jpg')}
+        style={{ flex: 1, resizeMode: 'cover', position: 'absolute', height: '60%', width: '100%' }}
+      >
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 40, fontWeight: 'bold', color: 'black' }}>{league[0].name}</Text>
 
-         
-       
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Organized by: {league[0].League.name}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+            Starting from :
+            {new Date(league[0].startsAt).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </Text>
+        </View>
+      </ImageBackground>
+      )}
+
       {
         team? (
 
            ( !registeration && !teams_full)? (
-              <TouchableOpacity style={{backgroundColor:'red',paddingVertical:10,borderRadius:10,marginTop:20}}
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableOpacity style={{backgroundColor:'green',paddingVertical:10,borderRadius:10}}
               onPress={JoinLeague}
               >
               <Text style={{color:'white',fontWeight:'bold',margin:5}}>Register your Team {team.name} in This League</Text>
               </TouchableOpacity>
+              </View>
 
             ):null
              
@@ -123,21 +135,32 @@ const ApplyTeamInLeague = ({route,navigation}) => {
         ):null}
 
         {
-          registeration?(<Text>Your Team {team.name} is been registered </Text>):null
+          registeration?(
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{fontSize:20,fontWeight:'bold'}}>Your Team {team.name} is been registered </Text>
+            <TouchableOpacity onPress={PlayerList}
+            style={{paddingHorizontal:25,backgroundColor:'lightblue',
+            paddingVertical:10,borderRadius:10,elevation:10,marginTop:20}} 
+            >
+            <Text>Need more Players in your team? Start Bidding</Text>
+            </TouchableOpacity>
+            </View>
+            ):null
         }
 
         {
+
           
-          teams_full?( <Text style={{textAlign:'center' ,fontSize:18,fontWeight:'bold'}}>Teams fulled</Text>):null
+          teams_full?( 
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{textAlign:'center' ,fontSize:18,fontWeight:'bold'}}>Teams full</Text>
+            </View>
+            ):null
             
   
         }
 
 
-
-
-        </View>
-      )}
       
     </View>
   )
@@ -156,8 +179,6 @@ const styles= StyleSheet.create({
         fontWeight:'bold'
 
     }
-
-
 
 
 });

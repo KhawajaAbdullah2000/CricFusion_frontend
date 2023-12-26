@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     Pressable,
     Modal,
-    FlatList
+    FlatList,Image
 } from "react-native";
 import { useLogin } from "../../context/LoginProvider";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -88,17 +88,22 @@ export default function Teams({ route, navigation }) {
        );
       };
 
+      
+   
+
+
     const renderItem = ({ item }) => (
         
         <View style={styles.mainmapview}>
-        <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>Name: {item.myteams.name} </Text>
-        <Text style={{fontSize:10,color:'white',fontWeight:'bold',marginLeft:10}}>{
+        <Image source={require('../../../assets/teamlogo.png')} style={{width:100,height:100}}/>
+        <Text style={{fontSize:20,color:'white',fontWeight:'bold'}}>{item.myteams.name} </Text>
+        <Text style={{fontSize:12,color:'white',fontWeight:'bold',marginLeft:10}}>{
                  item.myteams.captain_id==profile._id?
                 <Text>Captain</Text> :null
              } </Text>
         
 
-    <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:10,width:70,justifyContent:'center',alignItems:'center'}}
+    <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:10,width:70,justifyContent:'center',alignItems:'center',marginEnd:10}}
     onPress={()=>handleButtonClick(item.team_id)}>
     <Text style={{fontSize:15}}>View Team</Text>
     </TouchableOpacity>
@@ -253,8 +258,8 @@ export default function Teams({ route, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "lightgreen",
+        flex: 1
+       
     },
     create_btn: {
         width: 170,
@@ -309,6 +314,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     mainmapview:{
-        flexDirection:'row',marginTop:20,paddingVertical:25,backgroundColor:'purple',alignItems:'center',justifyContent:'space-between'
+        flexDirection:'row',marginTop:20,paddingVertical:25,backgroundColor:'grey',alignItems:'center',justifyContent:'space-between'
       }
 });

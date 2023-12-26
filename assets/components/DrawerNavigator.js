@@ -23,6 +23,7 @@ import ApplyAsTeam from './Player/ApplyAsTeam';
 import ApplyTeamInLeague from './Player/ApplyTeamInLeague';
 import Leagues from './Player/Leagues';
 import RegisterAsIndividual from './Player/RegisterAsIndividual';
+import PlayerListAuction from './Player/PlayerListAuction';
 
 const Drawer = createDrawerNavigator();
 
@@ -115,6 +116,9 @@ const TargetStackNavigator = () => {
       <Stack.Screen name="view_team" component={ViewTeam} options={{ headerShown: false}}/>
       <Stack.Screen name="apply_as_team" component={ApplyAsTeam} options={{ headerShown: false}}/>
       <Stack.Screen name="apply_team_in_league" component={ApplyTeamInLeague} options={{ headerShown: false}}/>
+      <Stack.Screen name="player_list" component={PlayerListAuction} options={{ headerShown: false}}/>
+
+      
     </Stack.Navigator>
   );
 };
