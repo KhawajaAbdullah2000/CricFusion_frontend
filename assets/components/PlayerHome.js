@@ -16,6 +16,13 @@ export default function PlayerHome({route,navigation}) {
     //const {routeuser,routetoken}=route.params;
   return (
     <ScrollView style={styles.container}>
+    <Text>{profile.email}</Text>
+    <Text>{profile._id}</Text>
+    <Text>{profile.city}</Text>
+    <Text>{token}</Text>
+
+
+
     {posts.map((post, index) => (
       <View key={index} style={styles.postContainer}>
         <View style={styles.headerContainer}>

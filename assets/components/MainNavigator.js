@@ -32,6 +32,7 @@ const StackNavigator = () => {
 
 const MainNavigator = () => {
   const { isLoggedIn ,isOrgLoggedIn} = useLogin();
+  console.log("At main navigator: "+isLoggedIn)
   return (
     isLoggedIn ? <DrawerNavigator /> :  isOrgLoggedIn? <OrgDrawerNavigator/>:   <StackNavigator />
   

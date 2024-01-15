@@ -28,18 +28,23 @@ import PlayerListAuction from './Player/PlayerListAuction';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = props => {
-  const {setIsLoggedIn,setLoginPending,profile,setProfile}=useLogin();
+  const {setIsLoggedIn,setLoginPending,profile,setProfile,setToken}=useLogin();
 
   const SignOut=async ()=>{
+    console.log("at logout");
     try {
       const token= await AsyncStorage.getItem('token');
       if(token!=null){
       const res= await client.get('/player-logout',{
+        headers:{
           Authorization: `JWT ${token}`
-        })
+        }
+       
+        });
         if(res.data.success){
           console.log("at player logout line 37")
-          await AsyncStorage.removeItem('token')
+          await AsyncStorage.removeItem('token')///added this
+         
           return true;
         }
       }
@@ -86,7 +91,8 @@ const CustomDrawer = props => {
         const isLoggedOut=SignOut();
         if(isLoggedOut){
           setIsLoggedIn(false)
-          setProfile({})
+          setProfile(null)
+          setToken(null)
         }
         setLoginPending(false)
 

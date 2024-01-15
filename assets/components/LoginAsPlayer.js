@@ -89,7 +89,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin(
       formikActions.setSubmitting(false);
     //  formikActions.resetForm();
    
-      const signinRes = await client.post("signin", {
+      const signinRes = await client.post("/signin", {
         email: values.email,
         password: values.password,
       });
@@ -97,10 +97,10 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin(
         console.log("Signed in by: "+signinRes.data.token)
         const SignUpAndLogInToken=signinRes.data.token;
         await AsyncStorage.setItem('token',SignUpAndLogInToken)
-        setIsLoggedIn(true);
         setProfile(signinRes.data.user)
         setToken(signinRes.data.token)
         setLoginPending(false)
+        setIsLoggedIn(true);
         // navigation.dispatch(
         //   StackActions.replace("playerhome", {
         //     token: signinRes.data.token,
@@ -132,10 +132,10 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin(
         formikActions.setSubmitting(false);
         formikActions.resetForm();
         setLoginPending(false)
-        setIsLoggedIn(true);
         setProfile(res.data.user);
         console.log("At signin in settingtoken: "+res.data.token);
         setToken(res.data.token)
+        setIsLoggedIn(true);
         //  navigation.dispatch(
         //  StackActions.replace("playerhome", {
         //     routetoken: res.data.token,

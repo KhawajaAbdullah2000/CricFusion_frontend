@@ -181,7 +181,7 @@ setContextLeague_id(league_id);
      multiline
      onChangeText={text => onChangeText(text)}
      value={value}
-     style={{backgroundColor:'yellow',width:'80%',borderWidth:1,borderColor:'#1b1b33',height:50,marginTop:10}}
+     style={{width:'80%',borderWidth:1,borderColor:'#1b1b33',height:50,marginTop:10}}
    />
    <View style={{flexDirection:'row',marginTop:10,alignSelf:'flex-end'}}>
 

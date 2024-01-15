@@ -11,12 +11,13 @@ import {
 //import { StackActions } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import FormInput from "./FormInput";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Ionicons } from "@expo/vector-icons";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import client from "../api/client";
 import { useLogin } from "../context/LoginProvider";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Apploader from "./Apploader";
 const validationSchema = Yup.object({
   name: Yup.string()
@@ -93,11 +94,10 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
         await AsyncStorage.setItem('org_token',SignUpAndLogInToken)
         console.log("At signup and login line94");
         setIsLoggedIn(false);
-        setIsOrgLoggedIn(true);
-        setProfile({})
         setProfile(signinRes.data.org)
         setToken(signinRes.data.token)
         setLoginPending(false)
+        setIsOrgLoggedIn(true);
         // navigation.dispatch(
         //   StackActions.replace("playerhome", {
         //     token: signinRes.data.token,
@@ -130,11 +130,10 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
         formikActions.resetForm();
         setLoginPending(false)
         setIsLoggedIn(false)
-        setIsOrgLoggedIn(true);
-        setProfile({})
         setProfile(res.data.org);
         console.log("At signin in settingtoken line132: "+res.data.token);
         setToken(res.data.token)
+        setIsOrgLoggedIn(true);
         //  navigation.dispatch(
         //  StackActions.replace("playerhome", {
         //     routetoken: res.data.token,
@@ -294,7 +293,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
             fontWeight: "bold",
             marginBottom: 10,
             marginTop: 15,
-            color:'orange'
+            color:'42BC6E'
           }}
         >
           Login
@@ -373,6 +372,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
   
   );
 }
+
 
 const styles = StyleSheet.create({
   submitBtn: {

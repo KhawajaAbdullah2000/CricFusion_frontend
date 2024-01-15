@@ -10,61 +10,74 @@ const LoginProvider=({children})=>{
     const [isLoggedIn,setIsLoggedIn]=useState(false)
     const [isOrgLoggedIn,setIsOrgLoggedIn]=useState(false)
     const [profile,setProfile]=useState({});
-    const [token,setToken]=useState('');
+    const [token,setToken]=useState(null);
+    const [org_token,setOrgToken]=useState(null);
+
     const [loginPending,setLoginPending]=useState(false)
     const [contextLeague_id,setContextLeague_id]=useState(null);
 
-    const fetchUser=async ()=>{
+const fetchUser=async ()=>{
 
-   console.log("At fetch user");
-   const my_token= await AsyncStorage.getItem('token');
-   const org_token= await AsyncStorage.getItem('org_token');
-   console.log("TOken automatic is: "+my_token);
-   if (my_token!=null){
-    setLoginPending(true)
-    setToken(my_token)
-    console.log("at line 25 of login provider")
+    const my_token = await AsyncStorage.getItem('token'); // user token
+    const orgtoken = await AsyncStorage.getItem('org_token');
 
-    try {
-        var res= await client.get('/profile',{
-            headers:{
-                Authorization:`JWT ${my_token}`
-            }
-               
-            });
+    console.log("Token at context provider is: " + my_token);
+
+    if (my_token != null) {
+        setToken(my_token);
+        try {
+            console.log("on /profile route");
+            var res= await client.get('/profile',{
+                headers:{
+                    Authorization:`JWT ${my_token}`
+                }
+                   
+                });
+            
+        } catch (error) {
+            console.log("At profile route"+error.message);
+        }
+    
+        if(res.data.success){
+            console.log(res.data.user)
+           setProfile(res.data.user)
+           // console.log("at context provider line 44: "+profile);
+            setIsLoggedIn(true)
         
-    } catch (error) {
-        console.log("At profile route"+error.message);
+    }
+}
+
+    if (orgtoken != null) {
+        setOrgToken(orgtoken);
+        try {
+            
+            var res= await client.get('/org-profile',{
+                headers:{
+                    Authorization:`JWT ${orgtoken}`
+                }
+                   
+                });
+            
+        } catch (error) {
+            console.log("At profile route"+error.message);
+        }
+    
+        if(res.data.success){
+            console.log(res.data.org)
+           setProfile(res.data.org)
+           // console.log("at context provider line 44: "+profile);
+            setIsOrgLoggedIn(true)
+        
+    }
     }
 
-    if(res.data.success){
-        console.log("at login provider line 40")
-        setProfile(res.data.profile)
-        setIsLoggedIn(true)
-    }else {
-        setProfile({})
-        setIsLoggedIn(false)
-        setLoginPending(false)
+    if (my_token == null && orgtoken == null) {
+        setProfile({});
+        setIsLoggedIn(false);
+        setIsOrgLoggedIn(false);
+        setLoginPending(false);
     }
- 
-   }else{
-    setProfile({})
-    setIsLoggedIn(false)
-    setLoginPending(false)
    }
-
-   if(org_token!=null){
-    setIsOrgLoggedIn(true)
-   }else{
-    setProfile({})
-    setIsLoggedIn(false)
-    setLoginPending(false)
-   }
-
-   }
-
-
-
 
     useEffect(()=>{
         console.log('use effect of login context called');
@@ -73,7 +86,7 @@ const LoginProvider=({children})=>{
             return (
             <LoginContext.Provider
              value={{isLoggedIn,setIsLoggedIn,profile,setProfile,token,setToken,loginPending,setLoginPending,
-                isOrgLoggedIn,setIsOrgLoggedIn,contextLeague_id,setContextLeague_id}}>
+                isOrgLoggedIn,setIsOrgLoggedIn,contextLeague_id,setContextLeague_id,org_token,setOrgToken}}>
             {children}
             </LoginContext.Provider>
             )

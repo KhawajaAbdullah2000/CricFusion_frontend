@@ -319,8 +319,8 @@ export default function Leagues({ route, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "lightgreen",
+        flex: 1
+        
     },
     create_btn: {
         width: 170,
