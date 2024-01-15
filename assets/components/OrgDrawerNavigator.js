@@ -26,22 +26,31 @@ import MatchesSchedules from './orgaization/MatchesSchedules';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawer = props => {
-  const {setIsLoggedIn,setLoginPending,profile,setIsOrgLoggedIn}=useLogin();
+  const {setLoginPending,setOrgToken,setProfile,setIsOrgLoggedIn,org_token,profile}=useLogin();
 
   const SignOut=async ()=>{
+    console.log("at Org logout");
     try {
       const token= await AsyncStorage.getItem('org_token');
       if(token!=null){
-
-          //console.log(res.data.message)
-          await AsyncStorage.removeItem('org_token')
+      const res= await client.get('/org-logout',{
+        headers:{
+          Authorization: `JWT ${org_token}`
+        }
+       
+        });
+        if(res.data.success){
+          await AsyncStorage.removeItem('org_token')///added this
+         
           return true;
-        
+        }else{
+          return false;
+        }
       }
       return false;
 
     } catch (error) {
-      console.log('In Org signout mthod',error.message);
+      console.log('In signout mthod',error.message);
       return false;
     }
   }
@@ -74,14 +83,15 @@ const CustomDrawer = props => {
         </View>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      <TouchableOpacity onPress={ ()=>{
-        console.log("logout");
-     setLoginPending(true)
+      <TouchableOpacity onPress={()=>{
+        setLoginPending(true)
         const isLoggedOut=SignOut();
         if(isLoggedOut){
-       setIsOrgLoggedIn(false)
-     }
-     setLoginPending(false)
+          setIsOrgLoggedIn(false)
+          setProfile(null)
+          setOrgToken(null)
+        }
+        setLoginPending(false)
 
       }
  

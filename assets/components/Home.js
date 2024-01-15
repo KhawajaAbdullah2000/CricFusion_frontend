@@ -9,26 +9,29 @@ export default function Home(props) {
   const {token,setIsLoggedIn,setProfile,org_token,setIsOrgLoggedIn}=useLogin()
 
   const fetchProfile=async()=>{
-    try {
-      console.log("at fetch profile");
-      var res= await client.get('/profile',{
-          headers:{
-              Authorization:`JWT ${token}`
-          }
-             
-          });
-      
-  } catch (error) {
-      console.log("At profile route"+error.message);
-  }
 
-  if(res.data.success){
-    console.log("At home: "+res.data.user)
-   setProfile(res.data.user)
-    setIsLoggedIn(true)
-      
-     }
 
+      try {
+        console.log("at fetch profile");
+        var res= await client.get('/profile',{
+            headers:{
+                Authorization:`JWT ${token}`
+            }
+               
+            });
+        
+    } catch (error) {
+        console.log("At profile route"+error.message);
+    }
+  
+    if(res.data.success){
+      console.log("At home: "+res.data.user)
+     setProfile(res.data.user)
+      setIsLoggedIn(true)
+        
+       }
+
+    
 
   }
 

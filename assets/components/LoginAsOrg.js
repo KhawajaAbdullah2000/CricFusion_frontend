@@ -121,9 +121,10 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
         ...values,
       });
       if (res.data.success) {
+        console.log(res.data);
         const logInToken=res.data.token;
         await AsyncStorage.setItem('org_token',logInToken)
-        console.log("at orgogin line124");
+    
 
 
         formikActions.setSubmitting(false);
