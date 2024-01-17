@@ -12,12 +12,12 @@ export default function Login({navigation}) {
     const scrollview=useRef();
  const {loginPending}=useLogin()
   return (
-    <>
+
     <View style={styles.container}>
         <View style={{height:80}}>
             <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
             <Text style={styles.heading}>Welcome Back </Text>
-            <Text style={[styles.heading,{color:'lightgreen'}]}>Champ</Text>
+            <Text style={[styles.heading,{color:'#44D177'}]}>Champ</Text>
             </View>
         </View>
 
@@ -35,7 +35,7 @@ export default function Login({navigation}) {
             
         }
              >
-            <View style={[styles.headerbtn,{backgroundColor:'green'}]}>
+            <View style={[styles.headerbtn,{backgroundColor:'#44D177'}]}>
             <Text style={{color:'white',fontSize:16}}>Login As Organization</Text>
             </View>
         </TouchableWithoutFeedback>
@@ -55,12 +55,12 @@ export default function Login({navigation}) {
            
 
             </ScrollView>
+            {
+                loginPending? <Apploader/>:null
+            }
     </View>
-    {
-        loginPending? <Apploader/>:null
-    }
     
-    </>
+    
     
   );
 

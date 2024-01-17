@@ -157,6 +157,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
       {
         loginPending? <Apploader/>:null
     }
+   
         <Formik
           initialValues={orgInfo}
           validationSchema={validationSchema}
@@ -279,6 +280,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
             );
           }}
         </Formik>
+      
       </Modal>
 
       <Animated.View
@@ -294,7 +296,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
             fontWeight: "bold",
             marginBottom: 10,
             marginTop: 15,
-            color:'42BC6E'
+            color:'#42BC6E'
           }}
         >
           Login

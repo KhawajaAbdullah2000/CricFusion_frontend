@@ -25,6 +25,7 @@ const fetchUser=async ()=>{
 
     if (my_token != null) {
         setToken(my_token);
+        setLoginPending(true)
         try {
             console.log("on /profile route");
             var res= await client.get('/profile',{
@@ -35,12 +36,14 @@ const fetchUser=async ()=>{
                 });
             
         } catch (error) {
+            setLoginPending(false)
             console.log("At profile route"+error.message);
         }
     
         if(res.data.success){
             console.log(res.data.user)
            setProfile(res.data.user)
+           setLoginPending(false)
            // console.log("at context provider line 44: "+profile);
             setIsLoggedIn(true)
         
@@ -50,7 +53,7 @@ const fetchUser=async ()=>{
     if (orgtoken != null) {
         setOrgToken(orgtoken);
         try {
-            
+            setLoginPending(true)
             var res= await client.get('/org-profile',{
                 headers:{
                     Authorization:`JWT ${orgtoken}`
@@ -59,12 +62,14 @@ const fetchUser=async ()=>{
                 });
             
         } catch (error) {
+            setLoginPending(false)
             console.log("At profile route"+error.message);
         }
     
         if(res.data.success){
             console.log(res.data.org)
            setProfile(res.data.org)
+           setLoginPending(false)
            // console.log("at context provider line 44: "+profile);
             setIsOrgLoggedIn(true)
         
@@ -76,6 +81,7 @@ const fetchUser=async ()=>{
         setIsLoggedIn(false);
         setIsOrgLoggedIn(false);
         setLoginPending(false);
+        setLoginPending(false)
     }
    }
 

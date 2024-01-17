@@ -3,16 +3,18 @@ import Logo from './logo';
 import { useLogin } from '../context/LoginProvider';
 import {useEffect} from 'react'
 import client from '../api/client';
+import Apploader from './Apploader';
 
 
 export default function Home(props) {
-  const {token,setIsLoggedIn,setProfile,org_token,setIsOrgLoggedIn}=useLogin()
+  const {token,setIsLoggedIn,setProfile,org_token,setIsOrgLoggedIn,loginPending,setLoginPending}=useLogin()
 
   const fetchProfile=async()=>{
 
 
       try {
         console.log("at fetch profile");
+        setLoginPending(true)
         var res= await client.get('/profile',{
             headers:{
                 Authorization:`JWT ${token}`
@@ -21,15 +23,19 @@ export default function Home(props) {
             });
         
     } catch (error) {
+      setLoginPending(false)
         console.log("At profile route"+error.message);
     }
   
     if(res.data.success){
       console.log("At home: "+res.data.user)
      setProfile(res.data.user)
+     setLoginPending(false)
+
       setIsLoggedIn(true)
         
        }
+       setLoginPending(false)
 
     
 
@@ -37,6 +43,7 @@ export default function Home(props) {
 
   const fetchOrgProfile=async()=>{
     try {
+      setLoginPending(true)
       var res= await client.get('/org-profile',{
           headers:{
               Authorization:`JWT ${org_token}`
@@ -45,15 +52,18 @@ export default function Home(props) {
           });
       
   } catch (error) {
+    setLoginPending(false)
       console.log("At profile route"+error.message);
   }
 
   if(res.data.success){
     console.log(res.data.org)
    setProfile(res.data.org)
+   setLoginPending(false)
    setIsOrgLoggedIn(true)
       
      }
+     setLoginPending(false)
 
 
   }
@@ -78,6 +88,9 @@ export default function Home(props) {
       <TouchableOpacity style={styles.playbtn} onPress={() =>props.navigation.navigate('login')}>
         <Text>Lets Play</Text>
       </TouchableOpacity>
+      {
+        loginPending? <Apploader/>:null
+    }
     </View>
     
   );
