@@ -19,10 +19,12 @@ const Leagues = ({route,navigation}) => {
                 setLoginPending(false)
             }else{
               console.log('No League Found');
+              setLoginPending(false)
             }
       
     } catch (error) {
       console.log(error.message)
+      setLoginPending(false)
     }
 
           
@@ -90,6 +92,9 @@ const playerId=profile._id;
 
   return (
     <View style={styles.container}>
+    {
+      loginPending? <Apploader/>:null
+    }
       <Text style={{fontSize:18,fontWeight:'bold',marginTop:20,textAlign:'center'}}>Nearby Leagues in {profile.city}</Text>
 
       

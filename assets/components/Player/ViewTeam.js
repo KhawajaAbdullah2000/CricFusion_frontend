@@ -1,4 +1,4 @@
-import { View, Text,StyleSheet,TouchableOpacity } from 'react-native'
+import { View, Text,StyleSheet,TouchableOpacity,FlatList } from 'react-native'
 import React,{useEffect,useState} from 'react'
 
 import client from '../../api/client';
@@ -9,9 +9,11 @@ import { useLogin } from "../../context/LoginProvider";
 
 
 
+
 export default function ViewTeam({route,navigation}) {
   const {profile,token}=useLogin();
   const [team,setTeam]=useState({})
+  const [players,setPlayers]=useState([])
 
 
 const fetchTeamDetails=async ()=>{
@@ -21,6 +23,21 @@ const fetchTeamDetails=async ()=>{
           }
         
 }
+
+const fetchPlayers=async()=>{
+try {
+  const res=await client.get(`/players-in-team/${route.params.team_id}`);
+  if(res.data.success){
+    setPlayers(res.data.players)
+    
+  }
+  
+} catch (error) {
+  console.log(error.message)
+}
+
+}
+
 const FindNearbyLeagues=(city)=>{
 
   navigation.push('apply_as_team',
@@ -34,8 +51,8 @@ const FindNearbyLeagues=(city)=>{
 
 
   useEffect(() => {
-
     fetchTeamDetails();
+    fetchPlayers();
    },[]);
 
 
@@ -55,44 +72,50 @@ const FindNearbyLeagues=(city)=>{
     {
 
       team.captain_id==profile._id ?(
+        <View>
 
-      <View style={{flexDirection:'row',alignSelf:'flex-end',marginTop:10,marginEnd:20}}>
-
-      <TouchableOpacity style={{paddingHorizontal:25,backgroundColor:'lightblue',paddingVertical:10,borderRadius:10,elevation:10}} 
-      onPress={()=>FindNearbyLeagues(profile.city)}>
-      <Text>Find Nearby Leagues</Text>
-      </TouchableOpacity>
-
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10, marginRight: 20}}>
+        <TouchableOpacity style={{paddingHorizontal: 25, backgroundColor: 'lightblue', paddingVertical: 10, borderRadius: 10, elevation: 10}} onPress={() => FindNearbyLeagues(profile.city)}>
+          <Text>Find Nearby Leagues</Text>
+        </TouchableOpacity>
       
-      </View> ):null
+        <TouchableOpacity style={{marginLeft: 10, paddingHorizontal: 25, backgroundColor: 'lightblue', paddingVertical: 10, borderRadius: 10, elevation: 10}}>
+          <Text>Add Players</Text>
+        </TouchableOpacity>
+      </View>
+      </View>
+      
+      
+      
+      ):null
     }
 
 
-    <Text style={{marginTop:30,fontSize:15,fontWeight:'500'}}>Player List </Text>
+    <Text style={{marginTop:30,fontSize:25,fontWeight:'500',marginBottom:5}}>Players</Text>
+
+  
+    {team && players && players.length > 0 ? (
+      <FlatList
+        data={players}
+        keyExtractor={(item) => item._id}
+        renderItem={({item}) => (
+          <View style={{flex:1,flexDirection:'row'}}>
+            <Text style={{backgroundColor:'#44D177',paddingHorizontal:'20%'}}>{item.player.first_name} {item.player.last_name}</Text>
+            {
+              item.player_id==team.captain_id?(
+               <Text style={{fontWeight:'500',backgroundColor:'#44D177'}}>Captain</Text>
+              ):null
+            }
+        
+          </View>
+        )}
+      />
+    ) : (
+      <Text>No players available</Text>
+    )}
 
 
-    <View style={styles.headerRow}>
-      <Text style={styles.headerCell}>Name</Text>
-      <Text style={styles.headerCell}>Batting Rating</Text>
-      <Text style={styles.headerCell}>Bowling Rating</Text>
-      <Text style={styles.headerCell}>Fielding Rating</Text>
-    </View>
-
-    <View style={styles.dataRow}>
-      <Text style={styles.dataCell}>Player 1</Text>
-      <Text style={styles.dataCell}>85</Text>
-      <Text style={styles.dataCell}>70</Text>
-      <Text style={styles.dataCell}>90</Text>
-    </View>
-
-    <View style={styles.dataRow}>
-      <Text style={styles.dataCell}>Player 2</Text>
-      <Text style={styles.dataCell}>78</Text>
-      <Text style={styles.dataCell}>85</Text>
-      <Text style={styles.dataCell}>80</Text>
-    </View>
-
-    {/* Add more rows for other players as needed */}
+    
   </View>
 
 
@@ -122,29 +145,27 @@ const styles=StyleSheet.create({
         container2: {
           flex: 1,
           padding: 16,
-          marginTop: 20,
+          marginTop: 20
         },
-        headerRow: {
-          marginLeft:10,
+        playerContainer: {
           flexDirection: 'row',
-          borderBottomWidth: 1,
-          paddingBottom: 6,
-          marginTop:20
+          justifyContent: 'space-between',
+          backgroundColor: 'lightgreen',
+          borderRadius: 10,
+          padding: 10,
+          marginBottom: 10,
         },
-        headerCell: {
+        playerInfo: {
           flex: 1,
+          justifyContent: 'center',
+        },
+        playerName: {
           fontWeight: 'bold',
-          marginLeft:5
         },
-        dataRow: {
-          flexDirection: 'row',
-          borderBottomWidth: 1,
-          paddingTop: 8,
-          paddingBottom: 8,
-          marginLeft:10
-        },
-        dataCell: {
-          flex: 1,
-        },
+        captainText: {
+          fontWeight: '500',
+          alignSelf: 'flex-end',
+        }
+       
 
 });

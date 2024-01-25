@@ -9,12 +9,18 @@ const ApplyAsTeam = ({route,navigation}) => {
     const [leagues,setLeagues]=useState([]);
 
  const fetchLeagues=async ()=>{
+  try {
     const res=await client.get(`/nearby-leagues/${route.params.city}`);
          if(res.data.success){
               setLeagues(res.data.leagues);
           }else{
             console.log('No League Found');
           }
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+    
           
  }
 
