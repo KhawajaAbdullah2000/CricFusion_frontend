@@ -61,8 +61,6 @@ const PlayerListAuction = ({ route, navigation }) => {
   return (
 
 
-   
-
     <View style={styles.container}>
     <Text style={styles.headerText}>Players Auction! Start Bidding</Text>
 

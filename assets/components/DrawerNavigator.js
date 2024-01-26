@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { View, Text, Image, TouchableOpacity,StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import client from '../api/client';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+
 
 import {
   createDrawerNavigator,
@@ -24,6 +28,9 @@ import ApplyTeamInLeague from './Player/ApplyTeamInLeague';
 import Leagues from './Player/Leagues';
 import RegisterAsIndividual from './Player/RegisterAsIndividual';
 import PlayerListAuction from './Player/PlayerListAuction';
+import AddPlayers from './Player/AddPlayers';
+import Invitations from './Player/Invitations';
+import RequestsSent from './Player/RequestsSent';
 
 const Drawer = createDrawerNavigator();
 
@@ -123,6 +130,8 @@ const TargetStackNavigator = () => {
       <Stack.Screen name="apply_as_team" component={ApplyAsTeam} options={{ headerShown: false}}/>
       <Stack.Screen name="apply_team_in_league" component={ApplyTeamInLeague} options={{ headerShown: false}}/>
       <Stack.Screen name="player_list" component={PlayerListAuction} options={{ headerShown: false}}/>
+      <Stack.Screen name="add_players" component={AddPlayers} options={{ headerShown: false}}/>
+
 
       
     </Stack.Navigator>
@@ -134,12 +143,45 @@ const LeagueForIndividualStackNavigator = () => {
     <Stack.Navigator>
       <Stack.Screen name="leagues" component={Leagues} options={{ headerShown: false}}/>
       <Stack.Screen name="register_as_individual" component={RegisterAsIndividual} options={{ headerShown: false}}/>
-
-
     
     </Stack.Navigator>
   );
 };
+
+const RequestTab=createBottomTabNavigator()
+
+//Requests
+const RequestsTab=()=>{
+  return (
+    <RequestTab.Navigator initialRouteName='invitations'
+    screenOptions={{headerShown:false,tabBarActiveTintColor:'lightgreen',
+   tabBarShowLabel:false}}>
+      <RequestTab.Screen name="invitations" component={Invitations} options=
+      {{
+       tabBarIcon:({color})=>(
+         <Ionicons
+         name="newspaper-outline"
+         size={35}
+         color={color}
+       />     
+       )
+     }} />
+      <RequestTab.Screen name="requests_sent" component={RequestsSent} options=
+      {{
+       tabBarIcon:({color})=>(
+         <Ionicons
+         name="call-outline"
+         size={35}
+         color={color}
+       />     
+       )
+     }}   />
+ 
+    </RequestTab.Navigator>
+    );
+   
+
+}
 
 const DrawerNavigator = () => {
   return (
@@ -159,6 +201,9 @@ const DrawerNavigator = () => {
     <Drawer.Screen component={PlayerHome} name='playerhome' />
     <Drawer.Screen component={TargetStackNavigator} name='My Teams' />
     <Drawer.Screen component={LeagueForIndividualStackNavigator} name='Leagues' />
+    <Drawer.Screen component={RequestsTab} name='Requests' />
+
+
 
 
       <Drawer.Screen component={Matches} name='matches' />

@@ -49,6 +49,15 @@ const FindNearbyLeagues=(city)=>{
 
 }
 
+const AddPlayers=(city)=>{
+  navigation.push('add_players',
+  {
+    city:city,
+    team_id:route.params.team_id
+ }
+ );
+}
+
 
   useEffect(() => {
     fetchTeamDetails();
@@ -79,7 +88,9 @@ const FindNearbyLeagues=(city)=>{
           <Text>Find Nearby Leagues</Text>
         </TouchableOpacity>
       
-        <TouchableOpacity style={{marginLeft: 10, paddingHorizontal: 25, backgroundColor: 'lightblue', paddingVertical: 10, borderRadius: 10, elevation: 10}}>
+        <TouchableOpacity style={{marginLeft: 10, paddingHorizontal: 25,
+           backgroundColor: 'lightblue', paddingVertical: 10, borderRadius: 10, elevation: 10}}
+           onPressIn={()=>AddPlayers(profile.city)}>
           <Text>Add Players</Text>
         </TouchableOpacity>
       </View>
