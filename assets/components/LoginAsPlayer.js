@@ -186,15 +186,17 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin(
                 >
                   <View style={{ backgroundColor: "lightgreen", padding: 10 }}>
                     <View style={{ position: "absolute", right: 15 }}>
-                      <Pressable onPress={() => setModal(false)}>
-                  
+                      <TouchableOpacity onPressIn={() => setModal(false)}>
+                      <View>
+
                           <Ionicons
                             name="close-outline"
                             size={50}
                             color="red"
                           />
+                          </View>
                         
-                      </Pressable>
+                      </TouchableOpacity>
                     </View>
 
                     <Text
