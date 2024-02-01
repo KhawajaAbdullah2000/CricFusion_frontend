@@ -65,6 +65,7 @@ export default function Teams({ route, navigation }) {
     };
 
     const fetchTeams= async()=>{
+        setTeams([])
          const res=await client.get(`/my-teams/${profile._id}`);
          if(res.data.sucess){
               setTeams(res.data.my_teams)

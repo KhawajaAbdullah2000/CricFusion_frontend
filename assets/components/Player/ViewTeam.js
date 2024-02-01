@@ -105,25 +105,30 @@ const AddPlayers=(city)=>{
     <Text style={{marginTop:30,fontSize:25,fontWeight:'500',marginBottom:5}}>Players</Text>
 
   
+   
+    
     {team && players && players.length > 0 ? (
       <FlatList
         data={players}
         keyExtractor={(item) => item._id}
         renderItem={({item}) => (
-          <View style={{flex:1,flexDirection:'row'}}>
-            <Text style={{backgroundColor:'#44D177',paddingHorizontal:'20%'}}>{item.player.first_name} {item.player.last_name}</Text>
+        
+          <View style={{flex:1,flexDirection:'row',marginTop:8}}>
+            <Text style={{backgroundColor:'#44D177',width:200,textAlign:'center'}}>{item.player.first_name} {item.player.last_name}</Text>
             {
               item.player_id==team.captain_id?(
-               <Text style={{fontWeight:'500',backgroundColor:'#44D177'}}>Captain</Text>
+               <Text style={{fontWeight:'500',backgroundColor:'#44D177',width:20}}>C</Text>
               ):null
             }
-        
+     
           </View>
         )}
       />
     ) : (
       <Text>No players available</Text>
     )}
+ 
+  
 
 
     

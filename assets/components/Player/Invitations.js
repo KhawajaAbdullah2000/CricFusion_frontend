@@ -5,13 +5,23 @@ import { useLogin } from '../../context/LoginProvider';
 
 const Invitations = () => {
 
+  useEffect(()=>{
+    fetchPlayers()
+    },[])
+
+    
+
   const {profile}=useLogin();
   const [players,setPlayers]=useState([]);
 
   const fetchPlayers=async()=>{
+    console.log("At fetch Players")
+    setPlayers([])
     try {
       const res = await client.get(`/requests-sent-to-me/${profile._id}`);
       if (res.data.success){
+
+        console.log("players set")
         setPlayers(res.data.Requests)
       }
       
@@ -20,6 +30,26 @@ const Invitations = () => {
     }
   
 
+  }
+
+  const joinTeam=async(item)=>{
+    try {
+      const res = await client.post('/accept-request',{
+          team_id:item.team_id,
+          player_id:profile._id,
+          _id:item._id
+      });
+      if (res.data.success){
+        console.log("joined team")
+        fetchPlayers();
+      }
+      
+
+      
+    } catch (error) {
+      console.log(error.message)
+    }
+    
   }
 
   const renderItem = ({ item }) => (
@@ -33,7 +63,7 @@ const Invitations = () => {
         <Text style={[styles.ratingText,{textDecorationLine:'underline',color:'green'}]}>{item.Requestor.first_name} {item.Requestor.last_name}</Text>
           <Text style={styles.ratingText}>Invite to team: {item.Team.name}</Text>
           <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginBottom:5}}>
-         <TouchableOpacity style={{backgroundColor:'#44D177',padding:5,borderRadius:10}}>
+         <TouchableOpacity onPress={()=>joinTeam(item)} style={{backgroundColor:'#44D177',padding:5,borderRadius:10}}>
          <Text>Accept</Text>
          </TouchableOpacity>
 
@@ -50,11 +80,6 @@ const Invitations = () => {
   );
 
 
-
-
-  useEffect(()=>{
-  fetchPlayers()
-  },[])
   return (
     <View style={{flex:1,padding:16}}>
       <Text style={{textAlign:'center',fontWeight:"bold",fontSize:20,marginTop:10,marginBottom:20}}>Invitations</Text>
