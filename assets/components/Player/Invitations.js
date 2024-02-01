@@ -52,6 +52,24 @@ const Invitations = () => {
     
   }
 
+  const RejectReq=async(id)=>{
+    try {
+      const res = await client.get(`/reject-request/${id}`)
+  
+      if (res.data.success){
+        console.log("req rejected")
+        fetchPlayers();
+      }
+      
+
+      
+    } catch (error) {
+      console.log(error.message)
+    }
+    
+  }
+
+
   const renderItem = ({ item }) => (
     <View style={styles.cardContainer}>
       <View style={styles.container}>
@@ -67,7 +85,7 @@ const Invitations = () => {
          <Text>Accept</Text>
          </TouchableOpacity>
 
-         <TouchableOpacity style={{backgroundColor:'#ed6d64',padding:5,borderRadius:10}}>
+         <TouchableOpacity onPress={()=>RejectReq(item._id)} style={{backgroundColor:'#ed6d64',padding:5,borderRadius:10}}>
          <Text>Delete</Text>
          </TouchableOpacity>
 

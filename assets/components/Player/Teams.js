@@ -40,6 +40,7 @@ export default function Teams({ route, navigation }) {
     const [servererror, setServerError] = useState(""); //for signup of player
 
     const createTeam = async (values, formikActions) => {
+        console.log(token)
         setLoginPending(true);
         const res = await client.post("/create-team", {
             name: values.name,
