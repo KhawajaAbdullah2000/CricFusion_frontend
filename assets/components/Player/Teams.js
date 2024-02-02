@@ -105,7 +105,7 @@ export default function Teams({ route, navigation }) {
              } </Text>
         
 
-    <TouchableOpacity style={{backgroundColor:'yellow',borderRadius:10,width:70,justifyContent:'center',alignItems:'center',marginEnd:10}}
+    <TouchableOpacity style={{backgroundColor:'#44D177',borderRadius:10,width:70,justifyContent:'center',alignItems:'center',marginEnd:10}}
     onPress={()=>handleButtonClick(item.team_id)}>
     <Text style={{fontSize:15}}>View Team</Text>
     </TouchableOpacity>
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     create_btn: {
         width: 170,
         height: 45,
-        backgroundColor: "yellow",
+        backgroundColor: "#44D177",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,

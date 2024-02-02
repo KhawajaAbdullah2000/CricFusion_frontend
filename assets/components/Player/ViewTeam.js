@@ -84,12 +84,12 @@ const AddPlayers=(city)=>{
         <View>
 
         <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10, marginRight: 20}}>
-        <TouchableOpacity style={{paddingHorizontal: 25, backgroundColor: 'lightblue', paddingVertical: 10, borderRadius: 10, elevation: 10}} onPress={() => FindNearbyLeagues(profile.city)}>
+        <TouchableOpacity style={{paddingHorizontal: 25, backgroundColor: '#32ed76', paddingVertical: 10, borderRadius: 10, elevation: 10}} onPress={() => FindNearbyLeagues(profile.city)}>
           <Text>Find Nearby Leagues</Text>
         </TouchableOpacity>
       
         <TouchableOpacity style={{marginLeft: 10, paddingHorizontal: 25,
-           backgroundColor: 'lightblue', paddingVertical: 10, borderRadius: 10, elevation: 10}}
+           backgroundColor: '#32ed76', paddingVertical: 10, borderRadius: 10, elevation: 10}}
            onPressIn={()=>AddPlayers(profile.city)}>
           <Text>Add Players</Text>
         </TouchableOpacity>

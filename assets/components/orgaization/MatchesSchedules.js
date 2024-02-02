@@ -101,7 +101,7 @@ const MatchesSchedules = () => {
 
         league.length? (  
           <View style={{alignItems:'center'}}>
-          <Text style={{fontSize:30,fontWeight:'bold',color:'orange'}}>{league[0].name}</Text>
+          <Text style={{fontSize:30,fontWeight:'bold',color:'#44D177'}}>{league[0].name}</Text>
           </View>
        ):null
        }
@@ -140,8 +140,8 @@ const MatchesSchedules = () => {
 const styles=StyleSheet.create({
   container:{
     flex:1,
-    padding:16,
-    backgroundColor:'lightblue'
+    padding:16
+
   
   
   },

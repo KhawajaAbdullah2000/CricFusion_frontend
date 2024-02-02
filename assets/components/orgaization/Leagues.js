@@ -289,7 +289,7 @@ export default function Leagues({ route, navigation }) {
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <TouchableOpacity
-                                                    style={{flex:1,backgroundColor:'green',borderRadius:20,padding:10}}
+                                                    style={{flex:1,backgroundColor:'#44D177',borderRadius:20,padding:10}}
                                                     onPress={isSubmitting ? null : handleSubmit}
                                                 >
                                                     <Text style={{textAlign:'center'}}>Create</Text>
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     create_btn: {
         width: 170,
         height: 45,
-        backgroundColor: "yellow",
+        backgroundColor: "#44D177",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,
@@ -360,10 +360,10 @@ const styles = StyleSheet.create({
 
     },
     buttonOpen: {
-        backgroundColor: "#F194FF",
+        backgroundColor: "#44D177",
     },
     buttonClose: {
-        backgroundColor: "#2196F3",
+        backgroundColor: "red",
     },
     textStyle: {
         color: "white",
@@ -398,8 +398,8 @@ const styles = StyleSheet.create({
   btn:{
     padding: 10,
     textAlign: 'center',
-    backgroundColor: 'yellow',
-  elevation:10
+    backgroundColor: '#44D177',
+     elevation:10
   }
   
 });
