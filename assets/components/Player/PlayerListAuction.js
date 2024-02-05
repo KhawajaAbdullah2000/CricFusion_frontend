@@ -24,6 +24,13 @@ const PlayerListAuction = ({ route, navigation }) => {
     }
   };
 
+  const goToBidding=(player_id)=>{
+    navigation.navigate("bid_player",{
+      player_id:player_id,
+      league_id:route.params.league_id
+    })
+  }
+
   useEffect(() => {
     fetchPlayers(route.params.league_id);
   }, []);
@@ -43,7 +50,7 @@ const PlayerListAuction = ({ route, navigation }) => {
           <Text style={styles.ratingText}>Fielding Rating: 80</Text>
           <Text style={styles.ratingText}>Base Price: 1000PKR</Text>
           <Text style={styles.ratingText}>Current Bid: No bids yet</Text>
-          <TouchableOpacity style={{backgroundColor:'lightgreen',width:80,height:30,justifyContent:'center',
+          <TouchableOpacity onPress={()=>goToBidding(item.player_id)} style={{backgroundColor:'lightgreen',width:80,height:30,justifyContent:'center',
           alignItems:'center',borderRadius:8,elevation:10}}>
           <Text style={{fontWeight:'bold'}}>Bid</Text>
           </TouchableOpacity>

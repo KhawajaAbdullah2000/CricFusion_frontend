@@ -31,6 +31,7 @@ import PlayerListAuction from './Player/PlayerListAuction';
 import AddPlayers from './Player/AddPlayers';
 import Invitations from './Player/Invitations';
 import RequestsSent from './Player/RequestsSent';
+import BidPlayer from './Player/BidPlayer';
 
 const Drawer = createDrawerNavigator();
 
@@ -130,6 +131,8 @@ const TargetStackNavigator = () => {
       <Stack.Screen name="apply_as_team" component={ApplyAsTeam} options={{ headerShown: false}}/>
       <Stack.Screen name="apply_team_in_league" component={ApplyTeamInLeague} options={{ headerShown: false}}/>
       <Stack.Screen name="player_list" component={PlayerListAuction} options={{ headerShown: false}}/>
+      <Stack.Screen name="bid_player" component={BidPlayer} options={{ headerShown: false}}/>
+
       <Stack.Screen name="add_players" component={AddPlayers} options={{ headerShown: false}}/>
 
 
