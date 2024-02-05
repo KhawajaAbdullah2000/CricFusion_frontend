@@ -1,37 +1,60 @@
 import { View, Text,StyleSheet,Dimensions,Image,TouchableOpacity } from 'react-native'
 import React,{useState,useEffect} from 'react'
 import client from '../../api/client';
+import { useLogin } from '../../context/LoginProvider';
+
+import Apploader from '../Apploader';
 
 
 const BidPlayer = ({route,navigation}) => {
 const [player,setPlayer]=useState([]);
 const [bid,setBid]=useState(null)
+const [currentBid,setCurrentBid]=useState(null)
+
+const { setLoginPending, loginPending } = useLogin();
+
 
 const fetchPlayer=async()=>{
   try {
-
+    setPlayer([]);
+    setLoginPending(true)
     const res=await client.get(`/player/${route.params.player_id}/${route.params.league_id}`);
     if (res.data.success){
       //console.log(res.data.player)
       setPlayer(res.data.player)
      setBid(res.data.player[0].current_bid)
-  
+     setCurrentBid(res.data.player[0].current_bid)
+     setLoginPending(false)
     }
     
   } catch (error) {
     console.log(error.message)
+    setLoginPending(false)
   }
 }
 
 const increaseBid=()=>{
+ 
   setBid(bid+500)
+  
 }
 
 const decreaseBid=()=>{
-  if (bid-500>=1000){
+  if (bid-500>=currentBid){
+  
     setBid(bid-500)
   }
  
+}
+
+const submitBid=async()=>{
+  const res=await client.get(`/submit-bid/${route.params.player_id}/${route.params.league_id}/${bid}/${route.params.team_id}`)
+  if (res.data.success){
+    console.log("done")
+  
+   fetchPlayer()
+}
+
 }
 
 useEffect(()=>{
@@ -40,7 +63,11 @@ fetchPlayer()
 
 
   return (
+
     <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+    {
+      loginPending && <Apploader/>
+    }
     {player && player.length > 0 && (
 
       <View style={styles.cardContainer}>
@@ -57,6 +84,11 @@ fetchPlayer()
           <Text style={styles.ratingText}>Fielding Rating: 80</Text>
           <Text style={styles.ratingText}>Base Price: 1000 PKR</Text>
           <Text style={styles.ratingText}>Current Bid: {player[0].current_bid} PKR </Text>
+          {
+            player[0].BiddingTeam && 
+            <Text style={styles.ratingText}>By: {player[0].BiddingTeam.name} </Text>
+          }
+        
         
 
 {
@@ -76,6 +108,17 @@ fetchPlayer()
   </TouchableOpacity>
   </View>
 
+}
+
+{
+  bid!=null && 
+  <View>
+  <TouchableOpacity onPress={()=>submitBid()} style={{width:90,height:30,backgroundColor:'#44D177',marginLeft:10,
+  justifyContent:'center',alignItems:'center',marginTop:5,marginBottom:10,elevation:10}}>
+  <Text style={{color:'white',fontWeight:'bold'}}>Submit Bid</Text>
+  </TouchableOpacity>
+
+  </View>
 }
           
 

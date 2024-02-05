@@ -74,7 +74,8 @@ const ApplyTeamInLeague = ({route,navigation}) => {
 
      const PlayerList=()=>{
       navigation.navigate('player_list',{
-        league_id:route.params.league_id
+        league_id:route.params.league_id,
+        team_id:route.params.team_id
       });
      }
 

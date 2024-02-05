@@ -27,7 +27,8 @@ const PlayerListAuction = ({ route, navigation }) => {
   const goToBidding=(player_id)=>{
     navigation.navigate("bid_player",{
       player_id:player_id,
-      league_id:route.params.league_id
+      league_id:route.params.league_id,
+      team_id:route.params.team_id
     })
   }
 
