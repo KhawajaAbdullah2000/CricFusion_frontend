@@ -13,6 +13,7 @@ const PlayerListAuction = ({ route, navigation }) => {
       const res = await client.get(`/player-list-for-auction/${league_id}`);
       if (res.data.success) {
         setPlayers(res.data.PlayersInLeague);
+       // console.log(res.data.PlayersInLeague);
         setLoginPending(false);
       } else {
         setLoginPending(false);
@@ -50,11 +51,25 @@ const PlayerListAuction = ({ route, navigation }) => {
           <Text style={styles.ratingText}>Bowling Rating: 78</Text>
           <Text style={styles.ratingText}>Fielding Rating: 80</Text>
           <Text style={styles.ratingText}>Base Price: 1000PKR</Text>
-          <Text style={styles.ratingText}>Current Bid: No bids yet</Text>
-          <TouchableOpacity onPress={()=>goToBidding(item.player_id)} style={{backgroundColor:'lightgreen',width:80,height:30,justifyContent:'center',
-          alignItems:'center',borderRadius:8,elevation:10}}>
-          <Text style={{fontWeight:'bold'}}>Bid</Text>
-          </TouchableOpacity>
+          <Text style={styles.ratingText}>Current Bid: {item.current_bid}PKR</Text>
+          {
+            item.status===0?
+            (
+              <TouchableOpacity onPress={()=>goToBidding(item.player_id)} style={{backgroundColor:'lightgreen',width:80,height:30,justifyContent:'center',
+              alignItems:'center',borderRadius:8,elevation:10}}>
+              <Text style={{fontWeight:'bold'}}>Bid</Text>
+              </TouchableOpacity>
+
+            ):
+            (
+              <TouchableOpacity style={{backgroundColor:'yellow',width:80,height:30,justifyContent:'center',
+              alignItems:'center',borderRadius:8,elevation:10}}>
+              <Text style={{fontWeight:'bold'}}>Sold</Text>
+              </TouchableOpacity>
+
+            )
+          }
+   
         </View>
       </View>
     </View>

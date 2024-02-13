@@ -6,13 +6,15 @@ import Apploader from '../Apploader';
 const RegisterAsIndividual = ({route,navigation}) => {
 
   const {setLoginPending, loginPending} = useLogin();
+  const [player,setPlayer]=useState([]);
+  const [bid,setBid]=useState(null)
+const [currentBid,setCurrentBid]=useState(null)
   const [league,setLeague]=useState([]);
-  const [status,setStatus]=useState(false)
+  const [status,setStatus]=useState(false) //whether player is registered or not
 
   const fetchLeagueDetails=async(league_id)=>{
     setLoginPending(true)
     const res=await client.get(`/get-league-details/${league_id}`);
-  //  console.log(res.data.leagueDetails);
     if(res.data.success){
    setLeague(res.data.leagueDetails)
     setLoginPending(false);
@@ -27,23 +29,43 @@ const RegisterAsIndividual = ({route,navigation}) => {
 
   
   const CheckRegistration=async(league_id,player_id)=>{
-    // console.log(player_id);
-    // console.log(league_id)
-
-   setLoginPending(true)
-     const res=await client.get(`/check-player-reg-in-league/${league_id}/${player_id}`);
-   console.log(res.data.message);
-   if(res.data.success){
-    setStatus(true)
+try {
+  setPlayer([])
+  setLoginPending(true)
+  const res=await client.get(`/check-player-reg-in-league/${league_id}/${player_id}`);
+console.log(res.data.message);
+if(res.data.success){
+ setStatus(true)
+ await getPlayerCard()
  setLoginPending(false);
-
   }
-      else{
-        setStatus(false)
-       setLoginPending(false);
-       }
+} catch (error) {
+  console.log(error.message)
+  setLoginPending(false);
+}
   
   };
+
+  const getPlayerCard=async()=>{
+ try {
+  setPlayer([])
+  setLoginPending(true);
+  const playerBidding=await client.get(`/player/${route.params.player_id}/${route.params.league_id}`)
+  if (playerBidding.data.success){
+    setPlayer(playerBidding.data.player)
+    
+  setBid(playerBidding.data.player[0].current_bid)
+  setCurrentBid(playerBidding.data.player[0].current_bid)
+  setLoginPending(false);
+  }else{
+    setLoginPending(false);
+  }
+  
+ } catch (error) {
+  console.log(error.message)
+  setLoginPending(false);
+ }
+  }
 
 
   const RegisterAsIndividual=async()=>{
@@ -67,11 +89,32 @@ const RegisterAsIndividual = ({route,navigation}) => {
 
   }
 
+const AcceptBid=async(registeration_id,player_id,team_id)=>{
+
+try {
+  console.log("At acept bid")
+  const res=await client.get(`/accept-bid/${registeration_id}/${player_id}/${team_id}`)
+if (res.data.success){
+  console.log("suuccess bid")
+  console.log(res.data.newplayer)
+  CheckRegistration(route.params.league_id,player_id)
+}
+else{
+  console.log(res.data.mesage)
+}
+} catch (error) {
+  console.log("In try catch eror")
+}
+
+}
+
   useEffect(()=>{
     console.log("at useEffect of register: "+route.params.player_id)
     fetchLeagueDetails(route.params.league_id);
     CheckRegistration(route.params.league_id,route.params.player_id)
   },[]);
+
+
 
 
 
@@ -106,7 +149,7 @@ const RegisterAsIndividual = ({route,navigation}) => {
             }
   
             {
-              status==false? 
+              status==false || player.length<1 ? 
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black',textAlign:'center' }}>Register As an Individual Player to be eligible for Auction</Text>
 
@@ -116,10 +159,9 @@ const RegisterAsIndividual = ({route,navigation}) => {
 
         </View>:
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        
-<Text style={{fontSize:20,fontWeight:'bold'}}>You Are Registered</Text> 
 
-<Text style={{fontSize:15,fontWeight:'bold'}}>Your Current bidding Status</Text> 
+      
+  
 
 <View style={styles.container}>
 
@@ -127,23 +169,67 @@ const RegisterAsIndividual = ({route,navigation}) => {
         <Image source={require('../../../assets/playerAvatar.png')} style={styles.image} />
       </View>
 
-      {/* Player Ratings */}
+      
+
       <View style={styles.ratingsContainer}>
+    
+      <Text style={styles.ratingText}>{player[0].PlayerDetails.first_name} {player[0].PlayerDetails.last_name}</Text>
         <Text style={styles.ratingText}>Batting Rating: 82</Text>
         <Text style={styles.ratingText}>Bowling Rating: 78</Text>
         <Text style={styles.ratingText}>Fielding Rating: 80</Text>
         <Text style={styles.ratingText}>Base Price: 1000PKR</Text>
-        <Text style={styles.ratingText}>Current Bid: No bids yet</Text>
+        <Text style={styles.ratingText}>Current Bid:{player[0].current_bid} PKR</Text>
+   
 
-      
+
+        {
+          player[0].bidding_team!=null?(
+            <Text style={styles.ratingText}>By: {player[0].BiddingTeam.name}</Text>
+          )
+          
+          :(
+            <Text style={styles.ratingText}>No bids by any team yet</Text>
+
+          )
+        }
+
+
+       {
+        player[0].bidding_team!=null & player[0].status==0? (
+          <TouchableOpacity onPress={()=>AcceptBid(player[0]._id,player[0].PlayerDetails._id,player[0].bidding_team)} style={{width:90,height:30,backgroundColor:'#44D177',marginLeft:10,
+  justifyContent:'center',alignItems:'center',marginTop:5,marginBottom:10,elevation:10}}>
+  <Text style={{color:'white',fontWeight:'bold'}}>Accept</Text>
+  </TouchableOpacity>
+        ):(null)
+       }
+       {
+        player[0].status==1?(
+          <TouchableOpacity style={{width:90,height:30,backgroundColor:'#44D177',marginLeft:10,
+          justifyContent:'center',alignItems:'center',marginTop:5,marginBottom:10,elevation:10}}>
+          <Text style={{color:'white',fontWeight:'bold'}}>Sold</Text>
+          </TouchableOpacity>
+        ):(null)
+       }
+
 
       </View>
+
+   
+   
+
+
+
     </View>
+
+    
+
+
+  
 
 
 
         </View>
-            }
+      }
       </View>
     );
 
@@ -158,7 +244,7 @@ const styles=StyleSheet.create({
     borderRadius: 10,
     borderColor: 'gray',
     position:'absolute',
-    bottom:70
+    bottom:50
   
   },
   imageContainer: {
