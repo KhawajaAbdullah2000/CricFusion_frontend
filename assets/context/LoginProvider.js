@@ -28,12 +28,14 @@ const fetchUser=async ()=>{
         setLoginPending(true)
         try {
             console.log("on /profile route in context");
+            console.log(my_token)
             var res= await client.get('/profile',{
                 headers:{
                     Authorization:`JWT ${my_token}`
                 }
                    
                 });
+                console.log(res.data)
             
         } catch (error) {
             setLoginPending(false)

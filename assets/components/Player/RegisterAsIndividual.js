@@ -35,7 +35,6 @@ try {
   const res=await client.get(`/check-player-reg-in-league/${league_id}/${player_id}`);
 console.log(res.data.message);
 if(res.data.success){
- setStatus(true)
  await getPlayerCard()
  setLoginPending(false);
   }
@@ -76,12 +75,12 @@ if(res.data.success){
    });
 
     if(res.data.success){
-   setStatus(true)
     setLoginPending(false);
+    await getPlayerCard()
 
      }
       else{
-        setStatus(false)
+  
         setLoginPending(false);
      
       }
@@ -112,6 +111,8 @@ else{
     console.log("at useEffect of register: "+route.params.player_id)
     fetchLeagueDetails(route.params.league_id);
     CheckRegistration(route.params.league_id,route.params.player_id)
+    //getPlayerCard()
+
   },[]);
 
 
@@ -149,7 +150,7 @@ else{
             }
   
             {
-              status==false || player.length<1 ? 
+            player.length<1 ? 
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'black',textAlign:'center' }}>Register As an Individual Player to be eligible for Auction</Text>
 
