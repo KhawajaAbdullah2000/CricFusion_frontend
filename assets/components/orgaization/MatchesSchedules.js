@@ -4,9 +4,10 @@ import client from '../../api/client';
 import { useLogin } from '../../context/LoginProvider';
 import Apploader from "../Apploader";
 import { useFocusEffect } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-const MatchesSchedules = () => {
+const MatchesSchedules = ({route,navigation}) => {
   const [matches,setMatches]=useState([]);
   const [league,setLeague]=useState({})
   const {contextLeague_id,loginPending,setLoginPending}=useLogin();
@@ -50,12 +51,19 @@ const MatchesSchedules = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log("at fcus effect");
+      console.log("at focus effect");
       // This function will be called every time the screen comes into focus
       fetchLeagueDetails(contextLeague_id);
       fetchLeagueSchedule(contextLeague_id);
     }, [contextLeague_id])
   );
+
+  const StartScoring=(match_id)=>{
+    console.log(match_id);
+    navigation.navigate('playing_eleven',{
+      match_id:match_id
+    })
+  }
 
   
   const renderItem = ({ item }) => (
@@ -80,6 +88,16 @@ const MatchesSchedules = () => {
         <Text>{item.Team1.name} vs {item.Team2.name}</Text>
       </View>
       <Text style={styles.col}>{item.venue}</Text>
+      {
+        item.match_status==0?(
+         <TouchableOpacity onPress={()=>StartScoring(item._id)} style={{backgroundColor:'green',borderRadius:10,marginLeft:2,width:70,height:30}}>
+         <Text style={{textAlign:'center',color:'white'}}>Start</Text>
+         </TouchableOpacity>
+
+        ):(
+          <Text style={styles.col}>See Scorecard</Text>
+        )
+      }
       </Pressable>
     </View>
 

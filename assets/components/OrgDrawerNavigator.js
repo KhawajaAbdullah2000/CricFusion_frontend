@@ -21,6 +21,7 @@ import Leagues from "./orgaization/Leagues";
 import Org_League from './orgaization/Org_League';
 import ScheduleMatches from './orgaization/ScheduleMatches';
 import MatchesSchedules from './orgaization/MatchesSchedules';
+import Playing_eleven from './orgaization/LiveScoring/Playing_eleven';
 
 
 const Drawer = createDrawerNavigator();
@@ -130,7 +131,7 @@ const LeaguesScheduling=()=> {
       />     
       )
     }} />
-     <Tab.Screen name="schedule" component={MatchesSchedules} options=
+     <Tab.Screen name="schedule" component={LiveScoringStack} options=
      {{
       tabBarIcon:({color})=>(
         <Ionicons
@@ -146,6 +147,18 @@ const LeaguesScheduling=()=> {
   
   }
 
+  //for Live Scoring
+  const LiveScoringStack = () => {
+    return (
+      <Stack.Navigator>
+      <Stack.Screen name="matches_schedules" component={MatchesSchedules} options={{headerShown: false}} />
+      <Stack.Screen name="playing_eleven" component={Playing_eleven} options={{headerShown: false}} />
+
+      </Stack.Navigator>
+    );
+  };
+
+
 const TargetStackNavigator = () => {
   return (
     <Stack.Navigator>
@@ -153,7 +166,6 @@ const TargetStackNavigator = () => {
    <Stack.Screen name="Org_League" component={Org_League} options={{headerShown: false}} />
    <Stack.Screen name="Schedule_League" component={LeaguesScheduling} options={{headerShown: false}} />
 
-  
 
     </Stack.Navigator>
   );
