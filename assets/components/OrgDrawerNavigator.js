@@ -22,6 +22,8 @@ import Org_League from './orgaization/Org_League';
 import ScheduleMatches from './orgaization/ScheduleMatches';
 import MatchesSchedules from './orgaization/MatchesSchedules';
 import Playing_eleven from './orgaization/LiveScoring/Playing_eleven';
+import MatchDetails from './orgaization/LiveScoring/MatchDetails';
+
 
 
 const Drawer = createDrawerNavigator();
@@ -153,6 +155,7 @@ const LeaguesScheduling=()=> {
       <Stack.Navigator>
       <Stack.Screen name="matches_schedules" component={MatchesSchedules} options={{headerShown: false}} />
       <Stack.Screen name="playing_eleven" component={Playing_eleven} options={{headerShown: false}} />
+      <Stack.Screen name="match_details" component={MatchDetails} options={{headerShown: false}} />
 
       </Stack.Navigator>
     );

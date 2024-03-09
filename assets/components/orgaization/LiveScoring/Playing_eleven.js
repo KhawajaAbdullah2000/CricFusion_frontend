@@ -59,8 +59,16 @@ const Playing_eleven = ({route,navigation}) => {
  }
    }
 
+   const GoToMatchDetails=()=>{
+    navigation.navigate("match_details",{
+        match_id:route.params.match_id
+    })
+   }
+
+
   return (
     <View style={{flex:1}}>
+<Text style={{textAlign:'center'}}>{route.params.match_id}</Text>
 
     {
         team1 && team2 && (
@@ -71,8 +79,8 @@ const Playing_eleven = ({route,navigation}) => {
                 <Text style={{textAlign:'center',fontSize:15,fontWeight:'bold',marginTop:6,marginBottom:10}}>Select Playing XI</Text>
                 
                 {
-                    playing_eleven_team1.length==11 && playing_eleven_team2.length==11 &&
-                    <TouchableOpacity style={{width: 50, height: 30, backgroundColor: '#FF5E63', borderRadius: 10,marginLeft:30,justifyContent:'center'}}>
+                    playing_eleven_team1.length>=1 && playing_eleven_team2.length>=1 &&
+                    <TouchableOpacity onPress={()=>GoToMatchDetails()} style={{width: 50, height: 30, backgroundColor: '#FF5E63', borderRadius: 10,marginLeft:30,justifyContent:'center'}}>
                     <Text style={{textAlign: 'center', fontWeight: 'bold', color: 'white',fontSize:15}}>Next</Text>
                     </TouchableOpacity>
 
