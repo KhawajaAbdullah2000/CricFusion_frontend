@@ -15,8 +15,6 @@ const Playing_eleven = ({route,navigation}) => {
 
     useEffect(()=>{
     fetchData()
-   console.log(playing_eleven_team2)
-   console.log(playing_eleven_team2.length)
     },[playing_eleven_team1,playing_eleven_team2])
 
     const fetchData=async()=>{
@@ -62,22 +60,40 @@ const Playing_eleven = ({route,navigation}) => {
    }
 
   return (
-    <View style={{flex:1,backgroundColor:'yellow'}}>
+    <View style={{flex:1}}>
 
     {
         team1 && team2 && (
             <View>
             <Text style={{textAlign:'center',fontSize:20,fontWeight:'bold',marginTop:10}}>{team1.name} vs {team2.name}</Text>
-            <Text style={{textAlign:'center',fontSize:15,fontWeight:'bold',marginTop:6,marginBottom:10}}>Select Playing XI</Text>
+           
+            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingRight: 20}}>
+                <Text style={{textAlign:'center',fontSize:15,fontWeight:'bold',marginTop:6,marginBottom:10}}>Select Playing XI</Text>
+                
+                {
+                    playing_eleven_team1.length==11 && playing_eleven_team2.length==11 &&
+                    <TouchableOpacity style={{width: 50, height: 30, backgroundColor: '#FF5E63', borderRadius: 10,marginLeft:30,justifyContent:'center'}}>
+                    <Text style={{textAlign: 'center', fontWeight: 'bold', color: 'white',fontSize:15}}>Next</Text>
+                    </TouchableOpacity>
+
+                }
+                
+              
+          </View>
+            
             </View>
         )
     }
 
     <View style={{flex:1,flexDirection:'row'}}>
 
-    <View style={{flex:1,width:'50%',backgroundColor:'lightgreen',alignItems:'center'}}>
-        
-            <Text>Squad</Text>
+    <View style={{flex:1,width:'50%',backgroundColor:'lightgreen',alignItems:'center',borderColor:'black',borderRightWidth:1}}>
+        {
+            team1 && (
+                <Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>{team1.name}</Text>
+            )
+        }
+           
             
         {
         players_team1 && players_team1.length>0 && (
@@ -100,10 +116,14 @@ const Playing_eleven = ({route,navigation}) => {
     </View>
 
    
-    <View style={{flex:1,width:'50%',backgroundColor:'orange',alignItems:'center'}}>
-    
-    <Text>Squad</Text>
+    <View style={{flex:1,width:'50%',backgroundColor:'lightgreen',alignItems:'center'}}>
+    {
+        team2 && (
+            <Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>{team2.name}</Text>
 
+        )
+    }
+  
     {
         players_team2 && players_team2.length>0 && (
             <FlatList
@@ -135,11 +155,13 @@ const styles=StyleSheet.create({
     players:{
         width:200,
         textAlign:'center',
-        height:25
+        textAlignVertical:'center',
+        height:30,
+        fontWeight:'bold'
     },
 
     selected: {
-        backgroundColor:'lightblue'
+        backgroundColor:'#7AA7FF'
       },
       unselected: {
      backgroundColor:'#44D177'
