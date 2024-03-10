@@ -59,10 +59,31 @@ const Playing_eleven = ({route,navigation}) => {
  }
    }
 
-   const GoToMatchDetails=()=>{
-    navigation.navigate("match_details",{
-        match_id:route.params.match_id
-    })
+   const GoToMatchDetails=async()=>{
+
+    try {
+        const res=await client.put("/update_playing_eleven",{
+            match_id:route.params.match_id,
+            team1_playing_eleven:playing_eleven_team1,
+            team2_playing_eleven:playing_eleven_team2,
+        
+          });
+          if (res.data.success){
+            console.log("Success")
+            navigation.navigate("match_details",{
+                match_id:route.params.match_id
+            })
+          }else{
+            console.log("Error from backend: "+error.message)
+          }
+        
+    } catch (error) {
+        console.log("Error ar frntend: "+error.message)
+    }
+  
+
+
+   
    }
 
 

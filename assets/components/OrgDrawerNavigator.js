@@ -23,8 +23,9 @@ import ScheduleMatches from './orgaization/ScheduleMatches';
 import MatchesSchedules from './orgaization/MatchesSchedules';
 import Playing_eleven from './orgaization/LiveScoring/Playing_eleven';
 import MatchDetails from './orgaization/LiveScoring/MatchDetails';
-
-
+import Toss from './orgaization/LiveScoring/Toss';
+import Scoring from './orgaization/LiveScoring/Scoring';
+import ChooseStriker from './orgaization/LiveScoring/ChooseStriker';
 
 const Drawer = createDrawerNavigator();
 
@@ -156,6 +157,9 @@ const LeaguesScheduling=()=> {
       <Stack.Screen name="matches_schedules" component={MatchesSchedules} options={{headerShown: false}} />
       <Stack.Screen name="playing_eleven" component={Playing_eleven} options={{headerShown: false}} />
       <Stack.Screen name="match_details" component={MatchDetails} options={{headerShown: false}} />
+      <Stack.Screen name="toss" component={Toss} options={{headerShown: false}} />
+      <Stack.Screen name="choose_striker" component={ChooseStriker} options={{headerShown: false}} />
+      <Stack.Screen name="scoring" component={Scoring} options={{headerShown: false}} />
 
       </Stack.Navigator>
     );
