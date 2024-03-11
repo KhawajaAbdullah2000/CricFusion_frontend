@@ -11,6 +11,7 @@ const ChooseStriker = ({route,navigation}) => {
    // const [toss,setToss]=useState(null)
 const [teamBatting,setTeamBatting]=useState(null)
 const [teamBowling,setTeamBowling]=useState(null)
+const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
 
 
     const fetchData=async()=>{
@@ -87,6 +88,13 @@ const [teamBowling,setTeamBowling]=useState(null)
     }
 
 
+    const selectStriker=()=>{
+      navigation.navigate('select_striker',{
+        match_id:route.params.match_id,
+        teamBatting:teamBatting
+      })
+    }
+
   return (
     <View style={{flex:1}}>
     {
@@ -97,6 +105,7 @@ const [teamBowling,setTeamBowling]=useState(null)
         )
     }
 
+  
 
     {
        team1 && team2 && matchDetails && teamBatting && teamBatting==matchDetails.team1_id && (
@@ -126,13 +135,18 @@ const [teamBowling,setTeamBowling]=useState(null)
             <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',paddingHorizontal:20}}>
 
 
-           <TouchableOpacity
-           style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'
+           <TouchableOpacity onPress={()=>selectStriker()}
+           style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'}}>
 
-
-         }}>
-
-               <Text style={{textAlign:'center'}}>Striker</Text>
+           {
+            route.params.striker? (
+          <Text style={{textAlign:'center'}}>{route.params.striker.first_name} {route.params.striker.last_name}</Text>
+            ):
+            (
+              <Text style={{textAlign:'center'}}>Choose Striker</Text>
+            )
+          }
+              
         </TouchableOpacity>
 
 
