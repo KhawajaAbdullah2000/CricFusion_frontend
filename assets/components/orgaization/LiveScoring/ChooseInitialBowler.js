@@ -5,15 +5,15 @@ import { useLogin } from '../../../context/LoginProvider'
 import Apploader from '../../Apploader'
 
 
-const SelectInitialStriker = ({route,navigation}) => {
+const ChooseInitialBowler = ({route,navigation}) => {
 
   const [players,setPlayers]=useState([])
-  const {setLoginPending, loginPending,striker,setStriker } = useLogin();
+  const {setLoginPending, loginPending,bowler,setBowler } = useLogin();
 
   const fetchPlayers=async()=>{
    try {
     setLoginPending(true)
-    const players=await client.get(`/players_batting_team/${route.params.match_id}/${route.params.teamBatting}`);
+    const players=await client.get(`/players_batting_team/${route.params.match_id}/${route.params.teamBowling}`);
     if (players.data.success){
       setPlayers(players.data.team_players);
       setLoginPending(false)
@@ -29,8 +29,8 @@ const SelectInitialStriker = ({route,navigation}) => {
   }
 
   useEffect(()=>{
-    console.log("At select initial striker component useeffec match id and teamBatting params are :"+
-    route.params.match_id+route.params.teamBatting
+    console.log("At select initial striker component useeffec match id and teamBowling params are :"+
+    route.params.match_id+  " "+ route.params.teamBowling
 
     )
     fetchPlayers()
@@ -41,7 +41,7 @@ const SelectInitialStriker = ({route,navigation}) => {
 
   const selectStriker=(id,first_name,last_name)=>{
 
-    setStriker({
+    setBowler({
       id: id,
       first_name: first_name,
       last_name: last_name
@@ -51,7 +51,7 @@ const SelectInitialStriker = ({route,navigation}) => {
 
   const goBackToChooseStriker=()=>{
     navigation.navigate('choose_striker',{
-      striker:striker,
+      bowler:bowler,
       match_id:route.params.match_id
     })
   }
@@ -60,7 +60,7 @@ const SelectInitialStriker = ({route,navigation}) => {
     {
       loginPending? <Apploader/>:null
     }
-      <Text style={{textAlign:'center',fontWeight:'bold',fontSize:20,marginBottom:20}}>Select Striker</Text>
+      <Text style={{textAlign:'center',fontWeight:'bold',fontSize:20,marginBottom:20}}>Select Bowler</Text>
 
       {
         players && players.length>0 && (
@@ -71,7 +71,7 @@ const SelectInitialStriker = ({route,navigation}) => {
           <TouchableOpacity onPress={()=>selectStriker(item._id,item.first_name,item.last_name)}
           style={{flex:1,flexDirection:'row',marginTop:8, justifyContent:'center'}}>
           <Text style={[ styles.players,
-            striker.id == item._id ? styles.selected : styles.unselected
+            bowler.id == item._id ? styles.selected : styles.unselected
           ]}>
             {item.first_name} {item.last_name}
           </Text>
@@ -83,7 +83,7 @@ const SelectInitialStriker = ({route,navigation}) => {
       }
 
       {
-        players && players.length>0 && striker.id!=null &&(
+        players && players.length>0 && bowler.id!=null &&(
           <TouchableOpacity onPress={()=>goBackToChooseStriker()} style={{backgroundColor:'green',width:'100%',height:40,justifyContent:'center'}}>
           <Text style={{textAlign:'center',color:'white',fontWeight:"bold",fontSize:20}}>Done</Text>
           </TouchableOpacity>
@@ -112,4 +112,4 @@ const styles=StyleSheet.create({
     },
 })
 
-export default SelectInitialStriker
+export default ChooseInitialBowler

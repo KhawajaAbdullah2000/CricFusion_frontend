@@ -16,6 +16,11 @@ const LoginProvider=({children})=>{
     const [loginPending,setLoginPending]=useState(false)
     const [contextLeague_id,setContextLeague_id]=useState(null);
 
+const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
+const [nonStriker,setNonStriker]=useState({id:'',first_name:'',last_name:''})
+const [bowler,setBowler]=useState({id:'',first_name:'',last_name:''})
+
+
 const fetchUser=async ()=>{
 
     const my_token = await AsyncStorage.getItem('token'); // user token
@@ -94,7 +99,11 @@ const fetchUser=async ()=>{
             return (
             <LoginContext.Provider
              value={{isLoggedIn,setIsLoggedIn,profile,setProfile,token,setToken,loginPending,setLoginPending,
-                isOrgLoggedIn,setIsOrgLoggedIn,contextLeague_id,setContextLeague_id,org_token,setOrgToken}}>
+                isOrgLoggedIn,setIsOrgLoggedIn,contextLeague_id,setContextLeague_id,org_token,setOrgToken,
+                striker,setStriker,nonStriker,setNonStriker,bowler,setBowler
+            
+            
+            }}>
             {children}
             </LoginContext.Provider>
             )

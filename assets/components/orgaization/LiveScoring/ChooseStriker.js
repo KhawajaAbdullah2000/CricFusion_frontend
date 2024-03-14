@@ -2,6 +2,7 @@ import { View, Text } from 'react-native'
 import React,{useEffect,useState} from 'react'
 import client from '../../../api/client'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useLogin } from '../../../context/LoginProvider'
 
 const ChooseStriker = ({route,navigation}) => {
     const [team1,setTeam1]=useState(null)
@@ -11,7 +12,9 @@ const ChooseStriker = ({route,navigation}) => {
    // const [toss,setToss]=useState(null)
 const [teamBatting,setTeamBatting]=useState(null)
 const [teamBowling,setTeamBowling]=useState(null)
-const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
+
+const {striker ,nonStriker,bowler} = useLogin();
+
 
 
     const fetchData=async()=>{
@@ -33,8 +36,7 @@ const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
              const res=await client.get(`/get_playing_elevens/${route.params.match_id}`);
              if (res.data.success){
                  setMatchDetails(res.data.match_details)
-                
-
+              
              }
 
             } catch (error) {
@@ -44,6 +46,7 @@ const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
              }
 
       useEffect(() => {
+ 
         fetchData();
      fetchPlayingEleven();
          }, []);
@@ -53,6 +56,7 @@ const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
                   GetTossDetails();
                 }
             }, [team1, team2, matchDetails]);
+
 
     const GetTossDetails=()=>{
         console.log("ON toss details");
@@ -89,12 +93,33 @@ const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
 
 
     const selectStriker=()=>{
-      navigation.navigate('select_striker',{
-        match_id:route.params.match_id,
-        teamBatting:teamBatting
-      })
+        console.log("At select striker function: teamBatting : "+teamBatting)
+        console.log("At select striker function: match id : "+route.params.match_id)
+  
+        navigation.navigate('select_striker',{
+          match_id:route.params.match_id,
+          teamBatting:teamBatting
+    
+        })
+    
+ 
     }
 
+    const selectNonStriker=()=>{
+      console.log("At select non striker function: teamBatting: "+teamBatting)
+      navigation.navigate('select_nonstriker',{
+        match_id:route.params.match_id,
+        teamBatting:teamBatting
+      });
+    }
+
+    const selectBowler=()=>{
+      navigation.navigate('select_bowler',{
+        match_id:route.params.match_id,
+        teamBowling:teamBowling
+    }
+      )
+  }
   return (
     <View style={{flex:1}}>
     {
@@ -137,26 +162,38 @@ const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
 
            <TouchableOpacity onPress={()=>selectStriker()}
            style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'}}>
+           <View>
+           <Text style={{textAlign:'center'}}>Striker</Text>
+           </View>
 
            {
-            route.params.striker? (
-          <Text style={{textAlign:'center'}}>{route.params.striker.first_name} {route.params.striker.last_name}</Text>
-            ):
-            (
-              <Text style={{textAlign:'center'}}>Choose Striker</Text>
-            )
+            striker? (
+          <Text style={{textAlign:'center',fontWeight:'bold'}}>{striker.first_name} {striker.last_name}</Text>
+            ): null
+           
           }
               
         </TouchableOpacity>
 
 
 
-      <TouchableOpacity
+      <TouchableOpacity onPress={()=>selectNonStriker()}
        style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'
+ }}>
 
-    }}>
+ <View>
+ <Text style={{textAlign:'center'}}>Non Striker</Text>
+ </View>
 
-      <Text style={{textAlign:'center'}}>Non Striker</Text>
+    {
+      nonStriker? (
+
+
+    <Text style={{textAlign:'center',fontWeight:'bold'}}>{nonStriker.first_name} {nonStriker.last_name}</Text>
+    
+      ): null
+     
+    }
  </TouchableOpacity>
 
 
@@ -193,14 +230,25 @@ const [striker,setStriker]=useState({id:'',first_name:'',last_name:''})
 
 
 
-    <TouchableOpacity
-    style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'
+    <TouchableOpacity onPress={()=>selectBowler()}
+       style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'
+ }}>
+
+ <View>
+ <Text style={{textAlign:'center'}}>Bowler</Text>
+ </View>
+
+    {
+      bowler? (
 
 
-  }}>
-
-        <Text style={{textAlign:'center'}}>Bowler</Text>
+    <Text style={{textAlign:'center',fontWeight:'bold'}}>{bowler.first_name} {bowler.last_name}</Text>
+    
+      ): null
+     
+    }
  </TouchableOpacity>
+
 
 
 

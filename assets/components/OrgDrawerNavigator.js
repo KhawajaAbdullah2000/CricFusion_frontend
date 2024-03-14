@@ -27,6 +27,8 @@ import Toss from './orgaization/LiveScoring/Toss';
 import Scoring from './orgaization/LiveScoring/Scoring';
 import ChooseStriker from './orgaization/LiveScoring/ChooseStriker';
 import SelectInitialStriker from './orgaization/LiveScoring/SelectInitialStriker';
+import SelectInitialNonStriker from './orgaization/LiveScoring/SelectInitialNonStriker';
+import ChooseInitialBowler from './orgaization/LiveScoring/ChooseInitialBowler';
 
 const Drawer = createDrawerNavigator();
 
@@ -161,6 +163,10 @@ const LeaguesScheduling=()=> {
       <Stack.Screen name="toss" component={Toss} options={{headerShown: false}} />
       <Stack.Screen name="choose_striker" component={ChooseStriker} options={{headerShown: false}} />
       <Stack.Screen name="select_striker" component={SelectInitialStriker} options={{headerShown: false}} />
+      <Stack.Screen name="select_nonstriker" component={SelectInitialNonStriker} options={{headerShown: false}} />
+      <Stack.Screen name="select_bowler" component={ChooseInitialBowler} options={{headerShown: false}} />
+
+
 
       <Stack.Screen name="scoring" component={Scoring} options={{headerShown: false}} />
 
