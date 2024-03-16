@@ -88,7 +88,11 @@ const {striker ,nonStriker,bowler} = useLogin();
   }
 
     const goToScoring=()=>{
-      navigation.navigate("scoring");
+      navigation.navigate("scoring",{
+        match_id:route.params.match_id,
+        teamBatting,
+        teamBowling
+      });
     }
 
 
