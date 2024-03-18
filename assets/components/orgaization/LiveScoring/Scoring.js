@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, SafeAreaView, StyleSheet, Text, View, FlatList,ImageBackground} from 'react-native';
+import { TouchableOpacity, SafeAreaView, StyleSheet, Text, View,ImageBackground} from 'react-native';
 import Grid from './Grid';
 import { useLogin } from '../../../context/LoginProvider';
 
@@ -8,14 +8,144 @@ export default function Scoring({route,navigation}) {
   const [score, setScore] = useState(0);
   const [wicket, setWicket] = useState(0);
 
-  const {striker ,nonStriker,bowler} = useLogin();
+  const {striker ,nonStriker,bowler,setStriker,setNonStriker} = useLogin();
 
-  const [strikerScore,setStrikerScore]=useState({runs:0,balls:0})
-  const [nonStrikerScore,setNonStrikerScore]=useState({runs:0,balls:0})
+
+  //const [currentBall,setCurrentBall]=useState({runs:0,balls:0})
+
+  const [strikerScore,setStrikerScore]=useState({runs:0,balls:0,id:striker.id,
+    first_name:striker.first_name,last_name:striker.last_name})
+
+  const [nonStrikerScore,setNonStrikerScore]=useState({runs:0,balls:0,id:nonStriker.id,
+    first_name:nonStriker.first_name,last_name:nonStriker.last_name})
+
+  const [batsmanData,setBatsmanData]=useState([]);
 
   const handleButtonPress=(points)=>{
     setScore(score + points);
+    addBallDataForBatsman(points)
   };
+
+  useEffect(() => {
+    console.log("The new batsmanDataArray is: ", batsmanData);
+    console.log("");
+  }, [batsmanData]);
+
+  useEffect(() => {
+      //console.log("Useeffect of strikerScore");
+    }, [strikerScore]);
+
+ 
+
+
+  // const addBallDataForBatsman=async (runs)=>{
+  //   console.log("add ball data for a batsman function")
+  //   setCurrentBall(prev => ({
+  //     ...prev,
+  //     runs: prev.runs + runs,
+  //     balls: prev.balls + 1
+  //   }));
+
+  //   setBatsmanData(prevArray=>[...prevArray,
+  //     {
+  //       player_id:striker.id,
+  //       team_id:route.params.teamBatting,
+  //       runs_scored:runs,
+  //       fours_count:1,
+  //       sixers_count:0,
+  //       dismissal:false,
+  //       fifty_scored:0,
+  //       century_scored:0
+  //     }
+  //   ]);
+
+  //   if(runs%2==0){
+  //     setStrikerScore(prev=>({
+  //       ...prev,
+  //       runs:prev.runs+runs,
+  //       balls:prev.balls+1
+  //     }))
+  //   }
+ 
+  
+  //   await new Promise(resolve => setTimeout(resolve, 1000));
+
+    
+  //   if (runs %2!=0){
+
+
+  //   //setStriker({id:nonStriker.id,first_name:nonStriker.first_name,last_name:nonStriker.last_name})
+  // //  setNonStriker({id:striker.id,first_name:striker.first_name,last_name:striker.last_name})
+     
+  //     // new Promise(resolve => setTimeout(resolve, 1000));
+
+  //    // Increment striker's score
+  // setStrikerScore(prev => ({
+  //   ...prev,
+  //   runs: prev.runs + runs,
+  //   balls: prev.balls + 1
+  // }));
+  
+  // // Swap striker and non-striker
+  // const temp = { ...strikerScore };
+  // setStrikerScore({ ...nonStrikerScore });
+  // setNonStrikerScore(temp);
+   
+
+  //   }
+
+
+
+
+  // }
+
+  const addBallDataForBatsman = (runs) => {
+
+    setBatsmanData((prevArray) => [
+      ...prevArray,
+      {
+        player_id: strikerScore.id, // Use the current striker's id
+        team_id: route.params.teamBatting,
+        runs_scored: runs,
+        fours_count: 1,
+        sixers_count: 0,
+        dismissal: false,
+        fifty_scored: 0,
+        century_scored: 0
+      }
+    ]);
+  
+  
+    // Increment striker's score
+    setStrikerScore((prev) => ({
+      ...prev,
+      runs: prev.runs + runs,
+      balls: prev.balls + 1
+    }));
+  
+    // Check if runs are odd and swap strikers
+    if (runs % 2 !== 0) {
+
+      const temp={...nonStrikerScore}
+
+      setNonStrikerScore((prev) => ({
+        ...strikerScore,
+        runs: strikerScore.runs+runs,
+        balls: strikerScore.balls+1
+      }));
+  
+      setStrikerScore((prev) => ({
+        ...temp,
+        runs: temp.runs ,
+        balls: temp.balls
+      }));
+
+  
+
+    }
+  };
+
+  
 
   const handleWicketButtonPressed=(wicket)=>{
     setWicket(wicket + 1);
@@ -68,10 +198,10 @@ export default function Scoring({route,navigation}) {
 
    <View style={{flex:1}}>
    <Text style={{color:'white',fontWeight:'bold',fontSize:13}} >
-   {striker.first_name} {striker.last_name}* {strikerScore.runs} ({strikerScore.balls})
+   {strikerScore.first_name} {strikerScore.last_name}* {strikerScore.runs} ({strikerScore.balls})
    </Text>
    <Text style={{color:'white',fontWeight:'bold',fontSize:13}}> 
-   {nonStriker.first_name} {nonStriker.last_name} {nonStrikerScore.runs} ({nonStrikerScore.balls})
+   {nonStrikerScore.first_name} {nonStrikerScore.last_name} {nonStrikerScore.runs} ({nonStrikerScore.balls})
    </Text>
    </View>
 
