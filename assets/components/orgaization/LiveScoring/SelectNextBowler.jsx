@@ -3,28 +3,18 @@ import React,{useState,useEffect} from 'react'
 import client from '../../../api/client';
 import { useLogin } from '../../../context/LoginProvider';
 
-const PlayerSelectionModal  = ({dismissedPlayers, onClose,match_id ,teamBatting,handleInningsFinish}) => {
+const SelectNextBowler  = ({onClose,match_id ,teamBowling,innings}) => {
     const [availablePlayers, setAvailablePlayers] = useState([]);
-    const {setStriker} = useLogin();
+    const {setBowler} = useLogin();
     useEffect(() => {
-    // Simulate fetching the player list from an API
-    fetchPlayers().then((players) => {
-      // Filter out dismissed players
-      const filteredPlayers = players.filter(player => !dismissedPlayers.includes(player._id));
-      if (filteredPlayers.length === 0) {
-        onClose(); // Close the modal first, optionally
-        handleInningsFinish();
-      }
-      setAvailablePlayers(filteredPlayers);
-    });
-  }, [dismissedPlayers,handleInningsFinish]);
+    fetchPlayers()
+    },[])
 
   // Placeholder function for fetching players
   async function fetchPlayers() {
-    const players=await client.get(`/players_batting_team/${match_id}/${teamBatting}`);
+    const players=await client.get(`/players_batting_team/${match_id}/${teamBowling}`);
     if (players.data.success){
-       // console.log(players.data.team_players)
-        return players.data.team_players;
+       setAvailablePlayers(players.data.team_players)
     }
 
 
@@ -36,7 +26,7 @@ try {
   }
 
   const onSelectPlayer = (player) => {
-  setStriker(
+  setBowler(
     {
         id:player._id,
         first_name:player.first_name,
@@ -50,6 +40,7 @@ try {
 
   return (
     <View style={styles.container}>
+    <Text style={{fontWeight:'bold',textAlign:'center',fontSize:25,marginBottom:30,marginTop:30}}>Select Bowler {innings} Innings</Text>
       <ScrollView>
         {availablePlayers.map(player => (
           <TouchableOpacity key={player._id} style={styles.playerItem} onPress={() => onSelectPlayer(player)}>
@@ -92,4 +83,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PlayerSelectionModal 
+export default SelectNextBowler 

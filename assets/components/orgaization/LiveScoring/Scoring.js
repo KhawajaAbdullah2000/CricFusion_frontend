@@ -4,22 +4,99 @@ import { TouchableOpacity, SafeAreaView, StyleSheet, Text, View,ImageBackground,
 import { useLogin } from '../../../context/LoginProvider';
 import client from '../../../api/client';
 import PlayerSelectionModal from './PlayerSelectionModal ';
+import SecondStriker from './SecondStriker';
+import SecondNonStriker from './SecondNonStriker'
+import SelectNextBowler from './SelectNextBowler';
 
 export default function Scoring({route,navigation}) {
   const [score, setScore] = useState(0);
   const [wicket, setWicket] = useState(0);
+  const [battingTeam,setBattingTeam]=useState(route.params.teamBatting)
+  const [bowlingTeam,setBowlingTeam]=useState(route.params.teamBowling)
+  const [winningTeam,setWinningTeam]=useState(null)
+
+  const [score2,setScore2]=useState(0)
+  const [wicket2, setWicket2] = useState(0);
+
   const [dismissedPlayers, setDismissedPlayers] = useState(nonStriker ? [nonStriker.id] : []);
+  const [innings,setInnings]=useState("first");
+  //for 1st innings
+  const [inningsFinished, setInningsFinished] = useState(false);
 
   const [isModalVisible, setModalVisible] = useState(false);
-  
+  const [strikerModalVisible, setStrikerModalVisible] = useState(false);
+  const [nonstrikerModalVisible, setNonStrikerModalVisible] = useState(false);
+  const [bowlerModal,setBowlerModal]=useState(false);
+
+
+  const SecondInningsStriker=()=>{
+  setStrikerScore({
+    runs:0,
+    balls:0,
+    id:null,
+    first_name:'',
+    last_name:''
+  })
+    setStrikerModalVisible(true)
+  }
+
+  const SecondInningsNonStriker=()=>{
+    setNonStrikerScore({
+    runs:0,
+    balls:0,
+    id:null,
+    first_name:'',
+    last_name:''
+  })
+    setNonStrikerModalVisible(true)
+  }
+
 
   const [myOvers, setOvers] = useState({
     overs: 0,
     balls: 0,
   });
 
-  const {striker ,nonStriker,bowler,} = useLogin();
+  useEffect(()=>{
+ //console.log("The overs are: ",myOvers)
+  },[myOvers]);
 
+  useEffect(()=>{
+ if(score2>score){
+  setWinningTeam(battingTeam)
+ }
+ if(score2<score){
+  setWinningTeam(bowlingTeam)
+ }
+
+ HandleVictory()
+
+  },[score2]
+  )
+
+  const HandleVictory=()=>{
+    if(winningTeam){
+      console.log("The winnign team is: ",winningTeam)
+    }
+  }
+
+  const {striker ,nonStriker,bowler} = useLogin();
+
+  // Callback to be called by the modal
+    const handleInningsFinish = () => {
+    setInningsFinished(true);
+setOvers({overs:0,balls:0})
+    swapTeams()
+    setInnings("second")
+    setDismissedPlayers([])
+  
+  };
+
+  const swapTeams = () => {
+  const currentBattingTeam = battingTeam;
+  setBattingTeam(bowlingTeam);
+  setBowlingTeam(currentBattingTeam);
+};
 
 
   //const [currentBall,setCurrentBall]=useState({runs:0,balls:0})
@@ -31,6 +108,7 @@ export default function Scoring({route,navigation}) {
     first_name:nonStriker.first_name,last_name:nonStriker.last_name})
 
   const [batsmanData,setBatsmanData]=useState([]);
+  const [bowlerData,setBowlerData]=useState([])
 
   const IncrementBall=()=>{
     let { overs, balls } = myOvers;
@@ -39,25 +117,54 @@ export default function Scoring({route,navigation}) {
     if (balls === 6) {
       balls = 0;
       overs += 1;
+      ChangeBowler()
     }
-    setOvers({ overs, balls });
+
+    if (overs==2){
+      handleInningsFinish()
+    }else{
+      setOvers({ overs, balls });
+    }
+    
+  }
+
+  const ChangeBowler=()=>{
+  setBowlerModal(true);
   }
 
   //for 1,2,3 runs
   const handleButtonPress=(points)=>{
-    setScore(score + points);
+
+    if(innings && innings=="first"){
+      setScore(score + points);
+    }
+    if(innings && innings=="second"){
+      setScore2(score2 + points);
+    }
+
     IncrementBall()
     addBallDataForBatsman(points)
   };
 
   const handleFourPress=(points)=>{
-    setScore(score + points);
+    if(innings && innings=="first"){
+      setScore(score + points);
+    }
+    if(innings && innings=="second"){
+      setScore2(score2 + points);
+    }
+ 
     IncrementBall()
     addFourDataForBatsman(points)
   };
 
   const handleSixPress=(points)=>{
-    setScore(score + points);
+    if(innings && innings=="first"){
+      setScore(score + points);
+    }
+    if(innings && innings=="second"){
+      setScore2(score2 + points);
+    }
     IncrementBall()
     addSixDataForBatsman(points)
   };
@@ -65,8 +172,8 @@ export default function Scoring({route,navigation}) {
 
 
   useEffect(() => {
-    console.log("The new batsmanDataArray is: ", batsmanData);
-    console.log("");
+  //  console.log("The new batsmanDataArray is: ", batsmanData);
+   // console.log("");
   }, [batsmanData]);
 
   useEffect(() => {
@@ -74,7 +181,7 @@ export default function Scoring({route,navigation}) {
     }, [strikerScore]);
 
  useEffect(()=>{
-console.log("Dismissed players array: ",dismissedPlayers)
+//console.log("Dismissed players array: ",dismissedPlayers)
  },[dismissedPlayers])
 
  useEffect(() => {
@@ -86,12 +193,24 @@ console.log("Dismissed players array: ",dismissedPlayers)
   }));
 }, [striker]);
 
+useEffect(() => {
+  setNonStrikerScore(prevScore => ({
+    ...prevScore,
+    id: nonStriker.id,
+    first_name: nonStriker.first_name,
+    last_name: nonStriker.last_name,
+  }));
+}, [nonStriker]);
+
 //to make sure non strikers are also not availabe in the player list
 useEffect(() => {
   if (nonStriker && nonStriker.id) {
     setDismissedPlayers([nonStriker.id]);
+
   }
 }, [nonStriker]);
+
+
 
 //for 1 2 3 runs
   const addBallDataForBatsman = (runs) => {
@@ -100,13 +219,24 @@ useEffect(() => {
       ...prevArray,
       {
         player_id: strikerScore.id, // Use the current striker's id
-        team_id: route.params.teamBatting,
+        team_id: battingTeam,
         runs_scored: runs,
         fours_count: 0,
         sixers_count: 0,
         dismissal: false,
         fifty_scored: 0,
         century_scored: 0
+      }
+    ]);
+
+    setBowlerData((prevArray) => [
+      ...prevArray,
+      {
+        player_id: bowler.id, // Use the current striker's id
+        team_id: bowlingTeam,
+        overs_bowled:1,
+        wickets_taken: 0,
+        runs_conceded: runs
       }
     ]);
   
@@ -121,24 +251,28 @@ useEffect(() => {
     // Check if runs are odd and swap strikers
     if (runs % 2 !== 0) {
 
-      const temp={...nonStrikerScore}
-
-      setNonStrikerScore((prev) => ({
-        ...strikerScore,
-        runs: strikerScore.runs+runs,
-        balls: strikerScore.balls+1
-      }));
-  
-      setStrikerScore((prev) => ({
-        ...temp,
-        runs: temp.runs ,
-        balls: temp.balls
-      }));
-
+     changeStriker(runs)
   
 
     }
   };
+
+const changeStriker=(runs)=>{
+ const temp={...nonStrikerScore}
+
+setNonStrikerScore((prev) => ({
+  ...strikerScore,
+  runs: strikerScore.runs+runs,
+  balls: strikerScore.balls+1
+}));
+
+setStrikerScore((prev) => ({
+  ...temp,
+  runs: temp.runs ,
+  balls: temp.balls
+}));
+
+  }
 
   const addFourDataForBatsman = (runs) => {
 
@@ -146,13 +280,24 @@ useEffect(() => {
       ...prevArray,
       {
         player_id: strikerScore.id, // Use the current striker's id
-        team_id: route.params.teamBatting,
+        team_id: battingTeam,
         runs_scored: runs,
         fours_count: 1,
         sixers_count: 0,
         dismissal: false,
         fifty_scored: 0,
         century_scored: 0
+      }
+    ]);
+
+    setBowlerData((prevArray) => [
+      ...prevArray,
+      {
+        player_id: bowler.id, // Use the current striker's id
+        team_id: bowlingTeam,
+        overs_bowled:1,
+        wickets_taken: 0,
+        runs_conceded: 4
       }
     ]);
   
@@ -173,13 +318,24 @@ useEffect(() => {
       ...prevArray,
       {
         player_id: strikerScore.id, // Use the current striker's id
-        team_id: route.params.teamBatting,
+        team_id: battingTeam,
         runs_scored: runs,
         fours_count: 0,
         sixers_count: 1,
         dismissal: false,
         fifty_scored: 0,
         century_scored: 0
+      }
+    ]);
+
+    setBowlerData((prevArray) => [
+      ...prevArray,
+      {
+        player_id: bowler.id, // Use the current striker's id
+        team_id: bowlingTeam,
+        overs_bowled:1,
+        wickets_taken: 0,
+        runs_conceded: 6
       }
     ]);
   
@@ -208,6 +364,17 @@ useEffect(() => {
       setBatsmanData([])
     }
 
+    const bowling=await client.post("/insert_baller_data",{
+      match_id:route.params.match_id,
+      data:bowlerData
+     
+    });
+
+    if(bowling.data.success){
+      console.log("Bowling db updated")
+      setBowlerData([])
+    }
+
    } catch (error) {
     console.log(error.message)
    }
@@ -215,7 +382,12 @@ useEffect(() => {
 
 
   const handleWicketButtonPressed=(wic)=>{
-    setWicket((prevWicket) => prevWicket + 1);
+    if(innings && innings=="first"){
+      setWicket((prevWicket) => prevWicket + 1);    }
+    if(innings && innings=="second"){
+      setWicket2((prevWicket) => prevWicket + 1);
+    }
+    //setWicket((prevWicket) => prevWicket + 1);
     setDismissedPlayers((prevDismissedPlayers) => [...prevDismissedPlayers, strikerScore.id]);
     IncrementBall()
     addBallDataForWicket()
@@ -238,29 +410,27 @@ useEffect(() => {
       }
     ]);
 
+    setBowlerData((prevArray) => [
+      ...prevArray,
+      {
+        player_id: bowler.id, // Use the current striker's id
+        team_id: bowlingTeam,
+        overs_bowled:1,
+        wickets_taken: 1,
+        runs_conceded: 0
+      }
+    ]);
+
+
     setStrikerScore({
       runs:0,balls:0,id:null,
-    first_name:"HEHE",last_name:"HEHE"
+    first_name:"None",last_name:"None"
     })
 
    setModalVisible(true);
 
   }
 
-  // const buttons = [
-  //   { id: 0, label: '0',value:0 },
-  //   { id: 1, label: '1',value:1 },
-  //   { id: 2, label: '2',value:2 },
-  //   { id: 3, label: '3',value:3 },
-  //   { id: 4, label: '4',value:4 },
-  //   { id: 5, label: '5/7',value:5 },
-  //   { id: 6, label: '6',value:6 },
-  //   { id: 7, label: 'WD (Wide)',value:1 },
-  //   { id: 8, label: 'NB (Noball)',value:1 },
-  //   { id: 9, label: 'UNDO' ,value:0},
-  //   { id: 10, label: 'WICKET', onPress: () => handleWicketButtonPressed(1) },
-  //   { id: 11, label: 'BYE' },
-  // ];
 
 
 
@@ -284,14 +454,67 @@ useEffect(() => {
    dismissedPlayers={dismissedPlayers} 
    onClose={() => setModalVisible(false)} 
    match_id={route.params.match_id}
-   teamBatting={route.params.teamBatting}
+   teamBatting={battingTeam}
+   handleInningsFinish={handleInningsFinish}
    />
  </Modal>
+
+ <Modal visible={strikerModalVisible} onRequestClose={() => setStrikerModalVisible(false)}>
+   <SecondStriker
+   dismissedPlayers={dismissedPlayers} 
+   onClose={() => setStrikerModalVisible(false)} 
+   match_id={route.params.match_id}
+   teamBatting={battingTeam}
+ 
+   />
+ </Modal>
+
+ 
+ <Modal visible={nonstrikerModalVisible} onRequestClose={() => setNonStrikerModalVisible(false)}>
+   <SecondNonStriker
+   dismissedPlayers={dismissedPlayers} 
+   onClose={() => setNonStrikerModalVisible(false)} 
+   match_id={route.params.match_id}
+   teamBatting={battingTeam}
+ 
+   />
+ </Modal>
+
+ <Modal visible={bowlerModal} onRequestClose={() => setBowlerModal(false)}>
+   <SelectNextBowler
+   onClose={() => setBowlerModal(false)} 
+   match_id={route.params.match_id}
+   teamBowling={bowlingTeam}
+   innings={innings}
+ 
+   />
+ </Modal>
+
+
    <ImageBackground source={image} resizeMode="cover" style={styles.imagestyle}>
-   
    <View style={styles.mainscore}>
+   
    <View style={styles.score}>
+
+  {
+    innings && (
+      <Text style={{color:'white',fontWeight:'bold',fontSize:15}}>{innings} Innings</Text>
+    )
+  }
+  {inningsFinished && (
+        <Text style={{color:'white',fontWeight:'bold',fontSize:15}}>Target: {score+1} runs</Text>
+      )}
+      {
+        innings=="first" && (
+      
    <Text style={styles.scoretext}>{score}/{wicket}</Text>
+  )}
+
+  {
+        innings=="second" && (
+      
+   <Text style={styles.scoretext}>{score2}/{wicket2}</Text>
+  )}
    </View>
    </View>
    
@@ -299,7 +522,11 @@ useEffect(() => {
   
    </View>
    
+   {
+    innings==="first" && (
+
    <View style={styles.container2}>
+
 
    <View style={{flex:2,marginLeft:10}}>
    <Text style={{color:'white',fontWeight:'bold',fontSize:13}} >
@@ -329,6 +556,41 @@ useEffect(() => {
    </View>
 
    </View>
+    )}
+
+    {innings=="second" && (
+      <View style={styles.container2}>
+
+   <View style={{flex:2,marginLeft:10}}>
+   <Text style={{color:'white',fontWeight:'bold',fontSize:13}} >
+   {strikerScore.first_name} {strikerScore.last_name}* {strikerScore.runs} ({strikerScore.balls})
+   </Text>
+   <Text style={{color:'white',fontWeight:'bold',fontSize:13}}> 
+   {nonStrikerScore.first_name} {nonStrikerScore.last_name} {nonStrikerScore.runs} ({nonStrikerScore.balls})
+   </Text>
+   </View>
+
+   <View style={{flex:1}}>
+   <Text style={{color:'white',fontWeight:'bold',fontSize:13}}>Bowler</Text>
+   <Text style={{color:'white',fontWeight:'bold',fontSize:13}}>
+   
+   {bowler.first_name} {bowler.last_name}
+   
+   </Text>
+   </View>
+
+   <View style={{flex:1}}>
+   <Text style={{color:'white',fontWeight:'bold',fontSize:13}}>Overs</Text>
+   <Text style={{color:'white',fontWeight:'bold',fontSize:13}}>
+   
+   {myOvers.overs}.{myOvers.balls}
+   
+   </Text>
+   </View>
+
+   </View>
+
+    )}
    
    <View style={styles.container3}>
 
@@ -383,6 +645,22 @@ useEffect(() => {
      >
      <Text style={styles.buttonText}>Update Score</Text>   
      </TouchableOpacity>
+
+     {inningsFinished && (
+      <TouchableOpacity onPress={()=>SecondInningsStriker()} style={[styles.button]}>
+     <Text style={styles.buttonText}>Choose Striker</Text>   
+     </TouchableOpacity>
+    
+      )}
+      
+     {inningsFinished && (
+      <TouchableOpacity onPress={()=>SecondInningsNonStriker()} style={[styles.button]}>
+     <Text style={styles.buttonText}>Choose Non Striker</Text>   
+     </TouchableOpacity>
+    
+      )}
+
+ 
     
      
   {/*

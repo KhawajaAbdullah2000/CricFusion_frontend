@@ -3,9 +3,9 @@ import React,{useState,useEffect} from 'react'
 import client from '../../../api/client';
 import { useLogin } from '../../../context/LoginProvider';
 
-const PlayerSelectionModal  = ({dismissedPlayers, onClose,match_id ,teamBatting,handleInningsFinish}) => {
+const SecondNonStriker  = ({dismissedPlayers ,onClose,match_id ,teamBatting}) => {
     const [availablePlayers, setAvailablePlayers] = useState([]);
-    const {setStriker} = useLogin();
+    const {setNonStriker} = useLogin();
     useEffect(() => {
     // Simulate fetching the player list from an API
     fetchPlayers().then((players) => {
@@ -13,11 +13,11 @@ const PlayerSelectionModal  = ({dismissedPlayers, onClose,match_id ,teamBatting,
       const filteredPlayers = players.filter(player => !dismissedPlayers.includes(player._id));
       if (filteredPlayers.length === 0) {
         onClose(); // Close the modal first, optionally
-        handleInningsFinish();
+     
       }
       setAvailablePlayers(filteredPlayers);
     });
-  }, [dismissedPlayers,handleInningsFinish]);
+  }, [dismissedPlayers]);
 
   // Placeholder function for fetching players
   async function fetchPlayers() {
@@ -36,7 +36,7 @@ try {
   }
 
   const onSelectPlayer = (player) => {
-  setStriker(
+    setNonStriker(
     {
         id:player._id,
         first_name:player.first_name,
@@ -92,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PlayerSelectionModal 
+export default SecondNonStriker 
