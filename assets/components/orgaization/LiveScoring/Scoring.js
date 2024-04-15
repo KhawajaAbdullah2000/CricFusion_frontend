@@ -57,26 +57,41 @@ export default function Scoring({route,navigation}) {
     balls: 0,
   });
 
-  useEffect(()=>{
- //console.log("The overs are: ",myOvers)
-  },[myOvers]);
+  useEffect(() => {
+WinningCondition()
+}, [score, score2, myOvers,innings]);
 
-  useEffect(()=>{
- if(score2>score){
-  setWinningTeam(battingTeam)
- }
- if(score2<score){
-  setWinningTeam(bowlingTeam)
- }
+const WinningCondition=()=>{
+  if (score2 > score) {
+    setWinningTeam(battingTeam);
+   
+  } else if (score2 < score && myOvers.overs == 2 && innings=="second") {
+    setWinningTeam(bowlingTeam);
+  }
+}
+useEffect(()=>{
+HandleVictory(winningTeam);
+},[winningTeam])
 
- HandleVictory()
-
-  },[score2]
-  )
-
-  const HandleVictory=()=>{
+  const HandleVictory=async(team)=>{
     if(winningTeam){
-      console.log("The winnign team is: ",winningTeam)
+      console.log("The winnign team is: ",team)
+  try {
+    const res=await client.put("/update_winning_team",{
+      match_id:route.params.match_id,
+      team_id:team
+    });
+    if(res.data.success){
+      //console.log(res.data.message)
+     navigation.navigate("winning_team_page",{
+      match_id:route.params.match_id,
+      team_won:team
+     })
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+
     }
   }
 
@@ -84,12 +99,15 @@ export default function Scoring({route,navigation}) {
 
   // Callback to be called by the modal
     const handleInningsFinish = () => {
+  
+
     setInningsFinished(true);
 setOvers({overs:0,balls:0})
     swapTeams()
     setInnings("second")
     setDismissedPlayers([])
-  
+      
+
   };
 
   const swapTeams = () => {
@@ -113,18 +131,19 @@ setOvers({overs:0,balls:0})
   const IncrementBall=()=>{
     let { overs, balls } = myOvers;
     balls += 1;
-
-    if (balls === 6) {
+    if (balls == 6) {
       balls = 0;
       overs += 1;
       ChangeBowler()
     }
+    setOvers({ overs, balls });
 
-    if (overs==2){
+    if (overs==2 && innings=="first"){
       handleInningsFinish()
-    }else{
-      setOvers({ overs, balls });
     }
+    // else{
+    //   setOvers({ overs, balls });
+    // }
     
   }
 
