@@ -1,10 +1,16 @@
-import { View, Text,ImageBackground } from 'react-native'
-import React, { useEffect,useState } from 'react'
+import { View, Text,ImageBackground ,TouchableOpacity} from 'react-native'
+import React, { useEffect,useState,useRef } from 'react'
 import client from '../../../api/client'
+import ConfettiCannon from 'react-native-confetti-cannon';
+import { useLogin } from '../../../context/LoginProvider';
+
 
 const WinningTeam = ({route,navigation}) => {
+  const {contextLeague_id}=useLogin();
 
-    const [team,setTeam]=useState('')
+
+    const [team,setTeam]=useState('');
+   
     useEffect(()=>{
         getTeamDetails();
 
@@ -12,8 +18,13 @@ const WinningTeam = ({route,navigation}) => {
 
     const getTeamDetails=async()=>{
 const res=await client.get(`/my_team/${route.params.team_won}`);
-if(res.data.success){
+try {
+  if(res.data.success){
     setTeam(res.data.team)
+   // confettiRef.current.start();
+}
+} catch (error) {
+  console.log(error.message)
 }
     }
   return (
@@ -22,10 +33,25 @@ if(res.data.success){
     style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
     resizeMode="cover" // Cover, contain, stretch, repeat, center
   >
+  <ConfettiCannon
+  count={200}
+  fallSpeed={6000}
+  origin={{x: -10, y: 0}}
+  autoStart={true}
+  fadeOut={true}
+/>
     {team && (
-      <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'black' }}>{team.name} Won the match</Text>
+      <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'black',marginBottom:30 }}>{team.name} Won the match</Text>
     )}
+    {
+      team && (
+        <TouchableOpacity style={{padding:20,backgroundColor:'yellow',marginTop:10}}>
+        <Text>Go to Matches</Text>
+        </TouchableOpacity>
+      )
+    }
   </ImageBackground>
+  
   )
 }
 
