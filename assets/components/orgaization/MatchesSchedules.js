@@ -31,6 +31,7 @@ const MatchesSchedules = ({route,navigation}) => {
    
     const res=await client.get(`/league-schedule/${league_id}`);
     if(res.data.success){
+      //console.log(res.data.leagueSchedule)
       setMatches(res.data.leagueSchedule)
 
      }
@@ -59,7 +60,6 @@ const MatchesSchedules = ({route,navigation}) => {
   );
 
   const StartScoring=(match_id)=>{
-    console.log(match_id);
     navigation.navigate('playing_eleven',{
       match_id:match_id
     })
@@ -95,7 +95,7 @@ const MatchesSchedules = ({route,navigation}) => {
          </TouchableOpacity>
 
         ):(
-          <Text style={styles.col}>See Scorecard</Text>
+          <Text style={styles.col}>Match Finished</Text>
         )
       }
       </Pressable>

@@ -27,6 +27,10 @@ try {
   console.log(error.message)
 }
     }
+
+    const goToMatches=()=>{
+      navigation.navigate("matches_schedules")
+    }
   return (
     <ImageBackground
     source={{ uri: 'https://image.winudf.com/v2/image1/Y29tLkdvb2R3YWxscGFwZXJzLmltYWdlcy5Dcmlja2V0V2FsbHBhcGVyX3NjcmVlbl8wXzE2MDI5NTg4NjNfMDE4/screen-0.jpg?fakeurl=1&type=.jpg' }} // Replace with your image URL or local require
@@ -45,7 +49,7 @@ try {
     )}
     {
       team && (
-        <TouchableOpacity style={{padding:20,backgroundColor:'yellow',marginTop:10}}>
+        <TouchableOpacity onPress={()=>goToMatches()} style={{padding:20,backgroundColor:'yellow',marginTop:10}}>
         <Text>Go to Matches</Text>
         </TouchableOpacity>
       )

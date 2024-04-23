@@ -33,7 +33,6 @@ const StackNavigator = () => {
 
 const MainNavigator = () => {
   const { isLoggedIn ,isOrgLoggedIn,loginPending} = useLogin();
-  console.log("At main navigator: "+isLoggedIn)
   return (
   
 

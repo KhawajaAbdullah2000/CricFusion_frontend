@@ -32,6 +32,7 @@ import AddPlayers from './Player/AddPlayers';
 import Invitations from './Player/Invitations';
 import RequestsSent from './Player/RequestsSent';
 import BidPlayer from './Player/BidPlayer';
+import Profile from './Player/Profile';
 
 const Drawer = createDrawerNavigator();
 
@@ -205,13 +206,8 @@ const DrawerNavigator = () => {
     <Drawer.Screen component={TargetStackNavigator} name='My Teams' />
     <Drawer.Screen component={LeagueForIndividualStackNavigator} name='Leagues' />
     <Drawer.Screen component={RequestsTab} name='Requests' />
-
-
-
-
-      <Drawer.Screen component={Matches} name='matches' />
-      <Drawer.Screen component={Tournaments} name='tournaments' />
-
+    <Drawer.Screen component={Profile} name='Profile' />
+    
     </Drawer.Navigator>
 
 

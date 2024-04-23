@@ -67,7 +67,19 @@ const AddPlayers=(city)=>{
 
   return (
     <View style={styles.container}>
+{
+  team.captain_id==profile._id && (
+    <View style={{marginTop:10,flexDirection:'row',justifyContent: 'flex-end',marginRight:20}}> 
+    <TouchableOpacity style={{backgroundColor:'green',width:'50%',height:38,justifyContent:'center',borderRadius:20}}>
+    <Text style={{textAlign:'center',color:'white',fontWeight:'bold'}}>Recommended Team</Text>
+    </TouchableOpacity>
+    </View>
 
+
+  )
+}
+
+ 
       {
         team? (
         <View style={styles.teamname}>
