@@ -45,7 +45,7 @@ try {
   fadeOut={true}
 />
     {team && (
-      <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'black',marginBottom:30 }}>{team.name} Won the match</Text>
+      <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'black',marginBottom:30 ,color:'white'}}>{team.name} Won the match</Text>
     )}
     {
       team && (

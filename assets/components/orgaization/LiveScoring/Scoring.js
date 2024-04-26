@@ -242,8 +242,9 @@ useEffect(() => {
         runs_scored: runs,
         fours_count: 0,
         sixers_count: 0,
-        dismissal: false,
+        dismissal: 0,
         fifty_scored: 0,
+        balls_faced:1,
         century_scored: 0
       }
     ]);
@@ -303,8 +304,9 @@ setStrikerScore((prev) => ({
         runs_scored: runs,
         fours_count: 1,
         sixers_count: 0,
-        dismissal: false,
+        dismissal: 0,
         fifty_scored: 0,
+        balls_faced:1,
         century_scored: 0
       }
     ]);
@@ -341,8 +343,9 @@ setStrikerScore((prev) => ({
         runs_scored: runs,
         fours_count: 0,
         sixers_count: 1,
-        dismissal: false,
+        dismissal: 0,
         fifty_scored: 0,
+        balls_faced:1,
         century_scored: 0
       }
     ]);
@@ -423,8 +426,9 @@ setStrikerScore((prev) => ({
         runs_scored:0,
         fours_count: 0,
         sixers_count: 0,
-        dismissal: true,
+        dismissal: 1,
         fifty_scored: 0,
+        balls_faced:1,
         century_scored: 0
       }
     ]);
