@@ -50,7 +50,7 @@ const Emergency = ({route,navigation}) => {
       <Text style={{fontSize:20,fontWeight:'bold',marginTop:20,marginBottom:50}}>Its An Emergency</Text>
         {
         location && (
-            <MapView style={{width:'90%',height:'50%'}}
+            <MapView style={{width:'90%',height:'70%'}}
   initialRegion={{
     latitude: location.coords.latitude,
     longitude: location.coords.longitude,
