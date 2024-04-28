@@ -33,6 +33,8 @@ import Invitations from './Player/Invitations';
 import RequestsSent from './Player/RequestsSent';
 import BidPlayer from './Player/BidPlayer';
 import Profile from './Player/Profile';
+import Emergency from './Player/Emergency';
+import Nearby from './Player/Nearby';
 
 const Drawer = createDrawerNavigator();
 
@@ -152,6 +154,8 @@ const LeagueForIndividualStackNavigator = () => {
   );
 };
 
+
+
 const RequestTab=createBottomTabNavigator()
 
 //Requests
@@ -187,6 +191,16 @@ const RequestsTab=()=>{
 
 }
 
+const EmergencyStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="emergency" component={Emergency} options={{ headerShown: false}}/>
+      <Stack.Screen name="nearby" component={Nearby} options={{ headerShown: false}}/>
+
+    </Stack.Navigator>
+  );
+};
+
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
@@ -207,6 +221,7 @@ const DrawerNavigator = () => {
     <Drawer.Screen component={LeagueForIndividualStackNavigator} name='Leagues' />
     <Drawer.Screen component={RequestsTab} name='Requests' />
     <Drawer.Screen component={Profile} name='Profile' />
+    <Drawer.Screen component={EmergencyStack} name='Emergency' />
     
     </Drawer.Navigator>
 
