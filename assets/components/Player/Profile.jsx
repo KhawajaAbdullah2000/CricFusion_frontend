@@ -10,10 +10,9 @@ const Profile = ({ route,navigation }) => {
   },[isAvailable])
 
   const handleToggleAvailability = () => {
-   
-    //firestore update status
+
       setIsAvailable(prevState => !prevState);
-  
+   
   
   
   };
