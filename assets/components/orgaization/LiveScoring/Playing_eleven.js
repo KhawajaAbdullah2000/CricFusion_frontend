@@ -89,7 +89,7 @@ const Playing_eleven = ({route,navigation}) => {
 
   return (
     <View style={{flex:1}}>
-<Text style={{textAlign:'center'}}>{route.params.match_id}</Text>
+
 
     {
         team1 && team2 && (
@@ -101,7 +101,7 @@ const Playing_eleven = ({route,navigation}) => {
                 
                 {
                     playing_eleven_team1.length>=1 && playing_eleven_team2.length>=1 &&
-                    <TouchableOpacity onPress={()=>GoToMatchDetails()} style={{width: 50, height: 30, backgroundColor: '#FF5E63', borderRadius: 10,marginLeft:30,justifyContent:'center'}}>
+                    <TouchableOpacity onPress={()=>GoToMatchDetails()} style={{width: 100, height: 30, backgroundColor: '#FF5E63', borderRadius: 10,marginLeft:30,justifyContent:'center'}}>
                     <Text style={{textAlign: 'center', fontWeight: 'bold', color: 'white',fontSize:15}}>Next</Text>
                     </TouchableOpacity>
 
@@ -130,13 +130,23 @@ const Playing_eleven = ({route,navigation}) => {
                 data={players_team1}
                 keyExtractor={(item) => item.player_id}
                 renderItem={({item}) => (
-                <TouchableOpacity onPress={()=>Add_player_Team1(item.player_id)} style={{flex:1,flexDirection:'row',marginTop:8}}>
-                    <Text style={[styles.players,
-                        playing_eleven_team1.includes(item.player_id) ? styles.selected : styles.unselected,
-                    ]}>{item.first_name} {item.last_name}
-                    {item.player_id==team1.captain_id? '  C':''}
-                    </Text>
-                </TouchableOpacity>
+                // <TouchableOpacity onPress={()=>Add_player_Team1(item.player_id)} style={{flex:1,flexDirection:'row',marginTop:8}}>
+                //     <Text style={[styles.players,
+                //         playing_eleven_team1.includes(item.player_id) ? styles.selected : styles.unselected,
+                //     ]}>{item.first_name} {item.last_name}
+                //     {item.player_id==team1.captain_id? '  C':''}
+                //     </Text>
+                // </TouchableOpacity>
+
+            <TouchableOpacity onPress={()=>Add_player_Team1(item.player_id)}  style={[styles.playerItem, playing_eleven_team1.includes(item.player_id) ? styles.selected : styles.unselected]}>
+                <Text style={[styles.playerText    
+                     ]}>{item.first_name} {item.last_name}
+                     {item.player_id==team1.captain_id? '  C':''}
+                     </Text>
+          
+          </TouchableOpacity>
+
+
                 )}
         />
             )
@@ -159,9 +169,9 @@ const Playing_eleven = ({route,navigation}) => {
                 data={players_team2}
                 keyExtractor={(item) => item.player_id}
                 renderItem={({item}) => (
-                <TouchableOpacity onPress={()=>Add_player_Team2(item.player_id)} style={{flex:1,flexDirection:'row',marginTop:8}}>
-                    <Text style={[styles.players,
-                        playing_eleven_team2.includes(item.player_id) ? styles.selected : styles.unselected,
+                <TouchableOpacity onPress={()=>Add_player_Team2(item.player_id)} 
+                style={[styles.playerItem, playing_eleven_team2.includes(item.player_id) ? styles.selected : styles.unselected]}>
+                    <Text style={[styles.players
                     ]}>{item.first_name} {item.last_name}
                     {item.player_id==team2.captain_id? '  C':''}
                     </Text>
@@ -190,10 +200,25 @@ const styles=StyleSheet.create({
     },
 
     selected: {
-        backgroundColor:'#7AA7FF'
+        backgroundColor:'#44D177'
+
+        
       },
       unselected: {
-     backgroundColor:'#44D177'
+     backgroundColor:'#e7e7e7'
+     
       },
+      
+      playerItem: {
+    backgroundColor: '#e7e7e7',
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerText: {
+    fontSize: 18,
+  },
 })
 export default Playing_eleven

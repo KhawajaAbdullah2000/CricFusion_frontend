@@ -97,11 +97,7 @@ setContextLeague_id(league_id);
 <Image source={require('../../teamlogo.png')} style={styles.image} />
     <Text style={[styles.title,{color:'white',fontWeight:'bold',fontSize:15}]}>{item.teams.name}</Text>
    
-                <TouchableOpacity style={styles.btn}
-                onPress={()=>console.log(item.teams._id)}
-                >
-             <Text style={{fontSize:15,textAlign:'center',fontWeight:'bold'}}>View Team</Text>
-             </TouchableOpacity>
+               
 
 </View>
 
@@ -124,17 +120,17 @@ setContextLeague_id(league_id);
   
 
     <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-    <View style={{backgroundColor:'lightblue',height:50,width:100,justifyContent:'center',
+    <View style={{backgroundColor:'#44D177',height:50,width:100,justifyContent:'center',
     alignItems:'center',alignSelf:'flex-end',marginEnd:20,borderRadius:20}}>
-    <Text>Promote League</Text>
+    <Text style={{fontWeight:'bold'}}>Promote League</Text>
     </View>
     </TouchableOpacity>
 
 
     <TouchableOpacity onPress={() => scheduleMatches(route.params.league_id)}>
-    <View style={{backgroundColor:'lightgreen',height:50,width:100,justifyContent:'center',
+    <View style={{backgroundColor:'#44D177',height:50,width:100,justifyContent:'center',
     alignItems:'center',alignSelf:'flex-end',marginEnd:20,borderRadius:20,marginTop:20}}>
-    <Text>Schedule Matches</Text>
+    <Text style={{fontWeight:'bold'}}>Schedule Matches</Text>
     </View>
     </TouchableOpacity>
 
@@ -188,14 +184,14 @@ setContextLeague_id(league_id);
    <TouchableOpacity
        onPress={()=>setModalVisible(false)}>
        <View style={{backgroundColor:'blue',borderRadius:20,width:120,height:40,justifyContent:'center'}}>
-       <Text style={{textAlign:'center'}}>Cancel</Text>
+       <Text style={{textAlign:'center',color:'white'}}>Cancel</Text>
        </View>
    </TouchableOpacity>
 
    <TouchableOpacity
    onPress={()=>promoteLeague(route.params.league_id)}>
-   <View style={{backgroundColor:'green',borderRadius:20,width:120,height:40,justifyContent:'center'}}>
-   <Text style={{textAlign:'center'}}>Share</Text>
+   <View style={{backgroundColor:'#44D177',borderRadius:20,width:120,height:40,justifyContent:'center'}}>
+   <Text style={{textAlign:'center',color:'white'}}>Share</Text>
    </View>
 </TouchableOpacity>
 
@@ -240,34 +236,33 @@ const styles=StyleSheet.create({
   card: {
     flex: 1,
     margin: 10,
-    borderRadius: 10
+    borderRadius: 10,
+    width:'100%',
+    alignItems:'center'
    
   },
   image: {
     width: '100%',
-    height: 150,
+    height: 130,
     resizeMode: 'contain',
   },
   title: {
-   paddingBottom:8,
-    textAlign: 'center',
-    backgroundColor: 'orange',
+  width:'50%',
+
+paddingVertical:10, 
+ textAlign: 'center',
+    backgroundColor: '#44D177',
 
   },
 
-  btn:{
-    padding: 10,
-    textAlign: 'center',
-    backgroundColor: 'yellow',
-  elevation:10
-  },
+ 
 
   centeredView: {
     flex: 1,
     alignItems: "center",
     marginTop: 200,
    paddingBottom:100,
-    backgroundColor:'lightblue'
+    backgroundColor:'grey'
 },
 
 

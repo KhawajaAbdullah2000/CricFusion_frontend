@@ -190,7 +190,7 @@ useEffect(()=>{
       {
         team1!=null && team2!=null && team1!=team2?  
          <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-        <Text style={{backgroundColor:'lightblue',borderRadius:10,width:90,textAlign:'center'}}>Create match</Text>
+        <Text style={{backgroundColor:'#44D177',borderRadius:10,width:90,textAlign:'center',fontWeight:'bold'}}>Create match</Text>
          </TouchableOpacity>:null
       }
    
@@ -320,7 +320,7 @@ useEffect(()=>{
                                               
                                               <Text style={{fontWeight:'bold',fontSize:17,marginBottom:5,marginLeft:10}}>Match Time</Text>
                                           <TouchableOpacity onPress={showDatePicker}
-                                           style={{backgroundColor:'yellow',width:140,height:30,marginLeft:20,borderRadius:20,
+                                           style={{backgroundColor:'#44D177',width:140,height:30,marginLeft:20,borderRadius:20,
                                            justifyContent:'center'}}>
                                             <Text style={{textAlign:'center'}} >Select</Text>
                                           </TouchableOpacity>
@@ -361,7 +361,7 @@ useEffect(()=>{
                                             
                                             <View style={{ flexDirection: "row" }}>
                                                 <TouchableOpacity
-                                                    style={{flex:1,backgroundColor:'green',borderRadius:20,padding:10}}
+                                                    style={{flex:1,backgroundColor:'#44D177',borderRadius:20,padding:10}}
                                                     onPress={isSubmitting ? null : handleSubmit}
                                                 >
                                                     <Text style={{textAlign:'center'}}>Schedule Match</Text>

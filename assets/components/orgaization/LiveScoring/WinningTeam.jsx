@@ -38,8 +38,8 @@ try {
     resizeMode="cover" // Cover, contain, stretch, repeat, center
   >
   <ConfettiCannon
-  count={200}
-  fallSpeed={6000}
+  count={50}
+  fallSpeed={1000}
   origin={{x: -10, y: 0}}
   autoStart={true}
   fadeOut={true}

@@ -221,7 +221,7 @@ const DrawerNavigator = () => {
       drawerContent={props => <CustomDrawer {...props} />}
     >
     
-    <Drawer.Screen component={PlayerHome} name='playerhome' />
+    <Drawer.Screen component={PlayerHome} name='Player Home' />
     <Drawer.Screen component={TargetStackNavigator} name='My Teams' />
     <Drawer.Screen component={LeagueForIndividualStackNavigator} name='Leagues' />
     <Drawer.Screen component={RequestsTab} name='Requests' />

@@ -1,8 +1,10 @@
-import { View, Text,StyleSheet } from 'react-native'
+import { View, Text,StyleSheet ,Linking,Button} from 'react-native'
 import React,{useState,useEffect} from 'react'
 import client from '../../api/client';
 import { useLogin } from '../../context/LoginProvider';
 import Apploader from '../Apploader';
+
+
 
 const NearbyPlayer = ({route}) => {
     const [stats,setStats]=useState(null);
@@ -30,9 +32,22 @@ fetchData()
         }
     }
 
+    const openWhatsApp = (number, message) => {
+        let url = 'whatsapp://send?text=' + encodeURIComponent(message) + '&phone=' + number;
+        Linking.canOpenURL(url).then(supported => {
+          if (supported) {
+            Linking.openURL(url);
+          } else {
+            alert('Please make sure WhatsApp installed on your device');
+          }
+        }).catch(error => console.error('An error occurred', error));
+      };
+
+
     const formatNumber = (number) => {
         return parseFloat(number).toFixed(2);
       };
+
   return (
     <View style={{flex:1,alignItems:'center'}}>
     {
@@ -63,6 +78,10 @@ fetchData()
             <Text style={styles.stats}>Bowling Average: {stats.bowling_average} </Text>
             <Text style={styles.stats}>Batting Rating: {stats.batting_rating} </Text>
             <Text style={styles.stats}>Bowling Rating: {stats.bowling_rating} </Text>
+            <Button
+        title="Contact"
+        onPress={() => openWhatsApp('923104660654', 'Hello')}
+      />
           </View>
 
         )

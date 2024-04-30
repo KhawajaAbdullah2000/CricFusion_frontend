@@ -177,6 +177,17 @@ setOvers({overs:0,balls:0})
     addFourDataForBatsman(points)
   };
 
+  const handleWidePress=(points)=>{
+    if(innings && innings=="first"){
+      setScore(score + points);
+    }
+    if(innings && innings=="second"){
+      setScore2(score2 + points);
+    }
+  
+
+  }
+
   const handleSixPress=(points)=>{
     if(innings && innings=="first"){
       setScore(score + points);
@@ -655,6 +666,18 @@ setStrikerScore((prev) => ({
      onPress={() => handleSixPress(6)}
      >
      <Text style={styles.buttonText}>Six</Text>   
+     </TouchableOpacity>
+
+     <TouchableOpacity style={[styles.button]}
+     onPress={() => handleWidePress(1)}
+     >
+     <Text style={styles.buttonText}>Wide</Text>   
+     </TouchableOpacity>
+
+     <TouchableOpacity style={[styles.button]}
+     onPress={() => handleWidePress(1)}
+     >
+     <Text style={styles.buttonText}>No Ball</Text>   
      </TouchableOpacity>
 
      <TouchableOpacity style={[styles.button]}

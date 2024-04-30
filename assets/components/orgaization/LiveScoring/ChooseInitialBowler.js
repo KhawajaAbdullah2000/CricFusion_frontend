@@ -68,15 +68,20 @@ const ChooseInitialBowler = ({route,navigation}) => {
           data={players}
           keyExtractor={(item) => item._id}
           renderItem={({item}) => (
+
           <TouchableOpacity onPress={()=>selectStriker(item._id,item.first_name,item.last_name)}
-          style={{flex:1,flexDirection:'row',marginTop:8, justifyContent:'center'}}>
-          <Text style={[ styles.players,
-            bowler.id == item._id ? styles.selected : styles.unselected
+          style={[styles.playerItem, bowler.id == item._id ? styles.selected : styles.unselected]}>
+          <Text style={[ styles.players
           ]}>
             {item.first_name} {item.last_name}
           </Text>
+        
             
           </TouchableOpacity>
+
+          
+    
+
           )}
   />
         )
@@ -84,9 +89,14 @@ const ChooseInitialBowler = ({route,navigation}) => {
 
       {
         players && players.length>0 && bowler.id!=null &&(
-          <TouchableOpacity onPress={()=>goBackToChooseStriker()} style={{backgroundColor:'green',width:'100%',height:40,justifyContent:'center'}}>
+          <TouchableOpacity onPress={()=>goBackToChooseStriker()} style={{backgroundColor:'#85D677',width:'100%',height:40,justifyContent:'center'}}>
           <Text style={{textAlign:'center',color:'white',fontWeight:"bold",fontSize:20}}>Done</Text>
           </TouchableOpacity>
+
+
+        
+
+
         )
       }
 
@@ -100,16 +110,28 @@ const styles=StyleSheet.create({
       textAlign:'center',
       textAlignVertical:'center',
       height:30,
-      fontWeight:'bold'
+    
+      fontSize:18
      
   },
 
   selected: {
-      backgroundColor:'#7AA7FF'
+      backgroundColor:'#44D177'
     },
     unselected: {
-   backgroundColor:'#44D177'
+
     },
+    playerItem: {
+    backgroundColor: '#e7e7e7',
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerText: {
+    fontSize: 18,
+  },
 })
 
 export default ChooseInitialBowler

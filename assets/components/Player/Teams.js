@@ -105,9 +105,10 @@ export default function Teams({ route, navigation }) {
              } </Text>
         
 
-    <TouchableOpacity style={{backgroundColor:'#44D177',borderRadius:10,width:70,justifyContent:'center',alignItems:'center',marginEnd:10}}
+    <TouchableOpacity style={{backgroundColor:'#067022',borderRadius:10,width:70,
+    justifyContent:'center',alignItems:'center',marginEnd:10}}
     onPress={()=>handleButtonClick(item.team_id)}>
-    <Text style={{fontSize:15}}>View Team</Text>
+    <Text style={{fontSize:15,color:'white',fontWeight:'bold'}}>View Team</Text>
     </TouchableOpacity>
       </View>   
    
@@ -316,6 +317,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     mainmapview:{
-        flexDirection:'row',marginTop:20,paddingVertical:25,backgroundColor:'grey',alignItems:'center',justifyContent:'space-between'
+        flexDirection:'row',marginTop:20,paddingVertical:25,backgroundColor:'#39cc60',alignItems:'center',justifyContent:'space-between'
       }
 });

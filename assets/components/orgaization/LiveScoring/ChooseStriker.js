@@ -165,14 +165,14 @@ const {striker ,nonStriker,bowler} = useLogin();
 
 
            <TouchableOpacity onPress={()=>selectStriker()}
-           style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'}}>
+           style={{width:150,backgroundColor:'#44D177',height:'80%',justifyContent:'center'}}>
            <View>
-           <Text style={{textAlign:'center'}}>Striker</Text>
+           <Text style={{textAlign:'center',fontWeight:'bold',fontSize:20}}>Striker</Text>
            </View>
 
            {
             striker? (
-          <Text style={{textAlign:'center',fontWeight:'bold'}}>{striker.first_name} {striker.last_name}</Text>
+          <Text style={{textAlign:'center',fontWeight:'bold',fontWeight:'bold'}}>{striker.first_name} {striker.last_name}</Text>
             ): null
            
           }
@@ -182,11 +182,11 @@ const {striker ,nonStriker,bowler} = useLogin();
 
 
       <TouchableOpacity onPress={()=>selectNonStriker()}
-       style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'
+       style={{width:150,backgroundColor:'#44D177',height:'80%',justifyContent:'center'
  }}>
 
  <View>
- <Text style={{textAlign:'center'}}>Non Striker</Text>
+ <Text style={{textAlign:'center',fontWeight:'bold',fontSize:20}}>Non Striker</Text>
  </View>
 
     {
@@ -235,11 +235,11 @@ const {striker ,nonStriker,bowler} = useLogin();
 
 
     <TouchableOpacity onPress={()=>selectBowler()}
-       style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center'
+       style={{width:150,backgroundColor:'#44D177',height:'80%',justifyContent:'center'
  }}>
 
  <View>
- <Text style={{textAlign:'center'}}>Bowler</Text>
+ <Text style={{textAlign:'center',fontWeight:'bold',fontSize:20}}>Bowler</Text>
  </View>
 
     {
@@ -263,7 +263,7 @@ const {striker ,nonStriker,bowler} = useLogin();
 
 
 
-     <TouchableOpacity onPress={()=>goToScoring()} style={{width:'100%',backgroundColor:'yellow',height:50,justifyContent:'center'}}>
+     <TouchableOpacity onPress={()=>goToScoring()} style={{width:'100%',backgroundColor:'#85D677',height:50,justifyContent:'center'}}>
      <Text style={{textAlign:'center',fontWeight:'bold',fontSize:20}}>Lets Play</Text>
      </TouchableOpacity>
 

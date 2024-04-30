@@ -75,10 +75,11 @@ const Toss = ({route,navigation}) => {
             <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',paddingHorizontal:20}}>
 
            <TouchableOpacity onPress={()=>selectTeam(matchDetails.team1_id)} 
-           style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center',
+           style={{width:150,backgroundColor:'#44D177',height:'80%',justifyContent:'center',
            borderWidth:teamWonToss==matchDetails.team1_id?3:0
 
          }}>
+
 
                <Text style={{textAlign:'center'}}>{team1.name}</Text>
         </TouchableOpacity>
@@ -86,7 +87,7 @@ const Toss = ({route,navigation}) => {
 
         
       <TouchableOpacity onPress={()=>selectTeam(matchDetails.team2_id)}
-       style={{width:150,backgroundColor:'lightblue',height:'80%',justifyContent:'center',
+       style={{width:150,backgroundColor:'#44D177',height:'80%',justifyContent:'center',
        borderWidth:teamWonToss==matchDetails.team2_id?3:0
     }}>
 
@@ -139,7 +140,7 @@ const Toss = ({route,navigation}) => {
          )
      }
 
-     <TouchableOpacity onPress={()=>goToScoring()} style={{width:'100%',backgroundColor:'yellow',height:50,justifyContent:'center'}}>
+     <TouchableOpacity onPress={()=>goToScoring()} style={{width:'100%',backgroundColor:'#85D677',height:50,justifyContent:'center'}}>
      <Text style={{textAlign:'center',fontWeight:'bold',fontSize:20}}>Lets Play</Text>
      </TouchableOpacity>
  
