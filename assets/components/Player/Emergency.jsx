@@ -2,13 +2,38 @@ import React,{useState,useEffect} from 'react';
 import {Text, View,StyleSheet} from 'react-native';
 import * as Location from 'expo-location';
 import MapView from 'react-native-maps';
-import {Marker} from 'react-native-maps';
+import {Marker,Callout} from 'react-native-maps';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-//var MapView = require('react-native-maps');
+import { useLogin } from '../../context/LoginProvider';
+import client from '../../api/client';
+
 
 const Emergency = ({route,navigation}) => {
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
+    const {profile}=useLogin();
+
+    const updateLocation=async()=>{
+   try {
+    const res=await client.put(`/update_location/${profile._id}`,{
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude
+
+    });
+    if(res.data.success){
+      console.log(res.data.message)
+    }
+   } catch (error) {
+    console.log(error.message)
+   }
+    }
+
+
+    useEffect(()=>{
+      console.log("Calling API to update location in db")
+   updateLocation()
+
+    },[location])
     
   useEffect(() => {
     (async () => {
@@ -21,7 +46,6 @@ const Emergency = ({route,navigation}) => {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-      console.log(location);
       
     })();
   }, []);
@@ -43,6 +67,7 @@ const Emergency = ({route,navigation}) => {
     navigation.navigate('nearby',{
         latitude:location.coords.latitude,
         longitude:location.coords.longitude,
+        id:profile._id
     })
   }
   return (
@@ -59,11 +84,8 @@ const Emergency = ({route,navigation}) => {
   }}>
 
 <Marker
-  coordinate={{latitude: location.coords.latitude, longitude: location.coords.longitude}}
-
-/>
-
-
+  coordinate={{latitude: location.coords.latitude, longitude: location.coords.longitude}}/>
+  
   </MapView>
 
 
@@ -73,7 +95,7 @@ const Emergency = ({route,navigation}) => {
  location && (
 
 
-      <TouchableOpacity onPress={()=>GoToNearby()} style={{backgroundColor:'yellow',height:40,justifyContent:'center',width:200,marginTop:30}}>
+      <TouchableOpacity onPress={()=>GoToNearby()} style={{backgroundColor:'#44D177',height:40,justifyContent:'center',width:200,marginTop:30}}>
         <Text style={{textAlign:'center'}}>Find Nearby Players</Text>
       </TouchableOpacity>
  )
@@ -91,6 +113,7 @@ const styles = StyleSheet.create({
     paragraph: {
       fontSize: 18,
       textAlign: 'center',
-    },
+    }
+   
 });
 export default Emergency;

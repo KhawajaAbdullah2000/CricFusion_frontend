@@ -140,7 +140,7 @@ const ApplyTeamInLeague = ({route,navigation}) => {
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{fontSize:20,fontWeight:'bold'}}>Your Team {team.name} is been registered </Text>
             <TouchableOpacity onPress={PlayerList}
-            style={{paddingHorizontal:25,backgroundColor:'lightblue',
+            style={{paddingHorizontal:25,backgroundColor:'#44D177',
             paddingVertical:10,borderRadius:10,elevation:10,marginTop:20}} 
             >
             <Text>Need more Players in your team? Start Bidding</Text>

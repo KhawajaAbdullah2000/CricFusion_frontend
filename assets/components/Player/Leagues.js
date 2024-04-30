@@ -146,7 +146,7 @@ const styles= StyleSheet.create({
   btn:{
     padding: 10,
     textAlign: 'center',
-    backgroundColor: 'lightblue',
+    backgroundColor: '#44D177',
   elevation:10
   }
   

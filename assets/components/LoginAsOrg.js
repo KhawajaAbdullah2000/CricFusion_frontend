@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     height: 45,
     paddingHorizontal: 50,
-    backgroundColor: "lightgreen",
+    backgroundColor: "#7ED957",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,

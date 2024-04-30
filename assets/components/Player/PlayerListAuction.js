@@ -55,7 +55,7 @@ const PlayerListAuction = ({ route, navigation }) => {
           {
             item.status===0?
             (
-              <TouchableOpacity onPress={()=>goToBidding(item.player_id)} style={{backgroundColor:'lightgreen',width:80,height:30,justifyContent:'center',
+              <TouchableOpacity onPress={()=>goToBidding(item.player_id)} style={{backgroundColor:'#44D177',width:80,height:30,justifyContent:'center',
               alignItems:'center',borderRadius:8,elevation:10}}>
               <Text style={{fontWeight:'bold'}}>Bid</Text>
               </TouchableOpacity>

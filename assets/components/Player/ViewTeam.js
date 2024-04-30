@@ -96,12 +96,12 @@ const AddPlayers=(city)=>{
         <View>
 
         <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10, marginRight: 20}}>
-        <TouchableOpacity style={{paddingHorizontal: 25, backgroundColor: '#32ed76', paddingVertical: 10, borderRadius: 10, elevation: 10}} onPress={() => FindNearbyLeagues(profile.city)}>
+        <TouchableOpacity style={{paddingHorizontal: 25, backgroundColor: '#44D177', paddingVertical: 10, borderRadius: 10, elevation: 10}} onPress={() => FindNearbyLeagues(profile.city)}>
           <Text>Find Nearby Leagues</Text>
         </TouchableOpacity>
       
         <TouchableOpacity style={{marginLeft: 10, paddingHorizontal: 25,
-           backgroundColor: '#32ed76', paddingVertical: 10, borderRadius: 10, elevation: 10}}
+           backgroundColor: '#44D177', paddingVertical: 10, borderRadius: 10, elevation: 10}}
            onPressIn={()=>AddPlayers(profile.city)}>
           <Text>Add Players</Text>
         </TouchableOpacity>
@@ -116,8 +116,7 @@ const AddPlayers=(city)=>{
 
     <Text style={{marginTop:30,fontSize:25,fontWeight:'500',marginBottom:5}}>Players</Text>
 
-  
-   
+
     
     {team && players && players.length > 0 ? (
       <FlatList
@@ -125,14 +124,25 @@ const AddPlayers=(city)=>{
         keyExtractor={(item) => item._id}
         renderItem={({item}) => (
         
-          <View style={{flex:1,flexDirection:'row',marginTop:8}}>
-            <Text style={{backgroundColor:'#44D177',width:200,textAlign:'center'}}>{item.player.first_name} {item.player.last_name}</Text>
+          // <View style={{flex:1,flexDirection:'row',marginTop:8}}>
+          //   <Text style={{backgroundColor:'#44D177',width:200,textAlign:'center'}}>{item.player.first_name} {item.player.last_name}</Text>
+          //   {
+          //     item.player_id==team.captain_id?(
+          //      <Text style={{fontWeight:'500',backgroundColor:'#44D177',width:20}}>C</Text>
+          //     ):null
+          //   }
+     
+          // </View>
+          <View style={styles.playerItem}>
+            <Text style={styles.playerText}>{item.player.first_name} {item.player.last_name}
+            
             {
               item.player_id==team.captain_id?(
-               <Text style={{fontWeight:'500',backgroundColor:'#44D177',width:20}}>C</Text>
+            <Text style={{color:'#44D177'}}>  C</Text>
               ):null
-            }
-     
+             }
+            </Text>
+          
           </View>
         )}
       />
@@ -166,6 +176,7 @@ const styles=StyleSheet.create({
   
         },
         teamname:{
+          flex:1,
           marginTop:40,
           alignItems:'center',
           
@@ -178,7 +189,7 @@ const styles=StyleSheet.create({
         playerContainer: {
           flexDirection: 'row',
           justifyContent: 'space-between',
-          backgroundColor: 'lightgreen',
+          backgroundColor: '#44D177',
           borderRadius: 10,
           padding: 10,
           marginBottom: 10,
@@ -193,7 +204,18 @@ const styles=StyleSheet.create({
         captainText: {
           fontWeight: '500',
           alignSelf: 'flex-end',
-        }
+        },
+        playerItem: {
+    backgroundColor: '#e7e7e7',
+    padding: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playerText: {
+    fontSize: 18,
+  },
        
 
 });

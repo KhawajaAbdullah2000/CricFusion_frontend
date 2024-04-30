@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         },
         playbtn:{
-        backgroundColor:'lightgreen',
+        backgroundColor:'#7ED957',
         paddingHorizontal:40,
         paddingVertical:15,
         borderRadius:8,

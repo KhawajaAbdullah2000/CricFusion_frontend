@@ -212,7 +212,7 @@ export default function Teams({ route, navigation }) {
 
                                             <View style={{ marginBottom: 5 }}>
                                                 <FormInput
-                                                    label="name"
+                                                    label="Name"
                                                     value={name}
                                                     onBlur={handleBlur("name")}
                                                     error={touched.name && errors.name}
@@ -230,7 +230,7 @@ export default function Teams({ route, navigation }) {
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <TouchableOpacity
-                                                    style={{flex:1,backgroundColor:'green',borderRadius:20,padding:10}}
+                                                    style={{flex:1,backgroundColor:'#44D177',borderRadius:20,padding:10}}
                                                     onPress={isSubmitting ? null : handleSubmit}
                                                 >
                                                     <Text style={{textAlign:'center'}}>Create</Text>

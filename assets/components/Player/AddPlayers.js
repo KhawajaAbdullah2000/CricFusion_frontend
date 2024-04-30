@@ -71,7 +71,7 @@ const AddPlayers = ({route,navigation}) => {
 
   return (
     <View style={{flex:1,padding:15}}>
-      <Text style={{textAlign:'center',fontSize:20,fontWeight:'bold',marginBottom:10}}>FInd Nearby Players</Text>
+      <Text style={{textAlign:'center',fontSize:20,fontWeight:'bold',marginBottom:10}}>Find Nearby Players</Text>
       
       {players && players.length > 0 && (
         <FlatList
