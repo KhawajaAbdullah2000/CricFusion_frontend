@@ -351,7 +351,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
                 style={styles.submitBtn}
                 onPress={isSubmitting ? null : handleSubmit}
               >
-                <Text>Login</Text>
+                <Text style={{fontWeight:'bold',color:'white',fontSize:15}}>Login</Text>
               </TouchableOpacity>
             </>
           );
@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     height: 45,
     paddingHorizontal: 50,
-    backgroundColor: "#7ED957",
+    backgroundColor: "#44D177",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,

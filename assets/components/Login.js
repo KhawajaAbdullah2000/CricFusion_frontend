@@ -35,7 +35,7 @@ export default function Login({navigation}) {
             
         }
              >
-            <View style={[styles.headerbtn,{backgroundColor:'#7ED957'}]}>
+            <View style={[styles.headerbtn,{backgroundColor:'#44D177'}]}>
             <Text style={{color:'white',fontSize:16}}>Login As Organization</Text>
             </View>
         </TouchableWithoutFeedback>

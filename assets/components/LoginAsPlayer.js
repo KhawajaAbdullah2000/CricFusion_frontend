@@ -306,6 +306,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin(
           }}
         >
           Login
+
         </Text>
       </Animated.View>
 
@@ -357,7 +358,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending}=useLogin(
                 style={styles.submitBtn}
                 onPress={isSubmitting ? null : handleSubmit}
               >
-                <Text>Login</Text>
+                <Text style={{color:'white',fontWeight:'bold',fontSize:15}}>Login</Text>
               </TouchableOpacity>
             </>
           );
@@ -386,7 +387,7 @@ const styles = StyleSheet.create({
   submitBtn: {
     height: 45,
     paddingHorizontal: 50,
-    backgroundColor: "#7ED957",
+    backgroundColor: "#1b1b33",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
