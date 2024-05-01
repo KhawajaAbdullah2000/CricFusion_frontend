@@ -75,7 +75,7 @@ fetchData()
             <Text style={styles.stats}>Total 6's count: {stats.total_sixers_count} </Text>
             <Text style={styles.stats}>Overs bowled: {stats.total_overs_bowled} </Text>
             <Text style={styles.stats}>Wickets taken: {stats.total_wickets_taken} </Text>
-            <Text style={styles.stats}>Bowling Average: {stats.bowling_average} </Text>
+            <Text style={styles.stats}>Bowling Average: {formatNumber(stats.bowling_average)} </Text>
             <Text style={styles.stats}>Batting Rating: {stats.batting_rating} </Text>
             <Text style={styles.stats}>Bowling Rating: {stats.bowling_rating} </Text>
             <Button

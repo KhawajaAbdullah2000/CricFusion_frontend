@@ -116,10 +116,10 @@ const Playing_eleven = ({route,navigation}) => {
 
     <View style={{flex:1,flexDirection:'row'}}>
 
-    <View style={{flex:1,width:'50%',backgroundColor:'lightgreen',alignItems:'center',borderColor:'black',borderRightWidth:1}}>
+    <View style={{flex:1,width:'50%',alignItems:'center',borderColor:'black',borderRightWidth:1}}>
         {
             team1 && (
-                <Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>{team1.name}</Text>
+                <Text style={{fontWeight:'bold',fontSize:20,textAlign:'center',marginBottom:10}}>{team1.name}</Text>
             )
         }
            
@@ -155,10 +155,10 @@ const Playing_eleven = ({route,navigation}) => {
     </View>
 
    
-    <View style={{flex:1,width:'50%',backgroundColor:'lightgreen',alignItems:'center'}}>
+    <View style={{flex:1,width:'50%',alignItems:'center'}}>
     {
         team2 && (
-            <Text style={{fontWeight:'bold',fontSize:20,textAlign:'center'}}>{team2.name}</Text>
+            <Text style={{fontWeight:'bold',fontSize:20,textAlign:'center',marginBottom:10}}>{team2.name}</Text>
 
         )
     }

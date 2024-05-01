@@ -246,7 +246,7 @@ export default function Leagues({ route, navigation }) {
 
                                             <View style={{ marginBottom: 5 }}>
                                                 <FormInput
-                                                    label="name"
+                                                    label="Name"
                                                     value={name}
                                                     onBlur={handleBlur("name")}
                                                     error={touched.name && errors.name}

@@ -51,6 +51,9 @@ fetchStats()
  
 };
 
+const formatNumber = (number) => {
+        return parseFloat(number).toFixed(2);
+      };
 
   return (
     <ScrollView style={styles.container}>
@@ -77,13 +80,13 @@ fetchStats()
         <Text style={styles.stats}>Matches Played: {playerDetails.matches_played}</Text>
 
         <Text style={styles.stats}>Runs Scored: {stats.total_runs_scored}</Text>
-        <Text style={styles.stats}>Batting Average {stats.batting_average}</Text>
-        <Text style={styles.stats}>Batting Strike Rate:  {stats.batting_strike_rate}</Text>
+        <Text style={styles.stats}>Batting Average {formatNumber(stats.batting_average)}</Text>
+        <Text style={styles.stats}>Batting Strike Rate:  {formatNumber(stats.batting_strike_rate)}</Text>
         <Text style={styles.stats}>Total 4's count: {stats.total_fours_count}</Text>
         <Text style={styles.stats}>Total 6's count: {stats.total_sixers_count} </Text>
         <Text style={styles.stats}>Overs bowled: {stats.total_overs_bowled} </Text>
         <Text style={styles.stats}>Wickets taken: {stats.total_wickets_taken} </Text>
-        <Text style={styles.stats}>Bowling Average: {stats.bowling_average} </Text>
+        <Text style={styles.stats}>Bowling Average: {formatNumber(stats.bowling_average)} </Text>
         <Text style={styles.stats}>Batting Rating: {stats.batting_rating} </Text>
         <Text style={styles.stats}>Bowling Rating: {stats.bowling_rating} </Text>
       </View>
