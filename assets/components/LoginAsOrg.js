@@ -184,7 +184,7 @@ const {setIsLoggedIn,setProfile,setToken,setLoginPending,loginPending,setIsOrgLo
                     alignItems: "center",
                   }}
                 >
-                  <View style={{ backgroundColor: "lightgreen", padding: 10 }}>
+                  <View style={{ backgroundColor: "#44D177", padding: 10 }}>
                     <View style={{ position: "absolute", right: 15 }}>
                       <Pressable onPress={() => setModal(false)}>
                   
