@@ -36,6 +36,7 @@ import Profile from './Player/Profile';
 import Emergency from './Player/Emergency';
 import Nearby from './Player/Nearby';
 import NearbyPlayer from './Player/NearbyPlayer';
+import RecommendTeam from './Player/RecommendTeam';
 
 const Drawer = createDrawerNavigator();
 
@@ -132,6 +133,7 @@ const TargetStackNavigator = () => {
     <Stack.Navigator>
       <Stack.Screen name="teams_page" component={Teams} options={{ headerShown: false}}/>
       <Stack.Screen name="view_team" component={ViewTeam} options={{ headerShown: false}}/>
+    <Stack.Screen name="recommend_team" component={RecommendTeam} options={{ headerShown: false}}/>
       <Stack.Screen name="apply_as_team" component={ApplyAsTeam} options={{ headerShown: false}}/>
       <Stack.Screen name="apply_team_in_league" component={ApplyTeamInLeague} options={{ headerShown: false}}/>
       <Stack.Screen name="player_list" component={PlayerListAuction} options={{ headerShown: false}}/>

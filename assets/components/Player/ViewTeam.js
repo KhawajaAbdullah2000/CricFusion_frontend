@@ -58,6 +58,11 @@ const AddPlayers=(city)=>{
  );
 }
 
+const RecommendTeam=()=>{
+  navigation.navigate("recommend_team",{
+    team_id:route.params.team_id
+  })
+}
 
   useEffect(() => {
     fetchTeamDetails();
@@ -70,7 +75,7 @@ const AddPlayers=(city)=>{
 {
   team.captain_id==profile._id && (
     <View style={{marginTop:10,flexDirection:'row',justifyContent: 'flex-end',marginRight:20}}> 
-    <TouchableOpacity style={{backgroundColor:'green',width:'50%',height:38,justifyContent:'center',borderRadius:20}}>
+    <TouchableOpacity onPress={()=>RecommendTeam()} style={{backgroundColor:'green',width:'50%',height:38,justifyContent:'center',borderRadius:20}}>
     <Text style={{textAlign:'center',color:'white',fontWeight:'bold'}}>Recommended Team</Text>
     </TouchableOpacity>
     </View>
@@ -124,15 +129,7 @@ const AddPlayers=(city)=>{
         keyExtractor={(item) => item._id}
         renderItem={({item}) => (
         
-          // <View style={{flex:1,flexDirection:'row',marginTop:8}}>
-          //   <Text style={{backgroundColor:'#44D177',width:200,textAlign:'center'}}>{item.player.first_name} {item.player.last_name}</Text>
-          //   {
-          //     item.player_id==team.captain_id?(
-          //      <Text style={{fontWeight:'500',backgroundColor:'#44D177',width:20}}>C</Text>
-          //     ):null
-          //   }
-     
-          // </View>
+
           <View style={styles.playerItem}>
             <Text style={styles.playerText}>{item.player.first_name} {item.player.last_name}
             
